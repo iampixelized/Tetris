@@ -36,7 +36,7 @@ void TetrisLayer::spawnTetromino()
 	if (spawnCount > 6)
 		randomizeBag();
 
-	Tetromino * tetromino = currentTetromino = Tetromino::createTetromino(Tetromino::TetrominoType::J, bag[spawnCount].second, *tetrisPlayField, *assetManager);
+	Tetromino * tetromino = currentTetromino = Tetromino::createTetromino(Tetromino::TetrominoType::L, bag[spawnCount].second, *tetrisPlayField, *assetManager);
 	esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
 	spawnCount++;
 }

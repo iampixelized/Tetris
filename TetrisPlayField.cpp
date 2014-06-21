@@ -8,10 +8,12 @@ using std::all_of;
 #include "TetrisPlayField.hpp"
 
 TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, float o)
-	: fieldSize(size), position(pos), offset(o)
+	: 
+	fieldSize(size), 
+	position(pos), 
+	offset(o), 
+	immediateHeight(10, 0)
 {
-
-	// for drafting only
 	for (size_t i = 0; i <= size.y; ++i)
 	{
 		sf::RectangleShape hline;
@@ -29,8 +31,7 @@ TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, flo
 		vline.setFillColor(sf::Color::Blue);
 		verticalGrid.push_back(vline);
 	}
-	//
-
+	
 	cout << "Playfield size : " << size.x << " x " << size.y << endl;
 	cout << "Playfield pos  : " << pos.x << " x " << pos.y << endl;
 }

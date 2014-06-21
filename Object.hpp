@@ -25,6 +25,7 @@ namespace esc
 		virtual void update(float) = 0;
 		virtual void draw(sf::RenderWindow*);
 
+		void moveTo(const sf::Vector2f &);
 		void setPosition(const sf::Vector2f &);
 		const sf::Vector2f & getPosition() const;
 		const string & getObjectName() const;

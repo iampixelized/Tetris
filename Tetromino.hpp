@@ -39,8 +39,9 @@ class Tetromino
 		void update(float);
 		void draw(sf::RenderWindow *);
 
-		void deploy();
-		bool isDeployed() const;
+		void hardDrop();
+		void softDrop();
+		bool isDropped() const;
 
 		void moveRight();
 		void moveLeft();
@@ -52,6 +53,7 @@ class Tetromino
 		void showObjectPositions() const;
 
 		TetrisPlayField * getPlayField() const;
+		void removeBlock(int);
 
 	protected:
 
@@ -63,6 +65,9 @@ class Tetromino
 
 		int getRightMostBounds();
 		int getLeftMostBounds();
+
+		void leftWallKick();
+		void rightWallKick();
 
 		struct BlockConfigurations
 		{
@@ -82,7 +87,7 @@ class Tetromino
 		BlockPalette palette;
 
 		float dropInterval;
-		bool _isDeployed;
+		bool _isDropped;
 		int face;
 		
 		BlockConfigurations blockConfigurations;
@@ -95,6 +100,7 @@ class Tetromino
 		int hWidthOffset;
 		int vWidthOffset;
 		int moveCount;
+		int dropCount;
 
 		bool isLateral;
 };	

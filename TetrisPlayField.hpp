@@ -46,6 +46,7 @@ class TetrisPlayField
 
 		BooleanGrid playField;
 		sf::Vector2f fieldSize;
+		vector<int> immediateHeight;
 
 		vector<sf::RectangleShape> horizontalGrid;
 		vector<sf::RectangleShape> verticalGrid;

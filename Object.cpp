@@ -29,6 +29,12 @@ namespace esc
 		window->draw(sprite);
 	}
 
+	void Object::moveTo(const sf::Vector2f &pos)
+	{
+		sprite.move(pos);
+		position = sprite.getPosition();
+	}
+
 	void Object::setPosition(const sf::Vector2f & pos)
 	{
 		position = pos;

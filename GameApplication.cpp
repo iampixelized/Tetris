@@ -92,7 +92,7 @@ GameApplication::GameState GameApplication::gameLoop()
 				}
 				else if (event.key.code == sf::Keyboard::Key::Down)
 				{
-
+					tetromino->softDrop();
 				}
 				else if (event.key.code == sf::Keyboard::Key::Space)
 				{
