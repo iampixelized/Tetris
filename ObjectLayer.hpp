@@ -27,6 +27,7 @@ namespace esc
 
 	using MANAGEDTYPE::update;
 	using MANAGEDTYPE::draw;
+	using MANAGEDTYPE::getID;
 
 	typedef unique_ptr<MANAGEDTYPE> ObjectPtr;
 	typedef map<int, ObjectPtr> TypeLayer;
@@ -47,19 +48,12 @@ namespace esc
 
 		TypeLayer layer;
 
-	private:
-		
-		static int objectid_generator;
 	};
-
-	template<class MANAGEDTYPE>
-	int ObjectLayer<MANAGEDTYPE>::objectid_generator = 0;
 
 	template<class MANAGEDTYPE>
 	void ObjectLayer<MANAGEDTYPE>::addNewObject(MANAGEDTYPE* mtype)
 	{
-		int id = objectid_generator++;
-		layer.insert(pair<int, ObjectPtr>(id,ObjectPtr(mtype)));
+		layer.insert(pair<int, ObjectPtr>(mtype->getID(),ObjectPtr(mtype)));
 	}
 
 	template<class MANAGEDTYPE>

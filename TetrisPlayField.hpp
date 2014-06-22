@@ -7,13 +7,16 @@ using std::vector;
 #include<string>
 using std::string;
 
+#include<map>
+using std::pair;
+using std::make_pair;
+
 #include<SFML/Graphics.hpp>
 
 #include "PlayField.hpp"
 
 class TetrisPlayField
 {
-
 	typedef vector<vector<bool>> BooleanGrid;
 
 	public:
@@ -24,10 +27,10 @@ class TetrisPlayField
 		void setGridOffset(const sf::Vector2f &);
 		float getGridOffset() const;
 
-		void setActive(const sf::Vector2f &, bool);
-		void setActive(float, float, bool);
-		bool isActive(const sf::Vector2f &) const;
-		bool isActive(float , float) const;
+		void setActive(const sf::Vector2i &, bool);
+		void setActive(int, int, bool);
+		bool isActive(const sf::Vector2i &) const;
+		bool isActive(int , int) const;
 
 		int getScore();
 
@@ -42,9 +45,12 @@ class TetrisPlayField
 
 		void drawGrid(sf::RenderWindow *, bool = true);
 
+		// to be deleted
+		void showBooleanGrid();
+
 	private:
 
-		BooleanGrid playField;
+		BooleanGrid booleanGrid;
 		sf::Vector2f fieldSize;
 		vector<int> immediateHeight;
 

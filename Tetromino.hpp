@@ -9,6 +9,15 @@ using std::vector;
 #include "TetrisPlayField.hpp"
 #include "Piece.hpp"
 
+/*
+	//NOTE: To be continued(...)
+	//	- Consider Bottom Wall Kick! Especially for I-Tetromino...
+	//	- Work on the internal representation of the grid
+	//	- Figure out how a piece can be remove from the playfield.
+	//  - Figure out how the grid can shift downwards(updated) after line out
+	//  - 
+*/
+
 // Create a specific Tetromino Manager for this class.
 
 // In our definition and policies: A Tetromino is composed
@@ -30,7 +39,7 @@ class Tetromino
 		enum TetrominoType{ S = 1, Z, J, L, I, O, T };
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange };
 		
-		Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField tpf, esc::AssetManager & am);
+		Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField & tpf, esc::AssetManager & am);
 		virtual ~Tetromino();
 
 		void rotateLeft();
@@ -54,6 +63,9 @@ class Tetromino
 
 		TetrisPlayField * getPlayField() const;
 		void removeBlock(int);
+		int getID() const;
+
+		Piece * getPiece(int);
 
 	protected:
 
@@ -63,11 +75,15 @@ class Tetromino
 
 	private:
 
+		static int id_generator;
+		int id;
+
 		int getRightMostBounds();
 		int getLeftMostBounds();
 
 		void leftWallKick();
 		void rightWallKick();
+		void deploy();
 
 		struct BlockConfigurations
 		{

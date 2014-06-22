@@ -8,12 +8,13 @@ using std::all_of;
 #include "TetrisPlayField.hpp"
 
 TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, float o)
-	: 
-	fieldSize(size), 
-	position(pos), 
-	offset(o), 
+	:
+	fieldSize(size),
+	position(pos),
+	offset(o),
 	immediateHeight(10, 0)
 {
+
 	for (size_t i = 0; i <= size.y; ++i)
 	{
 		sf::RectangleShape hline;
@@ -31,9 +32,13 @@ TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, flo
 		vline.setFillColor(sf::Color::Blue);
 		verticalGrid.push_back(vline);
 	}
-	
-	cout << "Playfield size : " << size.x << " x " << size.y << endl;
-	cout << "Playfield pos  : " << pos.x << " x " << pos.y << endl;
+
+	for (size_t y = 0; y < size.y; ++y)
+	{
+		booleanGrid.push_back(vector<bool>());
+		for (size_t i = 0; i < size.x; ++i)
+			booleanGrid[y].push_back(false);
+	}
 }
 
 TetrisPlayField::~TetrisPlayField()
@@ -46,9 +51,9 @@ int TetrisPlayField::getScore()
 	int score = 0;
 	int scoreLevel = 0;
 
-	for (size_t y = 0; y < playField.size(); ++y)
+	for (size_t y = 0; y < booleanGrid.size(); ++y)
 	{
-		if (all_of(playField[y].begin(), playField[y].end(),
+		if (all_of(booleanGrid[y].begin(), booleanGrid[y].end(),
 			[](bool b){return b; }))
 		{
 			scoreLevel++;
@@ -94,32 +99,32 @@ float TetrisPlayField::getGridOffset()
 	return offset;
 }
 
-void TetrisPlayField::setActive(const sf::Vector2f &pos, bool active)
+void TetrisPlayField::setActive(const sf::Vector2i &pos, bool active)
 {
-	if (!(pos.x < 0 && pos.x >= fieldSize.x) ||
-		!(pos.y < 0 && pos.y >= fieldSize.y))
+	if ((pos.x < 0 || pos.x >= fieldSize.x) &&
+		(pos.y < 0 || pos.y >= fieldSize.y))
 		return;
 
-	playField[pos.y][pos.x] = active;
+	booleanGrid[pos.y][pos.x] = active;
 }
 
-void TetrisPlayField::setActive(float x, float y, bool active)
+void TetrisPlayField::setActive(int x, int y, bool active)
 {
-	setActive(sf::Vector2f(x, y), active);
+	setActive(sf::Vector2i(x, y), active);
 }
 
-bool TetrisPlayField::isActive(const sf::Vector2f &pos) const
+bool TetrisPlayField::isActive(const sf::Vector2i &pos) const
 {
 	if (!(pos.x < 0 && pos.x >= fieldSize.x) ||
 		!(pos.y < 0 && pos.y >= fieldSize.y))
-		return playField[pos.y][pos.x];
+		return booleanGrid[pos.y][pos.x];
 
 	return false;
 }
 
-bool TetrisPlayField::isActive(float x, float y) const
+bool TetrisPlayField::isActive(int x, int y) const
 {
-	return isActive(sf::Vector2f(x, y));
+	return isActive(sf::Vector2i(x, y));
 }
 
 
@@ -148,4 +153,20 @@ void TetrisPlayField::drawGrid(sf::RenderWindow * window, bool show)
 
 	for (size_t y = 0; y <= fieldSize.y; ++y)
 		window->draw(horizontalGrid[y]);
+}
+
+// to be deleted
+void TetrisPlayField::showBooleanGrid()
+{
+	for (size_t y = 0; y < booleanGrid.size(); ++y)
+	{
+		for (size_t i = 0; i < booleanGrid[y].size(); ++i)
+		{
+			if (booleanGrid[y][i])
+				cout << "X";
+			else
+				cout << ".";
+		}
+		cout << endl;
+	}
 }

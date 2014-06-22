@@ -7,8 +7,9 @@ using std::boolalpha;
 
 // NOTE: Next stop, determine first the immediate height and the blocks at those
 // particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
+int Tetromino::id_generator = 0;
 
-Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField tpf, esc::AssetManager & am)
+Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField &tpf, esc::AssetManager & am)
 	: 
 	blockRotationCount(0),
 	type(ttype),
@@ -178,6 +179,7 @@ Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField tpf, es
 		vWidthOffset = 2;
 	}
 
+	id = id_generator++;
 	moveCount = (type == TetrominoType::O)? 4 : 3;
 	blockPositions = blockConfigurations._0Config;
 	playField = &tpf;
@@ -206,7 +208,7 @@ Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField tpf, es
 		actualPos.y = (p.y * blockSize) + positionOffset.y;
 
 		palette.push_back(PiecePtr(new Piece(spriteName, actualPos, am, pnum)));
-		palette[0]->perceivePlayField(tpf);
+		palette[pnum-1]->perceivePlayField(tpf);
 		pnum++;
 	}
 }
@@ -379,6 +381,7 @@ void Tetromino::softDrop()
 	if (dropCount >= (sizeOffset.y - 2) - 1)
 	{
 		_isDropped = true;
+		deploy();
 		return;
 	}
 
@@ -401,6 +404,22 @@ TetrisPlayField * Tetromino::getPlayField() const
 void Tetromino::removeBlock(int piece)
 {
 
+}
+
+int Tetromino::getID() const
+{
+	return id;
+}
+
+Piece * Tetromino::getPiece(int pid)
+{
+	for (size_t i = 0; i < palette.size(); ++i)
+	{
+		if (palette[i]->getPieceNumber() == pid)
+			return palette[i].get();
+	}
+
+	return nullptr;
 }
 
 // Try logic, whenever rotation starts from the left or from the right.
@@ -548,4 +567,13 @@ void Tetromino::rightWallKick()
 	}
 
 	cout << "Wall kick detected! face: " << face << " move count : " << moveCount << " (RIGHT): +" << kickpos.x << endl;
+}
+
+void Tetromino::deploy()
+{
+	cout << "PIECE DEPLOYED" << endl;
+	for (size_t i = 0; i < palette.size(); ++i)
+		palette[i]->deploy();
+
+	playField->showBooleanGrid();
 }

@@ -21,6 +21,8 @@ class Piece : public esc::Object
 		int getPieceNumber() const;
 		void perceivePlayField(TetrisPlayField &);
 
+		void deploy();
+
 	private:
 
 		int pieceNumber;

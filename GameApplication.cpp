@@ -62,9 +62,11 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 
 GameApplication::GameState GameApplication::gameLoop()
 {
-	TetrisLayer tetrisLayer(*tpf.get(), assetManager);
-	tetrisLayer.spawnTetromino();
-	Tetromino * tetromino = tetrisLayer.getCurrentTetromino();
+	//TetrisLayer tetrisLayer(*tpf.get(), assetManager);
+	//tetrisLayer.spawnTetromino();
+	//Tetromino * tetromino = tetrisLayer.getCurrentTetromino();
+
+	unique_ptr<Tetromino> tetromino(new Tetromino(Tetromino::TetrominoType::I, Tetromino::BlockColor::Blue, *tpf.get(), assetManager));
 
 	while (window.isOpen())
 	{
@@ -104,7 +106,8 @@ GameApplication::GameState GameApplication::gameLoop()
 		window.clear();
 
 		tpf->drawGrid(&window);
-		tetrisLayer.refreshLayer(elapsed, &window, true);
+		//tetrisLayer.refreshLayer(elapsed, &window, true);
+		tetromino->draw(&window);
 
 		window.display();
 	}
@@ -115,12 +118,12 @@ GameApplication::GameState GameApplication::gameLoop()
 bool GameApplication::loadGameAssets()
 {
 	map<string, string> assetList;
-	assetList["blue_block"] = "asset/textures/blue_block.png";
-	assetList["cyan_block"] = "asset/textures/cyan_block.png";
-	assetList["green_block"] = "asset/textures/green_block.png";
+	assetList["blue_block"	] = "asset/textures/blue_block.png";
+	assetList["cyan_block"	] = "asset/textures/cyan_block.png";
+	assetList["green_block"	] = "asset/textures/green_block.png";
 	assetList["orange_block"] = "asset/textures/orange_block.png";
 	assetList["purple_block"] = "asset/textures/purple_block.png";
-	assetList["red_block"] = "asset/textures/red_block.png";
+	assetList["red_block"	] = "asset/textures/red_block.png";
 	assetList["yellow_block"] = "asset/textures/yellow_block.png";
 
 	for (pair<string, string> p : assetList)

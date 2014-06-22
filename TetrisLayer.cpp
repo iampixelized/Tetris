@@ -10,6 +10,12 @@ TetrisLayer::TetrisLayer(TetrisPlayField & tpf, esc::AssetManager &am)
 	assetManager(&am),
 	spawnCount(0)
 {
+
+	cout << "Tetris playfield was established:" << endl;
+	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y  << endl;
+	cout << "Offset     : " << tetrisPlayField->getGridOffset() << endl;
+	cout << "Position   : " << tetrisPlayField->getPosition().x << " " << tetrisPlayField->getPosition().y << endl;
+
 	string tets = "IJLOSTZ";
 	do
 	{

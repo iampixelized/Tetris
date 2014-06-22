@@ -25,3 +25,12 @@ void Piece::perceivePlayField(TetrisPlayField &tpf)
 {
 	playField = &tpf;
 }
+
+void Piece::deploy()
+{
+	sf::Vector2i pos = sf::Vector2i(esc::Object::getPosition() - playField->getPosition());
+	pos.x /= playField->getGridOffset();
+	pos.y /= playField->getGridOffset();
+	
+	playField->setActive(pos, true);
+}
