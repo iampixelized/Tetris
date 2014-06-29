@@ -22,7 +22,7 @@ namespace esc
 		Object(const string &, const sf::Vector2f &, AssetManager &);
 		virtual ~Object();
 
-		virtual void update(float) = 0;
+		virtual void update(float);
 		virtual void draw(sf::RenderWindow*);
 
 		void moveTo(const sf::Vector2f &);

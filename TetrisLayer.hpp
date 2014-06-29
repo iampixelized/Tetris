@@ -26,6 +26,9 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 		void spawnTetromino();
 		Tetromino * getCurrentTetromino();
 
+		void insertPiece(Tetromino::TetrominoType, Tetromino::BlockColor, const sf::Vector2i &, int = 0);
+
+
 	private:
 
 		void randomizeBag();

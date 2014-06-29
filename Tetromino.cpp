@@ -8,6 +8,7 @@ using std::boolalpha;
 // NOTE: Next stop, determine first the immediate height and the blocks at those
 // particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
 int Tetromino::id_generator = 0;
+float Tetromino::dropInterval = 0.0f;
 
 Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField &tpf, esc::AssetManager & am)
 	: 
@@ -17,8 +18,11 @@ Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField &tpf, e
 	currentDirection(RotateTo::_0),
 	_isDropped(false),
 	face(0),
+	previousFace(face),
 	playField(&tpf),
 	moveCount(3),
+	previousMoveCount(moveCount),
+	moveOffset(0),
 	dropCount(0),
 	isLateral(false)
 {
@@ -200,15 +204,13 @@ Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField &tpf, e
 		case BlockColor::Yellow:	spriteName = "yellow_block";	break;
 	}
 
-	int pnum = 1;
+	int pnum = 0;
 	for (sf::Vector2f p : blockPositions)
 	{
 		sf::Vector2f actualPos;
 		actualPos.x = (p.x * blockSize) + positionOffset.x + (blockSize * 3);
 		actualPos.y = (p.y * blockSize) + positionOffset.y;
-
-		palette.push_back(PiecePtr(new Piece(spriteName, actualPos, am, pnum)));
-		palette[pnum-1]->perceivePlayField(tpf);
+		palette[pnum] = ObjectPtr(new esc::Object(spriteName, actualPos, am));
 		pnum++;
 	}
 }
@@ -242,10 +244,6 @@ void Tetromino::rotateLeft()
 
 	face = blockRotationCount * 90;
 	cout << "Face : " << face << endl;
-
-	updatePieces(blockPositions);
-	leftWallKick();
-	rightWallKick();
 }
 
 void Tetromino::rotateRight()
@@ -271,10 +269,40 @@ void Tetromino::rotateRight()
 
 	face = blockRotationCount * 90;
 	cout << "Face : " << face << endl;
+}
 
-	updatePieces(blockPositions);
-	leftWallKick();
-	rightWallKick();
+void Tetromino::setRotation(int f)
+{
+	if (f < 0 || face > 360)
+		return;
+
+	face = f;
+}
+
+int Tetromino::getRotation() const
+{
+	return face;
+}
+
+void Tetromino::setGridPosition(const sf::Vector2i &pos)
+{
+	moveCount = pos.x;
+	dropCount = pos.y;
+
+	if (moveCount >= getRightMostBounds() || 
+		moveCount <= getLeftMostBounds()  || 
+		_isDropped)
+		return;
+
+	for (size_t i = 0; i < palette.size(); ++i)
+	{
+		sf::Vector2f curpos = palette[i].get()->getPosition();
+		curpos.x += blockSize * moveCount;
+
+		palette[i].get()->setPosition(curpos);
+	}
+
+	_isDropped = true;
 }
 
 void Tetromino::moveRight()
@@ -282,14 +310,7 @@ void Tetromino::moveRight()
 	if (moveCount >= getRightMostBounds() || _isDropped)
 		return;
 
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		sf::Vector2f curpos = palette[i].get()->getPosition();
-		curpos.x += blockSize;
-
-		palette[i].get()->setPosition(curpos);
-	}
-
+	moveOffset += blockSize;
 	moveCount++;
 	cout << moveCount << endl;
 }
@@ -299,14 +320,7 @@ void Tetromino::moveLeft()
 	if (moveCount <= getLeftMostBounds() || _isDropped)
 		return;
 
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		sf::Vector2f curpos = palette[i].get()->getPosition();
-		curpos.x -= blockSize;
-
-		palette[i].get()->setPosition(curpos);
-	}
-
+	moveOffset -= blockSize;
 	moveCount--;
 	cout << moveCount << endl;
 }
@@ -327,22 +341,6 @@ Tetromino * Tetromino::createTetromino
 	return new Tetromino(ttype, bc, tpf, am);
 }
 
-void Tetromino::showObjectIDs() const
-{
-	for (size_t i = 0; i < palette.size(); ++i)
-		cout << "Object " << i << " : " << palette[i].get()->getObjectID() << endl;
-}
-
-void Tetromino::showObjectPositions() const
-{
-	for (size_t i = 0; i < palette.size(); ++i)
-		cout << "Object id: " << palette[i].get()->getObjectID() << " : "
-			 << palette[i].get()->getPosition().x 
-			 << " , " 
-			 << palette[i].get()->getPosition().y 
-			 << endl;
-}
-
 void Tetromino::updatePieces(const vector<sf::Vector2f> &pos)
 {
 	if (type == TetrominoType::O) return;
@@ -360,8 +358,34 @@ void Tetromino::updatePieces(const vector<sf::Vector2f> &pos)
 
 void Tetromino::update(float e)
 {
+	if (face != previousFace)
+	{
+		updatePieces(blockPositions);
+		leftWallKick();
+		rightWallKick();
+		previousFace = face;
+	}
+
+	if (moveCount != previousMoveCount)
+	{
+		for (size_t i = 0; i < palette.size(); ++i)
+			palette[i]->moveTo(sf::Vector2f(moveOffset, 0));
+
+		moveOffset = 0;
+		previousMoveCount = moveCount;
+	}
+
+	//gradual drop
+	dropElapsed += e;
+	if (dropElapsed <= dropInterval)
+		return;
+
+	int dropOffset = playField->getGridOffset();
+
 	for (size_t i = 0; i < palette.size(); ++i)
-		palette[i]->update(e);
+		palette[i]->moveTo(sf::Vector2f(0, blockSize));
+
+	dropElapsed = 0.0f;
 }
 
 void Tetromino::draw(sf::RenderWindow * window)
@@ -411,15 +435,12 @@ int Tetromino::getID() const
 	return id;
 }
 
-Piece * Tetromino::getPiece(int pid)
+esc::Object * Tetromino::getPiece(int pid)
 {
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		if (palette[i]->getPieceNumber() == pid)
-			return palette[i].get();
-	}
+	if (palette.find(id) == palette.end())
+		return nullptr;
 
-	return nullptr;
+	return palette[id].get();
 }
 
 // Try logic, whenever rotation starts from the left or from the right.
@@ -507,6 +528,7 @@ void Tetromino::leftWallKick()
 				moveCount += 2;
 			}
 		}
+
 		break;
 	}
 
@@ -525,7 +547,6 @@ void Tetromino::leftWallKick()
 void Tetromino::rightWallKick()
 {
 	if (moveCount <= getRightMostBounds()) return;
-
 	sf::Vector2f kickpos;
 	
 	switch (type)
@@ -554,6 +575,7 @@ void Tetromino::rightWallKick()
 				moveCount-=2;
 			}
 		}
+
 		break;
 	}
 
@@ -571,9 +593,30 @@ void Tetromino::rightWallKick()
 
 void Tetromino::deploy()
 {
-	cout << "PIECE DEPLOYED" << endl;
 	for (size_t i = 0; i < palette.size(); ++i)
-		palette[i]->deploy();
+	{
+		sf::Vector2i curpos = sf::Vector2i(palette[i]->getPosition());
+		curpos.x = (curpos.x / playField->getGridOffset()) - playField->getPosition().x;
+		curpos.y = (curpos.y / playField->getGridOffset()) - playField->getPosition().y;
 
-	playField->showBooleanGrid();
+		if (playField->isActive(curpos))
+			return;
+
+		playField->setActive(sf::Vector2i(curpos) , true);
+	}
+}
+
+void Tetromino::rotationCheck()
+{
+
+}
+
+void Tetromino::setDropInterval(float o)
+{
+	dropInterval = o;
+}
+
+float Tetromino::getDropInterval()
+{
+	return dropInterval;
 }

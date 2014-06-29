@@ -43,9 +43,11 @@ namespace esc
 		virtual void refreshLayer(float, sf::RenderWindow *, bool = true);
 
 		int getLayerSize() const;
+		MANAGEDTYPE * getRecentObject() const;
 
 	protected:
 
+		MANAGEDTYPE * recent;
 		TypeLayer layer;
 
 	};
@@ -53,7 +55,9 @@ namespace esc
 	template<class MANAGEDTYPE>
 	void ObjectLayer<MANAGEDTYPE>::addNewObject(MANAGEDTYPE* mtype)
 	{
-		layer.insert(pair<int, ObjectPtr>(mtype->getID(),ObjectPtr(mtype)));
+		int id = mtype->getID();
+		layer.insert(pair<int, ObjectPtr>(id,ObjectPtr(mtype)));
+		recent = layer[id].get();
 	}
 
 	template<class MANAGEDTYPE>
@@ -95,6 +99,12 @@ namespace esc
 	int ObjectLayer<MANAGEDTYPE>::getLayerSize() const
 	{
 		return layer.size();
+	}
+
+	template<class MANAGEDTYPE>
+	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::getRecentObject() const
+	{
+		return recent;
 	}
 }
 

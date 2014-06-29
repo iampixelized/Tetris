@@ -24,6 +24,11 @@ namespace esc
 
 	}
 
+	void Object::update(float e)
+	{
+		//
+	}
+
 	void Object::draw(sf::RenderWindow*window)
 	{
 		window->draw(sprite);

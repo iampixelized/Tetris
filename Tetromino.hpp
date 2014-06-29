@@ -6,8 +6,17 @@
 #include<vector>
 using std::vector;
 
+#include <memory>
+using std::unique_ptr;
+using std::make_unique;
+
+#include<map>
+using std::map;
+using std::pair;
+using std::make_pair;
+
 #include "TetrisPlayField.hpp"
-#include "Piece.hpp"
+#include "Object.hpp"
 
 /*
 	//NOTE: To be continued(...)
@@ -15,7 +24,7 @@ using std::vector;
 	//	- Work on the internal representation of the grid
 	//	- Figure out how a piece can be remove from the playfield.
 	//  - Figure out how the grid can shift downwards(updated) after line out
-	//  - 
+	//  - Integrate Piece class to Tetromino, then remove and delete Piece from project.
 */
 
 // Create a specific Tetromino Manager for this class.
@@ -28,8 +37,8 @@ using std::vector;
 
 class Tetromino
 {
-	typedef unique_ptr<Piece> PiecePtr;
-	typedef vector<PiecePtr> BlockPalette;
+	typedef unique_ptr<esc::Object> ObjectPtr;
+	typedef map<int, ObjectPtr> BlockPalette;
 
 	enum BlockRotate{ UP, DOWN, LEFT, RIGHT };
 	enum RotateTo{ _0, _90, _180, _270 };
@@ -44,6 +53,9 @@ class Tetromino
 
 		void rotateLeft();
 		void rotateRight();
+		void setRotation(int);
+		int getRotation() const;
+		void setGridPosition(const sf::Vector2i &);
 
 		void update(float);
 		void draw(sf::RenderWindow *);
@@ -58,20 +70,18 @@ class Tetromino
 		TetrominoType getType() const;
 		static Tetromino * createTetromino(TetrominoType, BlockColor, TetrisPlayField &, esc::AssetManager &);
 
-		void showObjectIDs() const;
-		void showObjectPositions() const;
-
 		TetrisPlayField * getPlayField() const;
 		void removeBlock(int);
 		int getID() const;
+		esc::Object * getPiece(int);
 
-		Piece * getPiece(int);
+		static void setDropInterval(float);
+		static float getDropInterval();
 
 	protected:
 
 		Tetromino(){};
 		void updatePieces(const vector<sf::Vector2f> &);
-
 
 	private:
 
@@ -84,6 +94,7 @@ class Tetromino
 		void leftWallKick();
 		void rightWallKick();
 		void deploy();
+		void rotationCheck();
 
 		struct BlockConfigurations
 		{
@@ -102,9 +113,11 @@ class Tetromino
 		vector<sf::Vector2f> blockPositions;
 		BlockPalette palette;
 
-		float dropInterval;
+		float dropElapsed;
+		static float dropInterval;
 		bool _isDropped;
 		int face;
+		int previousFace;
 		
 		BlockConfigurations blockConfigurations;
 
@@ -116,6 +129,8 @@ class Tetromino
 		int hWidthOffset;
 		int vWidthOffset;
 		int moveCount;
+		int previousMoveCount;
+		int moveOffset;
 		int dropCount;
 
 		bool isLateral;

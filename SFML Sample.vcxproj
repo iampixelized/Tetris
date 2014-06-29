@@ -15,7 +15,6 @@
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Piece.cpp" />
     <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="TetrisLayer.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
@@ -29,7 +28,6 @@
     <ClInclude Include="ILayer.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectLayer.hpp" />
-    <ClInclude Include="Piece.hpp" />
     <ClInclude Include="RandomGenerator.hpp" />
     <ClInclude Include="TetrisLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />

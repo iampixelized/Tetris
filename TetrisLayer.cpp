@@ -52,6 +52,14 @@ Tetromino * TetrisLayer::getCurrentTetromino()
 	return currentTetromino;
 }
 
+void TetrisLayer::insertPiece(Tetromino::TetrominoType ttype, Tetromino::BlockColor bc, const sf::Vector2i & pos, int face)
+{
+	Tetromino * tetromino = Tetromino::createTetromino(Tetromino::TetrominoType::L, bag[spawnCount].second, *tetrisPlayField, *assetManager);
+	esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
+	tetromino->setGridPosition(pos);
+	tetromino->setRotation(face);
+}
+
 void TetrisLayer::randomizeBag()
 {
 	bag.clear();

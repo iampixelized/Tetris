@@ -34,12 +34,13 @@ int GameApplication::run()
 	gameState = STARTING;
 	
 	tpf.reset(new TetrisPlayField(sf::Vector2f(10, 22)));
-	tpf->setPosition(sf::Vector2f(100, 100));
+	tpf->setPosition(sf::Vector2f(150.0f, 90.0f));
 
 	assetManager.addAsset("Textures", new TextureAsset(&GameApplication::loadTextureFromFile));
 	textures = dynamic_cast<TextureAsset*>(assetManager.getAsset("Textures"));
 
 	window.create(sf::VideoMode(screen_width, screen_height,32), "TETRIS");
+	window.setFramerateLimit(40);
 
 	if (!loadGameAssets())
 		return 1;
@@ -65,6 +66,9 @@ GameApplication::GameState GameApplication::gameLoop()
 	//TetrisLayer tetrisLayer(*tpf.get(), assetManager);
 	//tetrisLayer.spawnTetromino();
 	//Tetromino * tetromino = tetrisLayer.getCurrentTetromino();
+
+	//Set tetromino drop speed interval
+	Tetromino::setDropInterval(0.8f);
 
 	unique_ptr<Tetromino> tetromino(new Tetromino(Tetromino::TetrominoType::I, Tetromino::BlockColor::Blue, *tpf.get(), assetManager));
 
@@ -107,8 +111,10 @@ GameApplication::GameState GameApplication::gameLoop()
 
 		tpf->drawGrid(&window);
 		//tetrisLayer.refreshLayer(elapsed, &window, true);
+		
+		tetromino->update(elapsed);
 		tetromino->draw(&window);
-
+		
 		window.display();
 	}
 

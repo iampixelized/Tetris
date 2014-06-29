@@ -47,12 +47,12 @@ class TetrisPlayField
 
 		// to be deleted
 		void showBooleanGrid();
+		void setImmediateHeight(const sf::Vector2f &);
 
 	private:
 
 		BooleanGrid booleanGrid;
 		sf::Vector2f fieldSize;
-		vector<int> immediateHeight;
 
 		vector<sf::RectangleShape> horizontalGrid;
 		vector<sf::RectangleShape> verticalGrid;

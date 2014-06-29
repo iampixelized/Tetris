@@ -11,8 +11,7 @@ TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, flo
 	:
 	fieldSize(size),
 	position(pos),
-	offset(o),
-	immediateHeight(10, 0)
+	offset(o)
 {
 
 	for (size_t i = 0; i <= size.y; ++i)
@@ -167,6 +166,7 @@ void TetrisPlayField::showBooleanGrid()
 			else
 				cout << ".";
 		}
+
 		cout << endl;
 	}
 }
