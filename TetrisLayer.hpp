@@ -15,19 +15,17 @@ using std::pair;
 
 class TetrisLayer : public esc::ObjectLayer<Tetromino>
 {
+
 	public:
 
-		TetrisLayer(TetrisPlayField &, esc::AssetManager &);
+		TetrisLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
 		virtual ~TetrisLayer();
 
 		//virtual void refreshLayer(float, sf::RenderWindow * , bool = true);
 		//virtual void pauseLayer(bool = true);
 
-		void spawnTetromino();
-		Tetromino * getCurrentTetromino();
-
-		void insertPiece(Tetromino::TetrominoType, Tetromino::BlockColor, const sf::Vector2i &, int = 0);
-
+		Tetromino * spawnTetromino();
+		void setDotPieces(int, const vector<int> &);
 
 	private:
 
@@ -36,6 +34,7 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;
 		Tetromino * currentTetromino;
+		Mechanics * mechanics;
 		
 		vector<pair<Tetromino::TetrominoType, Tetromino::BlockColor>> bag;
 		vector<string> possiblePermutations;

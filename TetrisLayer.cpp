@@ -4,10 +4,15 @@ using std::next_permutation;
 #include "TetrisLayer.hpp"
 #include "RandomGenerator.hpp"
 
-TetrisLayer::TetrisLayer(TetrisPlayField & tpf, esc::AssetManager &am)
+// To do: (June 30, 2014)
+// - Try all pieces movement left to right and drop
+//
+
+TetrisLayer::TetrisLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager &am)
 	:
 	tetrisPlayField(&tpf),
 	assetManager(&am),
+	mechanics(&m),
 	spawnCount(0)
 {
 
@@ -37,27 +42,44 @@ TetrisLayer::~TetrisLayer()
 //
 //}
 
-void TetrisLayer::spawnTetromino()
+Tetromino * TetrisLayer::spawnTetromino()
 {
 	if (spawnCount > 6)
 		randomizeBag();
 
-	Tetromino * tetromino = currentTetromino = Tetromino::createTetromino(Tetromino::TetrominoType::L, bag[spawnCount].second, *tetrisPlayField, *assetManager);
-	esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
+	currentTetromino 
+		= Tetromino::createTetromino
+		( TetrominoType::I,
+		  bag[spawnCount].second, 
+		  *tetrisPlayField, 
+		  *mechanics,
+		  *assetManager);
+	
+	esc::ObjectLayer<Tetromino>::addNewObject(currentTetromino);
 	spawnCount++;
-}
 
-Tetromino * TetrisLayer::getCurrentTetromino()
-{
 	return currentTetromino;
 }
 
-void TetrisLayer::insertPiece(Tetromino::TetrominoType ttype, Tetromino::BlockColor bc, const sf::Vector2i & pos, int face)
+void TetrisLayer::setDotPieces(int line, const vector<int> & pieceLine)
 {
-	Tetromino * tetromino = Tetromino::createTetromino(Tetromino::TetrominoType::L, bag[spawnCount].second, *tetrisPlayField, *assetManager);
-	esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
-	tetromino->setGridPosition(pos);
-	tetromino->setRotation(face);
+	for (size_t i = 0; i < pieceLine.size(); ++i)
+	{
+		if (pieceLine[i] == 0) continue;
+
+		Tetromino * tetromino = Tetromino::createTetromino
+			(
+				Tetromino::TetrominoType::DOT, 
+				bag[spawnCount].second,
+				*tetrisPlayField,
+				*mechanics,
+				*assetManager
+			);
+		
+		esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
+		tetromino->setGridPosition(sf::Vector2i(i, line));
+		tetrisPlayField->setActive(sf::Vector2i(i, line), true);
+	}
 }
 
 void TetrisLayer::randomizeBag()

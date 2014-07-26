@@ -21,17 +21,18 @@ class TetrisPlayField
 
 	public:
 
-		TetrisPlayField(const sf::Vector2f &, sf::Vector2f = sf::Vector2f(), float offset = 16.0f);
+		TetrisPlayField(sf::Vector2f = sf::Vector2f(), float offset = 16.0f);
 		virtual ~TetrisPlayField();
-
-		void setGridOffset(const sf::Vector2f &);
-		float getGridOffset() const;
 
 		void setActive(const sf::Vector2i &, bool);
 		void setActive(int, int, bool);
-		bool isActive(const sf::Vector2i &) const;
-		bool isActive(int , int) const;
+		bool isActive (const sf::Vector2i &) const;
+		bool isActive (const sf::Vector2f &);
+		bool isActive (int , int) const;
+		bool isWithinBounds(const sf::Vector2f &);
+		bool isWithinBounds(const sf::Vector2i &);
 
+		int getMaxBounds(int direction , int level);
 		int getScore();
 
 		void setFieldSize(const sf::Vector2f &);
@@ -44,11 +45,11 @@ class TetrisPlayField
 		const sf::Vector2f & getPosition() const;
 
 		void drawGrid(sf::RenderWindow *, bool = true);
-
+		
 		// to be deleted
 		void showBooleanGrid();
-		void setImmediateHeight(const sf::Vector2f &);
-
+		sf::Vector2i convertToGridPosition(const sf::Vector2f &);
+	
 	private:
 
 		BooleanGrid booleanGrid;

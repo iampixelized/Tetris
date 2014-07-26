@@ -7,210 +7,70 @@ using std::boolalpha;
 
 // NOTE: Next stop, determine first the immediate height and the blocks at those
 // particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
-int Tetromino::id_generator = 0;
-float Tetromino::dropInterval = 0.0f;
 
-Tetromino::Tetromino(TetrominoType ttype, BlockColor bc, TetrisPlayField &tpf, esc::AssetManager & am)
+// TO DO:
+//		1. Do research on SRS
+//		2. For the meantime switch RS to DRS
+//		3. Decouple RS from this class
+//		4. Implement DRS and its wall kick
+
+int Tetromino::id_generator = 0;
+
+Tetromino::Tetromino
+	(
+		TetrominoType ttype			, 
+		BlockColor bc				, 
+		TetrisPlayField &tpf		, 
+		Mechanics &tmech			,
+		esc::AssetManager & am
+	)
 	: 
 	blockRotationCount(0),
+	dropElapsed(0.0f),
+	lockElapsed(0.0f),
+	lockTime(tmech.lockTime),
+	dropInterval(tmech.dropInterval),
+	rotationSystem(&tmech.rotationSystem),
 	type(ttype),
 	color(bc),
-	currentDirection(RotateTo::_0),
-	_isDropped(false),
+	_isLocked(false),
+	_isDeployed(false),
 	face(0),
 	previousFace(face),
 	playField(&tpf),
 	moveCount(3),
-	previousMoveCount(moveCount),
-	moveOffset(0),
-	dropCount(0),
-	isLateral(false)
+	dropCount(0)
 {
-	if (type == TetrominoType::S)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 1));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(2, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(2, 2));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 1));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(0, 0));
-		blockConfigurations._270Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 2));
-	}
-	else if (type == TetrominoType::Z)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 2));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(2, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(2, 0));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 2));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._270Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 0));
-	}
-	else if (type == TetrominoType::J)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 1));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 0));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 2));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 0));
-	}
-	else if (type == TetrominoType::L)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 1));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(0, 0));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 2));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 1));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 2));
-	}
-	else if (type == TetrominoType::I)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(3, 2));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 3));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(3, 2));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 0));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 3));
-	}
-	else if (type == TetrominoType::O)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 3));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 3));
-
-		blockConfigurations._90Config = blockConfigurations._0Config;
-		blockConfigurations._180Config = blockConfigurations._0Config;
-		blockConfigurations._270Config = blockConfigurations._0Config;
-	}
-	else if (type == TetrominoType::T)
-	{
-		blockConfigurations._0Config.push_back(sf::Vector2f(0, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(2, 1));
-		blockConfigurations._0Config.push_back(sf::Vector2f(1, 2));
-
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._90Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._90Config.push_back(sf::Vector2f(0, 1));
-
-		blockConfigurations._180Config.push_back(sf::Vector2f(0, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(2, 2));
-		blockConfigurations._180Config.push_back(sf::Vector2f(1, 1));
-
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 0));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 1));
-		blockConfigurations._270Config.push_back(sf::Vector2f(1, 2));
-		blockConfigurations._270Config.push_back(sf::Vector2f(2, 1));
-	}
-
-	if (type == TetrominoType::I)
-	{
-		hWidthOffset = 4;
-		vWidthOffset = 1;
-	}
-	else if (type == TetrominoType::O)
-		hWidthOffset = vWidthOffset = 2;
-	else
-	{
-		hWidthOffset = 3;
-		vWidthOffset = 2;
-	}
-
-	id = id_generator++;
-	moveCount = (type == TetrominoType::O)? 4 : 3;
-	blockPositions = blockConfigurations._0Config;
-	playField = &tpf;
-	blockSize = playField->getGridOffset();
-	positionOffset = playField->getPosition();
-	sizeOffset = playField->getFieldSize();
+	rotationSystem->setConfiguration(ttype);
 
 	string spriteName;
 
 	switch (color)
 	{
-		case BlockColor::Blue:		spriteName = "blue_block";		break;
-		case BlockColor::Cyan:		spriteName = "cyan_block";		break;
-		case BlockColor::Green:		spriteName = "green_block";		break;
-		case BlockColor::Orange:	spriteName = "orange_block";	break;
-		case BlockColor::Purple:	spriteName = "purple_block";	break;
-		case BlockColor::Red:		spriteName = "red_block";		break;
-		case BlockColor::Yellow:	spriteName = "yellow_block";	break;
+		case BlockColor::Blue	:	spriteName = "blue_block";		break;
+		case BlockColor::Cyan	:	spriteName = "cyan_block";		break;
+		case BlockColor::Green	:	spriteName = "green_block";		break;
+		case BlockColor::Orange	:	spriteName = "orange_block";	break;
+		case BlockColor::Purple	:	spriteName = "purple_block";	break;
+		case BlockColor::Red	:	spriteName = "red_block";		break;
+		case BlockColor::Yellow	:	spriteName = "yellow_block";	break;
 	}
 
+	id = id_generator++;
+	moveCount = (type == TetrominoType::O)? 4 : 3;
+	
+	blockPositions = rotationSystem->getBlockConfiguration(0);
+	playField = &tpf;
+	blockSize = playField->getGridOffset();
+	positionOffset = playField->getPosition();
+
 	int pnum = 0;
-	for (sf::Vector2f p : blockPositions)
+	for (sf::Vector2i p : blockPositions)
 	{
 		sf::Vector2f actualPos;
 		actualPos.x = (p.x * blockSize) + positionOffset.x + (blockSize * 3);
-		actualPos.y = (p.y * blockSize) + positionOffset.y;
-		palette[pnum] = ObjectPtr(new esc::Object(spriteName, actualPos, am));
+		actualPos.y = ((p.y-((type == TetrominoType::I)? 1: 0)) * blockSize) + positionOffset.y;
+		palette[pnum]     = ObjectPtr(new esc::Object(spriteName, actualPos, am));
 		pnum++;
 	}
 }
@@ -220,63 +80,90 @@ Tetromino::~Tetromino()
 
 }
 
+RotationSystem * Tetromino::getRotationSystem()
+{
+	return rotationSystem;
+}
+
 void Tetromino::rotateLeft()
 {
-	if (_isDropped) return;
-
+	if (_isLocked) return;
+	
 	blockRotationCount--;
-	isLateral = ((blockRotationCount % 2 != 0)) ? true : false;
 
 	if (blockRotationCount < 0 || blockRotationCount == 3)
 	{
 		blockRotationCount = 3;
-		blockPositions = blockConfigurations._270Config;
+		blockPositions = rotationSystem->getBlockConfiguration(270);
 	}
 	else if (blockRotationCount == 2)
-		blockPositions = blockConfigurations._180Config;
+	{
+		blockPositions = rotationSystem->getBlockConfiguration(180);
+	}
 	else if (blockRotationCount == 1)
-		blockPositions = blockConfigurations._90Config;
+	{
+		blockPositions = rotationSystem->getBlockConfiguration(90);
+	}
 	else if (blockRotationCount == 0)
 	{
-		blockPositions = blockConfigurations._0Config;
+		blockPositions = rotationSystem->getBlockConfiguration(0);
 		blockRotationCount = 4;
 	}
 
 	face = blockRotationCount * 90;
-	cout << "Face : " << face << endl;
+	updatePalette(blockPositions);
+
+	cout << endl;
+	cout << "Face      : " << face << endl;
+	cout << "Next face : " << face + 90 << endl;
 }
 
 void Tetromino::rotateRight()
 {
-	if (_isDropped) return;
+	if (_isLocked) return;
+
 	blockRotationCount++;
-	isLateral = ((blockRotationCount % 2) != 0) ? true : false;
 
 	if (blockRotationCount > 4 || blockRotationCount == 1)
 	{
 		blockRotationCount = 1;
-		blockPositions = blockConfigurations._90Config;
+		blockPositions = rotationSystem->getBlockConfiguration(90);
 	}
 	else if (blockRotationCount == 2)
-		blockPositions = blockConfigurations._180Config;
+		blockPositions = rotationSystem->getBlockConfiguration(180);
 	else if (blockRotationCount == 3)
-		blockPositions = blockConfigurations._270Config;
+		blockPositions = rotationSystem->getBlockConfiguration(270);
 	else if (blockRotationCount == 4)
-	{
-		blockPositions = blockConfigurations._0Config;
+		blockPositions = rotationSystem->getBlockConfiguration(0);
 		blockRotationCount = 0;
-	}
 
 	face = blockRotationCount * 90;
-	cout << "Face : " << face << endl;
+	updatePalette(blockPositions);
+
+	cout << endl;
+	cout << "Face      : " << face << endl;
+	cout << "Next face : " << face + 90 << endl;
 }
 
 void Tetromino::setRotation(int f)
 {
-	if (f < 0 || face > 360)
+	if ((f < 0 || face > 360) || checkRotation(1))
 		return;
 
 	face = f;
+	blockRotationCount = face / 90;
+
+	switch (f)
+	{
+		case 0   :
+		case 360 :
+			      blockPositions = rotationSystem->getBlockConfiguration(0); break;
+		case 90 : blockPositions = rotationSystem->getBlockConfiguration(90); break;
+		case 180: blockPositions = rotationSystem->getBlockConfiguration(180); break;
+		case 270: blockPositions = rotationSystem->getBlockConfiguration(270); break;
+	}
+
+	updatePalette(blockPositions);
 }
 
 int Tetromino::getRotation() const
@@ -286,43 +173,50 @@ int Tetromino::getRotation() const
 
 void Tetromino::setGridPosition(const sf::Vector2i &pos)
 {
-	moveCount = pos.x;
-	dropCount = pos.y;
-
-	if (moveCount >= getRightMostBounds() || 
-		moveCount <= getLeftMostBounds()  || 
-		_isDropped)
+	if (!playField->isWithinBounds(pos))
 		return;
 
 	for (size_t i = 0; i < palette.size(); ++i)
 	{
-		sf::Vector2f curpos = palette[i].get()->getPosition();
-		curpos.x += blockSize * moveCount;
+		sf::Vector2f newpos;
 
-		palette[i].get()->setPosition(curpos);
+		newpos.x = positionOffset.x + ((blockPositions[i].x + pos.x) * blockSize);
+		newpos.y = positionOffset.y + ((blockPositions[i].y + pos.y) * blockSize);
+
+		if (playField->isActive(newpos))
+			return;
+
+		palette[i]->setPosition(newpos);
 	}
 
-	_isDropped = true;
+	moveCount = pos.x;
+	dropCount = pos.y;
 }
 
 void Tetromino::moveRight()
 {
-	if (moveCount >= getRightMostBounds() || _isDropped)
-		return;
+	if (_isLocked) return;
 
-	moveOffset += blockSize;
 	moveCount++;
-	cout << moveCount << endl;
+	
+	for (size_t i = 0; i < palette.size(); ++i)
+		palette[i]->moveTo(sf::Vector2f(blockSize, 0));
+
+	cout << "Moving (RIGHT): " << moveCount << endl;
+	return;
 }
 
 void Tetromino::moveLeft()
 {	
-	if (moveCount <= getLeftMostBounds() || _isDropped)
-		return;
+	if (_isLocked) return;
 
-	moveOffset -= blockSize;
 	moveCount--;
-	cout << moveCount << endl;
+
+	for (size_t i = 0; i < palette.size(); ++i)
+		palette[i]->moveTo(sf::Vector2f(-blockSize, 0));
+
+	cout << "Moving (LEFT): " << moveCount << endl;
+	return;
 }
 
 Tetromino::TetrominoType Tetromino::getType() const
@@ -330,18 +224,24 @@ Tetromino::TetrominoType Tetromino::getType() const
 	return type;
 }
 
+const vector<sf::Vector2i> & Tetromino::getCurrentConfiguration() const
+{
+	return blockPositions;
+}
+
 Tetromino * Tetromino::createTetromino
 	(
 		Tetromino::TetrominoType ttype, 
 		Tetromino::BlockColor bc, 
 		TetrisPlayField & tpf, 
+		Mechanics & m,
 		esc::AssetManager & am
 	)
 {
-	return new Tetromino(ttype, bc, tpf, am);
+	return new Tetromino(ttype, bc, tpf, m, am);
 }
 
-void Tetromino::updatePieces(const vector<sf::Vector2f> &pos)
+void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 {
 	if (type == TetrominoType::O) return;
 
@@ -358,66 +258,83 @@ void Tetromino::updatePieces(const vector<sf::Vector2f> &pos)
 
 void Tetromino::update(float e)
 {
-	if (face != previousFace)
+	if (_isDeployed)
 	{
-		updatePieces(blockPositions);
-		leftWallKick();
-		rightWallKick();
-		previousFace = face;
+		if (_isLocked) return;
+
+		lockElapsed += e;
+		if (lockElapsed >= lockTime)
+		{
+			if (checkMovement(0))
+			{
+				_isDeployed = false;
+				lockElapsed = 0.0f;
+			}
+			else
+			{
+				deploy();
+				return;
+			}
+		}
 	}
 
-	if (moveCount != previousMoveCount)
-	{
-		for (size_t i = 0; i < palette.size(); ++i)
-			palette[i]->moveTo(sf::Vector2f(moveOffset, 0));
-
-		moveOffset = 0;
-		previousMoveCount = moveCount;
-	}
-
-	//gradual drop
-	dropElapsed += e;
-	if (dropElapsed <= dropInterval)
-		return;
-
-	int dropOffset = playField->getGridOffset();
-
-	for (size_t i = 0; i < palette.size(); ++i)
-		palette[i]->moveTo(sf::Vector2f(0, blockSize));
-
-	dropElapsed = 0.0f;
+	//// update gradual drop here
+	//dropElapsed += e;
+	//if (dropElapsed >= dropInterval)
+	//{
+	//	softDrop();
+	//	dropElapsed = 0.0f;
+	//}
 }
 
 void Tetromino::draw(sf::RenderWindow * window)
 {
 	for (size_t i = 0; i < palette.size(); ++i)
-		palette[i].get()->draw(window);
+	{
+		palette[i]->draw(window);
+	}
 }
 
 void Tetromino::hardDrop()
 {
-	dropCount = (sizeOffset.y - 2) - 1;
-	_isDropped = true;
+
+	//deploy();
 }
 
 void Tetromino::softDrop()
 {
-	if (dropCount >= (sizeOffset.y - 2) - 1)
+	if (!checkMovement(0))
 	{
-		_isDropped = true;
-		deploy();
+		_isDeployed = true;
 		return;
 	}
 
 	dropCount++;
 
 	for (size_t i = 0; i < palette.size(); ++i)
-		palette[i].get()->moveTo(sf::Vector2f(0.0f, blockSize));
+		palette[i]->moveTo(sf::Vector2f(0, blockSize));
+
+	cout << "Dropcount : " << dropCount << endl;
 }
 
-bool Tetromino::isDropped() const
+void Tetromino::move(const sf::Vector2i &pos)
 {
-	return _isDropped;
+	moveCount += pos.x;
+	dropCount += pos.y;
+
+	for (size_t i = 0; i < palette.size(); ++i)
+	{
+		palette[i]->moveTo(sf::Vector2f(pos.x * blockSize, pos.y * blockSize));
+	}
+}
+
+int Tetromino::getMoveCount() const{return moveCount;}
+
+int Tetromino::getDropCount() const{return dropCount;}
+
+bool Tetromino::isLocked() const
+{
+	return _isLocked;
 }
 
 TetrisPlayField * Tetromino::getPlayField() const
@@ -443,180 +360,84 @@ esc::Object * Tetromino::getPiece(int pid)
 	return palette[id].get();
 }
 
-// Try logic, whenever rotation starts from the left or from the right.
-int Tetromino::getRightMostBounds()
-{
-	int wo = (isLateral) ? vWidthOffset : hWidthOffset;
-	
-	if (type == TetrominoType::T ||
-	    type == TetrominoType::L ||
-	    type == TetrominoType::J)
-	{
-		return (face == 270) ? (sizeOffset.x - wo) - 1 : sizeOffset.x - wo;
-	}
-	else if (type == TetrominoType::S ||
-			 type == TetrominoType::Z)
-	{
-		return (face == 90) ? (sizeOffset.x - wo) - 1 : sizeOffset.x - wo;
-	}
-	else if (type == TetrominoType::I)
-	{
-		if (face == 270)
-			return (sizeOffset.x - wo) - 2;
-		else if (face == 90)
-			return (sizeOffset.x - wo) - 1;
-	}
-
-	return sizeOffset.x - wo;
-}
-
-int Tetromino::getLeftMostBounds()
-{
-	int wo = (isLateral) ? vWidthOffset : hWidthOffset;
-
-	if (type == TetrominoType::T ||
-		type == TetrominoType::L ||
-		type == TetrominoType::J)
-	{
-		if (face == 270 )
-			return -1;
-	}
-	else if (type == TetrominoType::S ||
-			 type == TetrominoType::Z)
-	{
-		return (face == 90) ? -1 : 0;
-	}
-	else if (type == TetrominoType::I)
-	{
-		if (face == 270)
-			return -2;
-		else if (face == 90)
-			return -1;
-	}
-
-	return 0;
-}
-
-void Tetromino::leftWallKick()
-{
-	if (moveCount >= getLeftMostBounds()) return;
-	sf::Vector2f kickpos;
-
-	switch (type)
-	{
-		case TetrominoType::L:
-		case TetrominoType::J:
-		case TetrominoType::T:
-		case TetrominoType::S:
-		case TetrominoType::Z:
-		{
-			kickpos.x = blockSize;
-			moveCount++;
-		}
-		break;
-
-		case TetrominoType::I:
-		{
-			if (face == 180)
-			{
-				kickpos.x = blockSize;
-				moveCount++;
-			}
-			else if (face == 0)
-			{
-				kickpos.x = blockSize * 2;
-				moveCount += 2;
-			}
-		}
-
-		break;
-	}
-
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		sf::Vector2f actualPos;
-		actualPos.x = palette[i].get()->getPosition().x + kickpos.x;
-		actualPos.y = palette[i].get()->getPosition().y + kickpos.y;
-
-		palette[i].get()->setPosition(actualPos);
-	}
-
-	cout << "Wall kick detected! face: " << face << " move count : " << moveCount << " (LEFT): +" << kickpos.x << endl;
-}
-
-void Tetromino::rightWallKick()
-{
-	if (moveCount <= getRightMostBounds()) return;
-	sf::Vector2f kickpos;
-	
-	switch (type)
-	{
-		case TetrominoType::L:
-		case TetrominoType::J:
-		case TetrominoType::T:
-		case TetrominoType::S:
-		case TetrominoType::Z:
-		{
-			kickpos.x = -blockSize;
-			moveCount--;
-		}
-		break;
-
-		case TetrominoType::I:
-		{
-			if (face == 0)
-			{
-				kickpos.x -= blockSize;
-				moveCount--;
-			}
-			else if (face == 180)
-			{
-				kickpos.x = -blockSize * 2;
-				moveCount-=2;
-			}
-		}
-
-		break;
-	}
-
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		sf::Vector2f actualPos;
-		actualPos.x = palette[i].get()->getPosition().x + kickpos.x;
-		actualPos.y = palette[i].get()->getPosition().y + kickpos.y;
-
-		palette[i].get()->setPosition(actualPos);
-	}
-
-	cout << "Wall kick detected! face: " << face << " move count : " << moveCount << " (RIGHT): +" << kickpos.x << endl;
-}
-
 void Tetromino::deploy()
 {
 	for (size_t i = 0; i < palette.size(); ++i)
 	{
-		sf::Vector2i curpos = sf::Vector2i(palette[i]->getPosition());
-		curpos.x = (curpos.x / playField->getGridOffset()) - playField->getPosition().x;
-		curpos.y = (curpos.y / playField->getGridOffset()) - playField->getPosition().y;
+		sf::Vector2i gridpos;
+		gridpos.x = (palette[i]->getPosition().x - positionOffset.x) / blockSize;
+		gridpos.y = (palette[i]->getPosition().y - positionOffset.y) / blockSize;
 
-		if (playField->isActive(curpos))
+		if (playField->isActive(gridpos))
 			return;
-
-		playField->setActive(sf::Vector2i(curpos) , true);
+		
+		playField->setActive(sf::Vector2i(gridpos) , true);
 	}
+	
+	_isLocked = true;
+	playField->showBooleanGrid();
 }
 
-void Tetromino::rotationCheck()
-{
+bool Tetromino::checkRotation(int rd)
+{	
+	int direction = (rd<=0)? -1 : 1;
+	vector<sf::Vector2i> predictedRotatedPositions;
+	predictedRotatedPositions = rotationSystem->getBlockConfiguration(face + (90*direction));
 
-}
+	for (size_t i = 0; i < predictedRotatedPositions.size(); ++i)
+	{
+		sf::Vector2f pos;
+		pos.x = ((predictedRotatedPositions[i].x + moveCount) * blockSize) + positionOffset.x;
+		pos.y = ((predictedRotatedPositions[i].y + dropCount) * blockSize) + positionOffset.y;
 
-void Tetromino::setDropInterval(float o)
-{
-	dropInterval = o;
-}
+		sf::Vector2i gridpos;
+		gridpos.x = (pos.x - positionOffset.x) / blockSize;
+		gridpos.y = (pos.y - positionOffset.y) / blockSize;
+		
+		if (!playField->isWithinBounds(gridpos))
+			return false;
 
-float Tetromino::getDropInterval()
-{
-	return dropInterval;
+		if (playField->isActive(gridpos))
+			return false;
+	}
+
+	return true;
+} 
+
+bool Tetromino::checkMovement(int direction)
+{	
+	if (direction <= 0)
+	{
+		for (size_t i = 0; i < palette.size(); ++i)
+		{
+			sf::Vector2f pos = palette[i]->getPosition();
+			
+			if (direction < 0)
+				pos.x -= blockSize;
+			else if (direction == 0)
+				pos.y += blockSize;
+		
+			if (!playField->isWithinBounds(pos))
+				return false;
+
+			if (playField->isActive(pos))
+				return false;
+		}
+	}
+	else if (direction > 0)
+	{
+		for (size_t i = palette.size(); i > 0; --i)
+		{
+			sf::Vector2f pos = palette[i-1]->getPosition();
+			pos.x += blockSize;
+
+			if (!playField->isWithinBounds(pos))
+				return false;
+
+			if (playField->isActive(pos))
+				return false;
+		}
+	}
+
+	return true;
 }

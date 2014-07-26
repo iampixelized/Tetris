@@ -40,7 +40,7 @@ namespace esc
 		bool deleteObject(int);
 		MANAGEDTYPE * getObject(int);
 
-		virtual void refreshLayer(float, sf::RenderWindow *, bool = true);
+		virtual void refreshLayer(float, sf::RenderWindow *, bool = false);
 
 		int getLayerSize() const;
 		MANAGEDTYPE * getRecentObject() const;

@@ -4,38 +4,39 @@ using std::endl;
 
 #include<algorithm>
 using std::all_of;
+using std::count;
 
 #include "TetrisPlayField.hpp"
 
-TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, float o)
+TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	:
-	fieldSize(size),
+	fieldSize(sf::Vector2f(10,20)),
 	position(pos),
 	offset(o)
 {
 
-	for (size_t i = 0; i <= size.y; ++i)
+	for (size_t i = 0; i <= fieldSize.y; ++i)
 	{
 		sf::RectangleShape hline;
-		hline.setSize(sf::Vector2f(size.x * offset, 1.0f));
+		hline.setSize(sf::Vector2f(fieldSize.x * offset, 1.0f));
 		hline.setPosition(sf::Vector2f(pos.y, i * offset));
 		hline.setFillColor(sf::Color::Blue);
 		horizontalGrid.push_back(hline);
 	}
 
-	for (size_t i = 0; i <= size.x; ++i)
+	for (size_t i = 0; i <= fieldSize.x; ++i)
 	{
 		sf::RectangleShape vline;
-		vline.setSize(sf::Vector2f(1.0f, size.y * offset));
+		vline.setSize(sf::Vector2f(1.0f, fieldSize.y * offset));
 		vline.setPosition(sf::Vector2f(i * offset, pos.x));
 		vline.setFillColor(sf::Color::Blue);
 		verticalGrid.push_back(vline);
 	}
 
-	for (size_t y = 0; y < size.y; ++y)
+	for (size_t y = 0; y < fieldSize.y; ++y)
 	{
 		booleanGrid.push_back(vector<bool>());
-		for (size_t i = 0; i < size.x; ++i)
+		for (size_t i = 0; i < fieldSize.x; ++i)
 			booleanGrid[y].push_back(false);
 	}
 }
@@ -43,6 +44,73 @@ TetrisPlayField::TetrisPlayField(const sf::Vector2f &size, sf::Vector2f pos, flo
 TetrisPlayField::~TetrisPlayField()
 {
 
+}
+
+void TetrisPlayField::setActive(const sf::Vector2i &pos, bool active)
+{
+	if ((pos.x >= 0 && pos.x < fieldSize.x) &&
+		(pos.y >= 0 && pos.y < fieldSize.y))
+		booleanGrid[pos.y][pos.x] = active;
+
+	return;
+}
+
+void TetrisPlayField::setActive(int x, int y, bool active)
+{
+	setActive(sf::Vector2i(x, y), active);
+}
+
+bool TetrisPlayField::isActive(const sf::Vector2i &pos) const
+{
+	if ((pos.x >= 0 && pos.x < fieldSize.x) &&
+		(pos.y >= 0 && pos.y < fieldSize.y))
+		return booleanGrid[pos.y][pos.x];
+
+	return true;
+}
+
+bool TetrisPlayField::isActive(const sf::Vector2f &pos)
+{
+	sf::Vector2i gridpos = convertToGridPosition(pos);
+	return isActive(gridpos);
+}
+
+bool TetrisPlayField::isActive(int x, int y) const
+{
+	return isActive(sf::Vector2i(x, y));
+}
+
+bool TetrisPlayField::isWithinBounds(const sf::Vector2i & pos)
+{
+	if ((pos.x >= 0 && pos.x < fieldSize.x) &&
+		(pos.y >= 0 && pos.y < fieldSize.y))
+		return true;
+
+	return false;
+}
+
+bool TetrisPlayField::isWithinBounds(const sf::Vector2f &pos)
+{
+	sf::Vector2i gridpos = convertToGridPosition(pos);
+	return isWithinBounds(gridpos);
+}
+
+int TetrisPlayField::getMaxBounds(int direction , int level)
+{
+	if (level >= 0 && level < booleanGrid.size())
+	{
+		if (direction <= 0)
+			for (size_t i = 4; i >= booleanGrid.size(); --i)
+				if(booleanGrid[level][i])
+					return i+1;
+
+		else if (direction > 0)
+			for (size_t i = 5; i < booleanGrid.size(); ++i)
+				if (booleanGrid[level][i])
+					return i;
+	}
+
+	return 0;
 }
 
 int TetrisPlayField::getScore()
@@ -98,35 +166,6 @@ float TetrisPlayField::getGridOffset()
 	return offset;
 }
 
-void TetrisPlayField::setActive(const sf::Vector2i &pos, bool active)
-{
-	if ((pos.x < 0 || pos.x >= fieldSize.x) &&
-		(pos.y < 0 || pos.y >= fieldSize.y))
-		return;
-
-	booleanGrid[pos.y][pos.x] = active;
-}
-
-void TetrisPlayField::setActive(int x, int y, bool active)
-{
-	setActive(sf::Vector2i(x, y), active);
-}
-
-bool TetrisPlayField::isActive(const sf::Vector2i &pos) const
-{
-	if (!(pos.x < 0 && pos.x >= fieldSize.x) ||
-		!(pos.y < 0 && pos.y >= fieldSize.y))
-		return booleanGrid[pos.y][pos.x];
-
-	return false;
-}
-
-bool TetrisPlayField::isActive(int x, int y) const
-{
-	return isActive(sf::Vector2i(x, y));
-}
-
-
 void TetrisPlayField::setPosition(const sf::Vector2f &pos)
 {
 	position = pos;
@@ -169,4 +208,13 @@ void TetrisPlayField::showBooleanGrid()
 
 		cout << endl;
 	}
+}
+
+sf::Vector2i TetrisPlayField::convertToGridPosition(const sf::Vector2f & pixelpos)
+{
+	sf::Vector2i gpos = sf::Vector2i(pixelpos - position);
+	gpos.x /= offset;
+	gpos.y /= offset;
+
+	return gpos;
 }
