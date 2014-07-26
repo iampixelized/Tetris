@@ -4,30 +4,20 @@ using std::next_permutation;
 #include "TetrisLayer.hpp"
 #include "RandomGenerator.hpp"
 
-// To do: (June 30, 2014)
-// - Try all pieces movement left to right and drop
-//
-
 TetrisLayer::TetrisLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager &am)
-	:
+:
 	tetrisPlayField(&tpf),
 	assetManager(&am),
 	mechanics(&m),
-	spawnCount(0)
+	spawnCount(0),
+	rcount(0)
 {
-
 	cout << "Tetris playfield was established:" << endl;
-	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y  << endl;
+	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y << endl;
 	cout << "Offset     : " << tetrisPlayField->getGridOffset() << endl;
 	cout << "Position   : " << tetrisPlayField->getPosition().x << " " << tetrisPlayField->getPosition().y << endl;
 
-	string tets = "IJLOSTZ";
-	do
-	{
-		possiblePermutations.push_back(tets);
-	} 
-	while (next_permutation(tets.begin(), tets.end()));
-
+	permutateBag();
 	random.seed();
 	randomizeBag();
 }
@@ -37,26 +27,31 @@ TetrisLayer::~TetrisLayer()
 
 }
 
-//void TetrisLayer::refreshLayer(float e, sf::RenderWindow *window , bool pause)
-//{
-//
-//}
-
 Tetromino * TetrisLayer::spawnTetromino()
 {
 	if (spawnCount > 6)
+	{
+		spawnCount = 0;
 		randomizeBag();
+	}
 
-	currentTetromino 
+	if (rcount > possiblePermutations.size())
+	{
+		rcount = 0;
+		permutateBag();
+	}
+
+	currentTetromino
 		= Tetromino::createTetromino
-		( TetrominoType::I,
-		  bag[spawnCount].second, 
-		  *tetrisPlayField, 
+		(  bag[spawnCount].first,
+		   bag[spawnCount].second,
+		  *tetrisPlayField,
 		  *mechanics,
 		  *assetManager);
-	
+
 	esc::ObjectLayer<Tetromino>::addNewObject(currentTetromino);
 	spawnCount++;
+	rcount++;
 
 	return currentTetromino;
 }
@@ -65,21 +60,33 @@ void TetrisLayer::setDotPieces(int line, const vector<int> & pieceLine)
 {
 	for (size_t i = 0; i < pieceLine.size(); ++i)
 	{
-		if (pieceLine[i] == 0) continue;
+		if (pieceLine[i] <= 0) continue;
 
 		Tetromino * tetromino = Tetromino::createTetromino
 			(
-				Tetromino::TetrominoType::DOT, 
+				Tetromino::TetrominoType::DOT,
 				bag[spawnCount].second,
 				*tetrisPlayField,
 				*mechanics,
 				*assetManager
 			);
-		
+
 		esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
 		tetromino->setGridPosition(sf::Vector2i(i, line));
 		tetrisPlayField->setActive(sf::Vector2i(i, line), true);
 	}
+}
+
+void TetrisLayer::permutateBag()
+{
+	possiblePermutations.clear();
+
+	string tets = "IJLOSTZ";
+	do
+	{
+		possiblePermutations.push_back(tets);
+	}
+	while (next_permutation(tets.begin(), tets.end()));
 }
 
 void TetrisLayer::randomizeBag()

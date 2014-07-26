@@ -26,9 +26,10 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 
 		Tetromino * spawnTetromino();
 		void setDotPieces(int, const vector<int> &);
+		void permutateBag();
 
 	private:
-
+		
 		void randomizeBag();
 
 		TetrisPlayField * tetrisPlayField;
@@ -40,6 +41,8 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 		vector<string> possiblePermutations;
 
 		int spawnCount;
+		int rcount;
+
 		esc::RandomGenerator random;
 };
 

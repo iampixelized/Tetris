@@ -21,8 +21,13 @@ struct Mechanics
 {
 	float dropInterval = 2.0f;
 	float lockTime     = 0.8f;
-	RotationSystem & rotationSystem;	
-} mechanics;
+
+	Mechanics(RotationSystem & rs) : rotationSystem(&rs){}
+	RotationSystem * getRotationSystem() const {return rotationSystem; }
+	
+	private:
+		RotationSystem * rotationSystem;
+};
 
 class Tetromino
 {
@@ -30,8 +35,6 @@ class Tetromino
 	typedef map<int, ObjectPtr> BlockPalette;
 
 	public:
-
-		typedef map<int, pair<sf::Vector2i, sf::Vector2i>> TempPalette;
 
 		struct BlockConfigurations
 		{
@@ -97,7 +100,6 @@ class Tetromino
 
 		void deploy();
 
-		//RotationSystem * rs;
 		static int id_generator;
 		int id;
 

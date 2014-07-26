@@ -30,7 +30,7 @@ Tetromino::Tetromino
 	lockElapsed(0.0f),
 	lockTime(tmech.lockTime),
 	dropInterval(tmech.dropInterval),
-	rotationSystem(&tmech.rotationSystem),
+	rotationSystem(tmech.getRotationSystem()),
 	type(ttype),
 	color(bc),
 	_isLocked(false),
@@ -70,9 +70,11 @@ Tetromino::Tetromino
 		sf::Vector2f actualPos;
 		actualPos.x = (p.x * blockSize) + positionOffset.x + (blockSize * 3);
 		actualPos.y = ((p.y-((type == TetrominoType::I)? 1: 0)) * blockSize) + positionOffset.y;
-		palette[pnum]     = ObjectPtr(new esc::Object(spriteName, actualPos, am));
+		palette[pnum] = ObjectPtr(new esc::Object(spriteName, actualPos, am));
 		pnum++;
 	}
+
+	cout << "TET Created : " << blockPositions.size() << endl;
 }
 
 Tetromino::~Tetromino()
@@ -134,8 +136,10 @@ void Tetromino::rotateRight()
 	else if (blockRotationCount == 3)
 		blockPositions = rotationSystem->getBlockConfiguration(270);
 	else if (blockRotationCount == 4)
+	{
 		blockPositions = rotationSystem->getBlockConfiguration(0);
 		blockRotationCount = 0;
+	}
 
 	face = blockRotationCount * 90;
 	updatePalette(blockPositions);
@@ -143,6 +147,7 @@ void Tetromino::rotateRight()
 	cout << endl;
 	cout << "Face      : " << face << endl;
 	cout << "Next face : " << face + 90 << endl;
+	cout << "Count     : " << blockRotationCount << endl;
 }
 
 void Tetromino::setRotation(int f)
@@ -258,6 +263,9 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 
 void Tetromino::update(float e)
 {
+	if (type == TetrominoType::DOT)
+		return;
+	
 	if (_isDeployed)
 	{
 		if (_isLocked) return;
@@ -278,13 +286,13 @@ void Tetromino::update(float e)
 		}
 	}
 
-	//// update gradual drop here
-	//dropElapsed += e;
-	//if (dropElapsed >= dropInterval)
-	//{
-	//	softDrop();
-	//	dropElapsed = 0.0f;
-	//}
+	// update gradual drop here
+	dropElapsed += e;
+	if (dropElapsed >= dropInterval)
+	{
+		softDrop();
+		dropElapsed = 0.0f;
+	}
 }
 
 void Tetromino::draw(sf::RenderWindow * window)

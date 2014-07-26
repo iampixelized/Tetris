@@ -42,7 +42,7 @@ int GameApplication::run()
 	textures = dynamic_cast<TextureAsset*>(assetManager.getAsset("Textures"));
 
 	window.create(sf::VideoMode(screen_width, screen_height,32), "TETRIS");
-	window.setFramerateLimit(40);
+	window.setFramerateLimit(60);
 
 	if (!loadGameAssets())
 		return 1;
@@ -65,20 +65,21 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 
 GameApplication::GameState GameApplication::gameLoop()
 {
-	DRS drs;
+	DRS drs; // DTET Rotation System
+
 	//Set tetromino drop speed interval
+	Mechanics mechanics(drs);
 	mechanics.dropInterval		= 0.8f;
 	mechanics.lockTime			= 0.5f;
-	mechanics.rotationSystem    = drs;
 
 	TetrisLayer tetrisLayer(mechanics, *tpf.get(), assetManager);
 	TetrominoKicker kicker(*tpf.get());
 
-	//tetrisLayer.setDotPieces(0,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	tetrisLayer.setDotPieces(0,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
 	tetrisLayer.setDotPieces(1,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
 	tetrisLayer.setDotPieces(2,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
 	tetrisLayer.setDotPieces(3,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	tetrisLayer.setDotPieces(4,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+	//tetrisLayer.setDotPieces(4,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
 	//tetrisLayer.setDotPieces(5,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrisLayer.setDotPieces(6,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrisLayer.setDotPieces(7,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -88,12 +89,12 @@ GameApplication::GameState GameApplication::gameLoop()
 	//tetrisLayer.setDotPieces(11, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrisLayer.setDotPieces(12, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrisLayer.setDotPieces(13, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	tetrisLayer.setDotPieces(14, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	tetrisLayer.setDotPieces(15, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	tetrisLayer.setDotPieces(16, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
-	tetrisLayer.setDotPieces(17, { 0, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
-	tetrisLayer.setDotPieces(18, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
-	tetrisLayer.setDotPieces(19, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
+	//tetrisLayer.setDotPieces(14, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrisLayer.setDotPieces(15, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrisLayer.setDotPieces(16, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
+	//tetrisLayer.setDotPieces(17, { 0, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
+	//tetrisLayer.setDotPieces(18, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
+	//tetrisLayer.setDotPieces(19, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
 
 	Tetromino * tetromino = tetrisLayer.spawnTetromino();
 	kicker.setTetromino(tetromino);
@@ -107,8 +108,8 @@ GameApplication::GameState GameApplication::gameLoop()
 
 		if (tetromino->isLocked())
 		{
-			tetrisLayer.spawnTetromino();
 			tetromino = tetrisLayer.spawnTetromino();
+			kicker.setTetromino(tetromino);
 		}
 
 		while (window.pollEvent(event))
@@ -130,10 +131,21 @@ GameApplication::GameState GameApplication::gameLoop()
 				}
 				else if (event.key.code == sf::Keyboard::Key::Up)
 				{
-					if (kicker.checkKick("right", 1))
+					if (tetromino->checkRotation(1))
 						tetromino->rotateRight();
-					else 
-						kicker.kickTetromino(1);
+					else
+					{	
+						if (kicker.checkKick("right", 1))
+						{
+							kicker.kickTetromino(1);
+							tetromino->rotateRight();
+						}
+						else if (kicker.checkKick("left", 1))
+						{
+							kicker.kickTetromino(-1);
+							tetromino->rotateLeft();
+						}
+					}
 				}
 				else if (event.key.code == sf::Keyboard::Key::Down)
 				{

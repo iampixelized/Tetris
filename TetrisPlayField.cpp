@@ -95,24 +95,6 @@ bool TetrisPlayField::isWithinBounds(const sf::Vector2f &pos)
 	return isWithinBounds(gridpos);
 }
 
-int TetrisPlayField::getMaxBounds(int direction , int level)
-{
-	if (level >= 0 && level < booleanGrid.size())
-	{
-		if (direction <= 0)
-			for (size_t i = 4; i >= booleanGrid.size(); --i)
-				if(booleanGrid[level][i])
-					return i+1;
-
-		else if (direction > 0)
-			for (size_t i = 5; i < booleanGrid.size(); ++i)
-				if (booleanGrid[level][i])
-					return i;
-	}
-
-	return 0;
-}
-
 int TetrisPlayField::getScore()
 {
 	int score = 0;

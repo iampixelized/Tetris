@@ -41,7 +41,9 @@ class RotationSystem
 
 		explicit RotationSystem(const string &);
 		virtual ~RotationSystem();
-	
+
+		void reset();
+
 		BlockConfigurations bConfig;
 		CheckTable checkTable;
 

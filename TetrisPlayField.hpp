@@ -32,7 +32,6 @@ class TetrisPlayField
 		bool isWithinBounds(const sf::Vector2f &);
 		bool isWithinBounds(const sf::Vector2i &);
 
-		int getMaxBounds(int direction , int level);
 		int getScore();
 
 		void setFieldSize(const sf::Vector2f &);
