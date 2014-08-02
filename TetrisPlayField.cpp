@@ -39,6 +39,19 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 		for (size_t i = 0; i < fieldSize.x; ++i)
 			booleanGrid[y].push_back(false);
 	}
+
+	holdingGrid.push_back(vector<Holder>(22));
+	
+	for (size_t y = fieldSize.y-1; y >= 0; --y)
+	{
+		for (size_t i = 0; i < fieldSize.x; ++i)
+		{
+			holdingGrid[y][i].nextHolder   = &holdingGrid[y - 1][i];
+			holdingGrid[y][i].nextOccupant =  holdingGrid[y - 1][i].occupant;
+			holdingGrid[y][i].occupant     = nullptr;
+		}
+	}
+	
 }
 
 TetrisPlayField::~TetrisPlayField()
@@ -114,6 +127,17 @@ int TetrisPlayField::getScore()
 		return 1000;
 	else
 		return score;
+}
+
+bool TetrisPlayField::verifyLine(int line)
+{
+	if (all_of(booleanGrid[line].begin(), booleanGrid[line].end(),
+		[](bool b){return b; }))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void TetrisPlayField::setFieldSize(const sf::Vector2f &fs)

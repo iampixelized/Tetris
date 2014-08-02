@@ -39,15 +39,14 @@ namespace esc
 		void addNewObject(MANAGEDTYPE*);
 		bool deleteObject(int);
 		MANAGEDTYPE * getObject(int);
-
+		void refreshLayer(float, sf::RenderWindow *, bool = false) final;
 
 		int getLayerSize() const;
 		MANAGEDTYPE * getRecentObject() const;
 
 	protected:
-
-		virtual void refreshLayer(float, sf::RenderWindow *, bool = false);
-
+		
+		virtual void update(float);
 		MANAGEDTYPE * recent;
 		TypeLayer layer;
 
@@ -94,6 +93,8 @@ namespace esc
 
 			layer[i].get()->draw(window);
 		}
+
+		update(e);
 	}
 
 	template<class MANAGEDTYPE>
@@ -106,6 +107,13 @@ namespace esc
 	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::getRecentObject() const
 	{
 		return recent;
+	}
+
+	template<class MANAGEDTYPE>
+	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::update(float e)
+	{
+		// Implement on child class to override and add
+		// additional update routines.
 	}
 }
 

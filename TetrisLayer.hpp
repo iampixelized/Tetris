@@ -21,16 +21,18 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 		TetrisLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
 		virtual ~TetrisLayer();
 
-		//virtual void refreshLayer(float, sf::RenderWindow * , bool = true);
-		//virtual void pauseLayer(bool = true);
-
 		Tetromino * spawnTetromino();
 		void setDotPieces(int, const vector<int> &);
 		void permutateBag();
 
+	protected:
+
+		virtual void update(float);
+
 	private:
 		
 		void randomizeBag();
+		void checkLineClear();
 
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;

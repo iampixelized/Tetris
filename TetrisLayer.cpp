@@ -133,3 +133,22 @@ void TetrisLayer::randomizeBag()
 		bag.push_back(pair<Tetromino::TetrominoType, Tetromino::BlockColor>(ttype,rcolor));
 	}
 }
+
+void TetrisLayer::update(float e)
+{
+	
+}
+
+void TetrisLayer::checkLineClear()
+{
+	int levels = 0;
+
+	for (int y = 0; y < tetrisPlayField->getFieldSize().y; ++y)
+	{
+		if (tetrisPlayField->verifyLine(y))
+		{
+			levels++;
+
+		}
+	}
+}

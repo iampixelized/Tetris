@@ -31,6 +31,7 @@
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="IAsset.hpp" />
     <ClInclude Include="ILayer.hpp" />
+    <ClInclude Include="Piece.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="ObjectLayer.hpp" />

@@ -4,6 +4,9 @@
 #include<vector>
 using std::vector;
 
+#include<queue>
+using std::queue;
+
 #include<string>
 using std::string;
 
@@ -13,11 +16,27 @@ using std::make_pair;
 
 #include<SFML/Graphics.hpp>
 
+#include "Object.hpp"
 #include "PlayField.hpp"
+
+struct Holder 
+{
+	esc::Object * occupant;
+	esc::Object * nextOccupant;
+	Holder * nextHolder;
+	int pieceNumber;
+	int tetrominoID;
+
+	Holder() 
+	: occupant(nullptr),
+	  nextOccupant(nullptr),
+	  nextHolder(nullptr){}
+};
 
 class TetrisPlayField
 {
 	typedef vector<vector<bool>> BooleanGrid;
+	typedef vector<vector<Holder>> HoldingGrid;
 
 	public:
 
@@ -33,6 +52,7 @@ class TetrisPlayField
 		bool isWithinBounds(const sf::Vector2i &);
 
 		int getScore();
+		bool verifyLine(int);
 
 		void setFieldSize(const sf::Vector2f &);
 		const sf::Vector2f & getFieldSize() const;
@@ -52,6 +72,7 @@ class TetrisPlayField
 	private:
 
 		BooleanGrid booleanGrid;
+		HoldingGrid holdingGrid;
 		sf::Vector2f fieldSize;
 
 		vector<sf::RectangleShape> horizontalGrid;
