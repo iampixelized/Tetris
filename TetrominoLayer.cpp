@@ -1,16 +1,15 @@
 #include <algorithm>
 using std::next_permutation;
 
-#include "TetrisLayer.hpp"
+#include "TetrominoLayer.hpp"
 #include "RandomGenerator.hpp"
 
-TetrisLayer::TetrisLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager &am)
-:
-	tetrisPlayField(&tpf),
-	assetManager(&am),
-	mechanics(&m),
-	spawnCount(0),
-	rcount(0)
+TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager &am)
+	:
+	  tetrisPlayField(&tpf)
+	, assetManager(&am)
+	, mechanics(&m)
+	, spawnCount(0)
 {
 	cout << "Tetris playfield was established:" << endl;
 	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y << endl;
@@ -22,23 +21,17 @@ TetrisLayer::TetrisLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager
 	randomizeBag();
 }
 
-TetrisLayer::~TetrisLayer()
+TetrominoLayer::~TetrominoLayer()
 {
 
 }
 
-Tetromino * TetrisLayer::spawnTetromino()
+Tetromino * TetrominoLayer::spawnTetromino()
 {
 	if (spawnCount > 6)
 	{
 		spawnCount = 0;
 		randomizeBag();
-	}
-
-	if (rcount > possiblePermutations.size())
-	{
-		rcount = 0;
-		permutateBag();
 	}
 
 	currentTetromino
@@ -51,12 +44,11 @@ Tetromino * TetrisLayer::spawnTetromino()
 
 	esc::ObjectLayer<Tetromino>::addNewObject(currentTetromino);
 	spawnCount++;
-	rcount++;
 
 	return currentTetromino;
 }
 
-void TetrisLayer::setDotPieces(int line, const vector<int> & pieceLine)
+void TetrominoLayer::setDotPieces(int line, const vector<int> & pieceLine)
 {
 	for (size_t i = 0; i < pieceLine.size(); ++i)
 	{
@@ -77,7 +69,7 @@ void TetrisLayer::setDotPieces(int line, const vector<int> & pieceLine)
 	}
 }
 
-void TetrisLayer::permutateBag()
+void TetrominoLayer::permutateBag()
 {
 	possiblePermutations.clear();
 
@@ -89,7 +81,7 @@ void TetrisLayer::permutateBag()
 	while (next_permutation(tets.begin(), tets.end()));
 }
 
-void TetrisLayer::randomizeBag()
+void TetrominoLayer::randomizeBag()
 {
 	bag.clear();
 	spawnCount = 0;
@@ -134,12 +126,12 @@ void TetrisLayer::randomizeBag()
 	}
 }
 
-void TetrisLayer::update(float e)
+void TetrominoLayer::update(float e)
 {
 	
 }
 
-void TetrisLayer::checkLineClear()
+void TetrominoLayer::checkLineClear()
 {
 	int levels = 0;
 

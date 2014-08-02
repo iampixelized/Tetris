@@ -23,9 +23,6 @@
     <ClCompile Include="TetrisPlayField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TetrisLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TetrominoKicker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,6 +38,9 @@
     <ClCompile Include="Block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TetrominoLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApplication.hpp">
@@ -50,9 +50,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TetrisPlayField.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TetrisLayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TetrominoKicker.hpp">
@@ -71,6 +68,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoLayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

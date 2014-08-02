@@ -17,7 +17,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
     <ClCompile Include="SRS.cpp" />
-    <ClCompile Include="TetrisLayer.cpp" />
+    <ClCompile Include="TetrominoLayer.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
     <ClCompile Include="Tetromino.cpp" />
     <ClCompile Include="TetrominoKicker.cpp" />
@@ -29,7 +29,7 @@
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="RandomGenerator.hpp" />
     <ClInclude Include="SRS.hpp" />
-    <ClInclude Include="TetrisLayer.hpp" />
+    <ClInclude Include="TetrominoLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />
     <ClInclude Include="Tetromino.hpp" />
     <ClInclude Include="TetrominoKicker.hpp" />

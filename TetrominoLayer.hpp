@@ -1,5 +1,5 @@
-#ifndef TETRISLAYER_HPP
-#define TETRISLAYER_HPP
+#ifndef TETROMINOLAYER_HPP
+#define TETROMINOLAYER_HPP
 
 #include<vector>
 using std::vector;
@@ -13,13 +13,13 @@ using std::pair;
 #include "AssetManager.hpp"
 #include "RandomGenerator.hpp"
 
-class TetrisLayer : public esc::ObjectLayer<Tetromino>
+class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 {
 
 	public:
 
-		TetrisLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
-		virtual ~TetrisLayer();
+	TetrominoLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
+	virtual ~TetrominoLayer();
 
 		Tetromino * spawnTetromino();
 		void setDotPieces(int, const vector<int> &);
@@ -43,7 +43,6 @@ class TetrisLayer : public esc::ObjectLayer<Tetromino>
 		vector<string> possiblePermutations;
 
 		int spawnCount;
-		int rcount;
 
 		esc::RandomGenerator random;
 };

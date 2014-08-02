@@ -17,29 +17,14 @@ using std::make_pair;
 #include<SFML/Graphics.hpp>
 
 #include "Object.hpp"
-#include "PlayField.hpp"
-
-struct Holder 
-{
-	esc::Object * occupant;
-	esc::Object * nextOccupant;
-	Holder * nextHolder;
-	int pieceNumber;
-	int tetrominoID;
-
-	Holder() 
-	: occupant(nullptr),
-	  nextOccupant(nullptr),
-	  nextHolder(nullptr){}
-};
 
 class TetrisPlayField
 {
 	typedef vector<vector<bool>> BooleanGrid;
-	typedef vector<vector<Holder>> HoldingGrid;
+	typedef vector<vector<Tetromino::ObjectPtr>> ;
 
 	public:
-
+		
 		TetrisPlayField(sf::Vector2f = sf::Vector2f(), float offset = 16.0f);
 		virtual ~TetrisPlayField();
 
@@ -72,7 +57,6 @@ class TetrisPlayField
 	private:
 
 		BooleanGrid booleanGrid;
-		HoldingGrid holdingGrid;
 		sf::Vector2f fieldSize;
 
 		vector<sf::RectangleShape> horizontalGrid;

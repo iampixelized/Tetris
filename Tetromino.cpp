@@ -355,11 +355,6 @@ TetrisPlayField * Tetromino::getPlayField() const
 	return playField;
 }
 
-void Tetromino::removeBlock(int piece)
-{
-
-}
-
 int Tetromino::getID() const
 {
 	return id;

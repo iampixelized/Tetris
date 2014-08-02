@@ -31,10 +31,10 @@ struct Mechanics
 
 class Tetromino
 {
-	typedef unique_ptr<esc::Object> ObjectPtr;
-	typedef map<int, ObjectPtr> BlockPalette;
-
 	public:
+
+		typedef unique_ptr<esc::Object> ObjectPtr;
+		typedef map<int, ObjectPtr> BlockPalette;
 
 		struct BlockConfigurations
 		{
@@ -84,7 +84,6 @@ class Tetromino
 		void draw(sf::RenderWindow *);
 
 		TetrisPlayField * getPlayField() const;
-		void removeBlock(int);
 		int getID() const;
 		esc::Object * getPiece(int);
 
