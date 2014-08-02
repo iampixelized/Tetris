@@ -130,6 +130,7 @@ class Tetromino
 		int vWidthOffset;
 		int moveCount;
 		int dropCount;
+		int pieceCount;
 };	
 
 #endif

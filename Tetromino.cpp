@@ -39,7 +39,8 @@ Tetromino::Tetromino
 	previousFace(face),
 	playField(&tpf),
 	moveCount(3),
-	dropCount(0)
+	dropCount(0),
+	pieceCount(-1)
 {
 	rotationSystem->setConfiguration(ttype);
 
@@ -75,6 +76,7 @@ Tetromino::Tetromino
 	}
 
 	cout << "TET Created : " << blockPositions.size() << endl;
+	pieceCount = palette.size();
 }
 
 Tetromino::~Tetromino()
@@ -293,6 +295,9 @@ void Tetromino::update(float e)
 		softDrop();
 		dropElapsed = 0.0f;
 	}
+
+	// detect piece clear
+
 }
 
 void Tetromino::draw(sf::RenderWindow * window)

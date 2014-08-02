@@ -38,7 +38,7 @@
     <ClCompile Include="RotationSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Piece.cpp">
+    <ClCompile Include="Block.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,10 +67,10 @@
     <ClInclude Include="DRS.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Piece.hpp">
+    <ClInclude Include="RandomGenerator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RandomGenerator.hpp">
+    <ClInclude Include="Block.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

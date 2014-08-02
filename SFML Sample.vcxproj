@@ -14,7 +14,7 @@
     <ClCompile Include="DRS.cpp" />
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
     <ClCompile Include="SRS.cpp" />
     <ClCompile Include="TetrisLayer.cpp" />
@@ -25,7 +25,7 @@
   <ItemGroup>
     <ClInclude Include="DRS.hpp" />
     <ClInclude Include="GameApplication.hpp" />
-    <ClInclude Include="Piece.hpp" />
+    <ClInclude Include="Block.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="RandomGenerator.hpp" />
     <ClInclude Include="SRS.hpp" />
