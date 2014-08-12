@@ -36,13 +36,15 @@ Tetromino * TetrominoLayer::spawnTetromino()
 
 	currentTetromino
 		= Tetromino::createTetromino
-		(  bag[spawnCount].first,
-		   bag[spawnCount].second,
-		  *tetrisPlayField,
-		  *mechanics,
-		  *assetManager);
+		(  
+			 bag[spawnCount].first
+		  ,  bag[spawnCount].second
+		  , *tetrisPlayField
+		  , *mechanics
+		  , *assetManager
+		);
 
-	esc::ObjectLayer<Tetromino>::addNewObject(currentTetromino);
+	TLAYER::addNewObject(currentTetromino);
 	spawnCount++;
 
 	return currentTetromino;
@@ -63,9 +65,9 @@ void TetrominoLayer::setDotPieces(int line, const vector<int> & pieceLine)
 				*assetManager
 			);
 
-		esc::ObjectLayer<Tetromino>::addNewObject(tetromino);
+		TLAYER::addNewObject(tetromino);
 		tetromino->setGridPosition(sf::Vector2i(i, line));
-		tetrisPlayField->setActive(sf::Vector2i(i, line), true);
+		tetrisPlayField->registerBlocks(tetromino);
 	}
 }
 
@@ -123,24 +125,5 @@ void TetrominoLayer::randomizeBag()
 			ttype = TetrominoType::Z;
 		
 		bag.push_back(pair<Tetromino::TetrominoType, Tetromino::BlockColor>(ttype,rcolor));
-	}
-}
-
-void TetrominoLayer::update(float e)
-{
-	
-}
-
-void TetrominoLayer::checkLineClear()
-{
-	int levels = 0;
-
-	for (int y = 0; y < tetrisPlayField->getFieldSize().y; ++y)
-	{
-		if (tetrisPlayField->verifyLine(y))
-		{
-			levels++;
-
-		}
 	}
 }

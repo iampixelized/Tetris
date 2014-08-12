@@ -9,7 +9,7 @@ using std::pair;
 #include "GameApplication.hpp"
 #include "RandomGenerator.hpp"
 #include "TetrominoKicker.hpp"
-#include "TetrisLayer.hpp"
+#include "TetrominoLayer.hpp"
 #include "DRS.hpp"
 
 GameApplication::GameApplication()
@@ -71,45 +71,52 @@ GameApplication::GameState GameApplication::gameLoop()
 	Mechanics mechanics(drs);
 	mechanics.dropInterval		= 0.8f;
 	mechanics.lockTime			= 0.5f;
-
-	TetrisLayer tetrisLayer(mechanics, *tpf.get(), assetManager);
+	
+	TetrominoLayer tetrominoLayer(mechanics, *tpf.get(), assetManager);
 	TetrominoKicker kicker(*tpf.get());
 
-	tetrisLayer.setDotPieces(0,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	tetrisLayer.setDotPieces(1,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	tetrisLayer.setDotPieces(2,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	tetrisLayer.setDotPieces(3,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrisLayer.setDotPieces(4,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrisLayer.setDotPieces(5,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(6,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(7,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(8,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(9,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(10, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(11, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(12, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(13, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(14, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrisLayer.setDotPieces(15, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrisLayer.setDotPieces(16, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
-	//tetrisLayer.setDotPieces(17, { 0, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
-	//tetrisLayer.setDotPieces(18, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
-	//tetrisLayer.setDotPieces(19, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
+	//tetrominoLayer.setDotPieces(0,  { 1, 0, 1, 0, 0, 0, 0, 1, 0, 1 });
+	//tetrominoLayer.setDotPieces(1,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(2,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(3,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+	//tetrominoLayer.setDotPieces(4,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+	//tetrominoLayer.setDotPieces(5,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(6,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(7,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(8,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(9,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(10, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(11, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(12, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(13, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(14, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(15, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(16, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(17, { 0, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
+	//tetrominoLayer.setDotPieces(18, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
+	//tetrominoLayer.setDotPieces(19, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
 
-	Tetromino * tetromino = tetrisLayer.spawnTetromino();
+	Tetromino * tetromino = tetrominoLayer.spawnTetromino();
 	kicker.setTetromino(tetromino);
 
-	cout << "Content number of t-layer : " << tetrisLayer.getLayerSize() << endl;
+	cout << "\n\n\n\n\n\n\n\nContent number of t-layer : " << tetrominoLayer.getSize() << endl;
 
 	while (window.isOpen())
 	{
-
 		float elapsed = clock.restart().asSeconds();
-
+		
 		if (tetromino->isLocked())
 		{
-			tetromino = tetrisLayer.spawnTetromino();
+			tpf->registerBlocks(tetromino);
+			tetromino = tetrominoLayer.spawnTetromino();
 			kicker.setTetromino(tetromino);
+		}
+
+
+		if (tpf->getClearedRowsSize() > 0)
+		{
+			tpf->shiftClearedRows();
+			tpf->resetRows();
 		}
 
 		while (window.pollEvent(event))
@@ -164,7 +171,7 @@ GameApplication::GameState GameApplication::gameLoop()
 					*/
 
 					 tetromino->softDrop();
-					// tetromino->hardDrop();
+					 tetromino->hardDrop();
 				}
 				else if (event.key.code == sf::Keyboard::Key::Space)
 				{
@@ -176,7 +183,8 @@ GameApplication::GameState GameApplication::gameLoop()
 		window.clear();
 
 		tpf->drawGrid(&window);
-		tetrisLayer.refreshLayer(elapsed, &window);
+		tetrominoLayer.refreshLayer(elapsed, &window, false);
+		
 		
 		window.display();
 	}

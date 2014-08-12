@@ -1,3 +1,7 @@
+#include<iostream>
+using std::cout;
+using std::endl;
+
 #include "RotationSystem.hpp"
 
 RotationSystem::RotationSystem(const string & rsname)

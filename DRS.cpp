@@ -1,4 +1,5 @@
 #include "DRS.hpp"
+#include "Tetromino.hpp"
 
 DRS::DRS() : RotationSystem("DTET Rotation System (DRS)")
 {
@@ -178,9 +179,9 @@ void DRS::setConfiguration(int type)
 	else if (type == Tetromino::TetrominoType::DOT)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 0));
-		RotationSystem::bConfig._90Config  = RotationSystem::bConfig._0Config;
-		RotationSystem::bConfig._180Config = RotationSystem::bConfig._0Config;
-		RotationSystem::bConfig._270Config = RotationSystem::bConfig._0Config;
+		RotationSystem::bConfig._90Config.push_back(sf::Vector2i(0, 0));
+		RotationSystem::bConfig._180Config.push_back(sf::Vector2i(0, 0));
+		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(0, 0));
 	}
 }
 

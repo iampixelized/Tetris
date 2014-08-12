@@ -12,11 +12,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DRS.cpp" />
+    <ClCompile Include="Escape\src\AssetManager.cpp" />
+    <ClCompile Include="Escape\src\Object.cpp" />
+    <ClCompile Include="Escape\src\RandomGenerator.cpp" />
     <ClCompile Include="GameApplication.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
-    <ClCompile Include="SRS.cpp" />
     <ClCompile Include="TetrominoLayer.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
     <ClCompile Include="Tetromino.cpp" />
@@ -24,15 +26,25 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DRS.hpp" />
+    <ClInclude Include="Escape\include\Asset.hpp" />
+    <ClInclude Include="Escape\include\AssetManager.hpp" />
+    <ClInclude Include="Escape\include\IAsset.hpp" />
+    <ClInclude Include="Escape\include\IAssetManager.hpp" />
+    <ClInclude Include="Escape\include\ILayer.hpp" />
+    <ClInclude Include="Escape\include\Object.hpp" />
+    <ClInclude Include="Escape\include\ObjectLayer.hpp" />
+    <ClInclude Include="Escape\include\RandomGenerator.hpp" />
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="Block.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
-    <ClInclude Include="RandomGenerator.hpp" />
-    <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrominoLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />
     <ClInclude Include="Tetromino.hpp" />
     <ClInclude Include="TetrominoKicker.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{61B849D1-92C0-43E5-9FC7-C503692E46A2}</ProjectGuid>

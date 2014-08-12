@@ -14,8 +14,10 @@ using std::pair;
 using std::make_pair;
 
 #include "TetrisPlayField.hpp"
-#include "Object.hpp"
-#include "RotationSystem.hpp"
+#include "Block.hpp"
+#include "ObjectLayer.hpp"
+
+class RotationSystem;
 
 struct Mechanics
 {
@@ -33,8 +35,8 @@ class Tetromino
 {
 	public:
 
-		typedef unique_ptr<esc::Object> ObjectPtr;
-		typedef map<int, ObjectPtr> BlockPalette;
+		typedef unique_ptr<Block> BlockPtr;
+		typedef map<int, BlockPtr> BlockPalette;
 
 		struct BlockConfigurations
 		{
@@ -46,15 +48,6 @@ class Tetromino
 
 		enum TetrominoType{ S = 1, Z, J, L, I, O, T, DOT };
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange };
-		
-		Tetromino
-		(
-			TetrominoType 		 , 
-			BlockColor 			 , 
-			TetrisPlayField    & ,
-			Mechanics		   & ,
-			esc::AssetManager  & 
-		);
 		
 		virtual ~Tetromino();
 
@@ -85,19 +78,29 @@ class Tetromino
 
 		TetrisPlayField * getPlayField() const;
 		int getID() const;
-		esc::Object * getPiece(int);
+		Block * getBlock(int);
 
 		bool checkRotation(int);
 		bool checkMovement(int);
+		int getBlockCount() const;
+
+		//void registerToField(TetrisPlayField &);
 
 	protected:
 
-		Tetromino(){};
+		Tetromino
+		(
+		TetrominoType,
+		BlockColor,
+		TetrisPlayField    &,
+		Mechanics		   &,
+		esc::AssetManager  &
+		);
+
+		Tetromino(){}
 		void updatePalette(const vector<sf::Vector2i> &);
 
 	private:
-
-		void deploy();
 
 		static int id_generator;
 		int id;
@@ -129,7 +132,7 @@ class Tetromino
 		int vWidthOffset;
 		int moveCount;
 		int dropCount;
-		int pieceCount;
+		int blockCount;
 };	
 
 #endif

@@ -5,7 +5,6 @@
 using std::string;
 
 #include "RotationSystem.hpp"
-#include "Tetromino.hpp"
 
 class DRS : public RotationSystem
 {

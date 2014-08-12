@@ -16,29 +16,25 @@ using std::make_pair;
 
 #include<SFML/Graphics.hpp>
 
-#include "Object.hpp"
+class Tetromino;
+class Block;
 
 class TetrisPlayField
 {
-	typedef vector<vector<bool>> BooleanGrid;
-	typedef vector<vector<Tetromino::ObjectPtr>> ;
+	typedef vector<vector<Block*>> BlockGrid;
 
 	public:
 		
 		TetrisPlayField(sf::Vector2f = sf::Vector2f(), float offset = 16.0f);
 		virtual ~TetrisPlayField();
 
-		void setActive(const sf::Vector2i &, bool);
-		void setActive(int, int, bool);
 		bool isActive (const sf::Vector2i &) const;
 		bool isActive (const sf::Vector2f &);
 		bool isActive (int , int) const;
+
 		bool isWithinBounds(const sf::Vector2f &);
 		bool isWithinBounds(const sf::Vector2i &);
-
-		int getScore();
-		bool verifyLine(int);
-
+		
 		void setFieldSize(const sf::Vector2f &);
 		const sf::Vector2f & getFieldSize() const;
 
@@ -51,19 +47,31 @@ class TetrisPlayField
 		void drawGrid(sf::RenderWindow *, bool = true);
 		
 		// to be deleted
-		void showBooleanGrid();
+		void showGridLines();
 		sf::Vector2i convertToGridPosition(const sf::Vector2f &);
-	
+		int getPeak() const;
+
+		void shiftClearedRows();
+		void registerBlocks(Tetromino *);
+		void resetRows();
+		int getClearedRowsSize() const;
+
 	private:
 
-		BooleanGrid booleanGrid;
+		void searchClearedRows();
+		void removeRow(int);
+
 		sf::Vector2f fieldSize;
+		BlockGrid blockGrid;
 
 		vector<sf::RectangleShape> horizontalGrid;
 		vector<sf::RectangleShape> verticalGrid;
 
 		sf::Vector2f position;
 		float offset;
+		int peakLevel;
+
+		vector<int> clearedRows;
 };
 
 #endif

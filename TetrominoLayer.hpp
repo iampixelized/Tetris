@@ -15,6 +15,8 @@ using std::pair;
 
 class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 {
+	
+	typedef esc::ObjectLayer<Tetromino> TLAYER;
 
 	public:
 
@@ -25,14 +27,9 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		void setDotPieces(int, const vector<int> &);
 		void permutateBag();
 
-	protected:
-
-		virtual void update(float);
-
 	private:
 		
 		void randomizeBag();
-		void checkLineClear();
 
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;

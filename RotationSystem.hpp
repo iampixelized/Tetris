@@ -1,5 +1,5 @@
-#ifndef IROTATIONSYSTEM_HPP
-#define IROTATIONSYSTEM_HPP
+#ifndef ROTATIONSYSTEM_HPP
+#define ROTATIONSYSTEM_HPP
 
 #include<vector>
 using std::vector;

@@ -3,7 +3,10 @@ using std::cout;
 using std::endl;
 using std::boolalpha;
 
+#include "ObjectLayer.hpp"
 #include "Tetromino.hpp"
+#include "RotationSystem.hpp"
+
 
 // NOTE: Next stop, determine first the immediate height and the blocks at those
 // particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
@@ -25,25 +28,24 @@ Tetromino::Tetromino
 		esc::AssetManager & am
 	)
 	: 
-	blockRotationCount(0),
-	dropElapsed(0.0f),
-	lockElapsed(0.0f),
-	lockTime(tmech.lockTime),
-	dropInterval(tmech.dropInterval),
-	rotationSystem(tmech.getRotationSystem()),
-	type(ttype),
-	color(bc),
-	_isLocked(false),
-	_isDeployed(false),
-	face(0),
-	previousFace(face),
-	playField(&tpf),
-	moveCount(3),
-	dropCount(0),
-	pieceCount(-1)
+	  blockRotationCount(0)
+	, dropElapsed(0.0f)
+	, lockElapsed(0.0f)
+	, lockTime(tmech.lockTime)
+	, dropInterval(tmech.dropInterval)
+	, rotationSystem(tmech.getRotationSystem())
+	, type(ttype)
+	, color(bc)
+	, _isLocked(false)
+	, _isDeployed(false)
+	, face(0)
+	, previousFace(face)
+	, playField(&tpf)
+	, moveCount(3)
+	, dropCount(0)
+	, blockCount(0)
 {
 	rotationSystem->setConfiguration(ttype);
-
 	string spriteName;
 
 	switch (color)
@@ -65,18 +67,18 @@ Tetromino::Tetromino
 	blockSize = playField->getGridOffset();
 	positionOffset = playField->getPosition();
 
-	int pnum = 0;
+
+	int bnum = 0;
 	for (sf::Vector2i p : blockPositions)
 	{
 		sf::Vector2f actualPos;
 		actualPos.x = (p.x * blockSize) + positionOffset.x + (blockSize * 3);
 		actualPos.y = ((p.y-((type == TetrominoType::I)? 1: 0)) * blockSize) + positionOffset.y;
-		palette[pnum] = ObjectPtr(new esc::Object(spriteName, actualPos, am));
-		pnum++;
+		palette[bnum] = BlockPtr(new Block(spriteName, actualPos, tpf, am));
+		bnum++;
 	}
 
-	cout << "TET Created : " << blockPositions.size() << endl;
-	pieceCount = palette.size();
+	blockCount = palette.size();
 }
 
 Tetromino::~Tetromino()
@@ -265,6 +267,7 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 
 void Tetromino::update(float e)
 {
+	cout << "fdafalsfjlkjsdaf" << endl;
 	if (type == TetrominoType::DOT)
 		return;
 	
@@ -282,7 +285,7 @@ void Tetromino::update(float e)
 			}
 			else
 			{
-				deploy();
+				_isLocked = true;
 				return;
 			}
 		}
@@ -295,9 +298,6 @@ void Tetromino::update(float e)
 		softDrop();
 		dropElapsed = 0.0f;
 	}
-
-	// detect piece clear
-
 }
 
 void Tetromino::draw(sf::RenderWindow * window)
@@ -360,30 +360,12 @@ int Tetromino::getID() const
 	return id;
 }
 
-esc::Object * Tetromino::getPiece(int pid)
+Block * Tetromino::getBlock(int pid)
 {
-	if (palette.find(id) == palette.end())
+	if (palette.find(pid) == palette.end())
 		return nullptr;
 
-	return palette[id].get();
-}
-
-void Tetromino::deploy()
-{
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		sf::Vector2i gridpos;
-		gridpos.x = (palette[i]->getPosition().x - positionOffset.x) / blockSize;
-		gridpos.y = (palette[i]->getPosition().y - positionOffset.y) / blockSize;
-
-		if (playField->isActive(gridpos))
-			return;
-		
-		playField->setActive(sf::Vector2i(gridpos) , true);
-	}
-	
-	_isLocked = true;
-	playField->showBooleanGrid();
+	return palette[pid].get();
 }
 
 bool Tetromino::checkRotation(int rd)
@@ -449,3 +431,13 @@ bool Tetromino::checkMovement(int direction)
 
 	return true;
 }
+
+int Tetromino::getBlockCount() const
+{
+	return blockCount;
+}
+
+//void Tetromino::registerToField(TetrisPlayField & tpf)
+//{
+//	
+//}

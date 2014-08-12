@@ -22,7 +22,7 @@ using std::unique_ptr;
 namespace esc
 {
 	template<class MANAGEDTYPE>
-	class ObjectLayer : public ILayer, protected MANAGEDTYPE
+	class ObjectLayer : protected MANAGEDTYPE , public ILayer
 	{
 
 	using MANAGEDTYPE::update;
@@ -39,14 +39,14 @@ namespace esc
 		void addNewObject(MANAGEDTYPE*);
 		bool deleteObject(int);
 		MANAGEDTYPE * getObject(int);
-		void refreshLayer(float, sf::RenderWindow *, bool = false) final;
+		
+		virtual void refreshLayer(float e , sf::RenderWindow * , bool = false);
 
-		int getLayerSize() const;
 		MANAGEDTYPE * getRecentObject() const;
+		int getSize() const;
 
 	protected:
 		
-		virtual void update(float);
 		MANAGEDTYPE * recent;
 		TypeLayer layer;
 
@@ -86,21 +86,14 @@ namespace esc
 	template<class MANAGEDTYPE>
 	void ObjectLayer<MANAGEDTYPE>::refreshLayer(float e, sf::RenderWindow * window, bool pause)
 	{
+		//cout << "Refreshing layer..." << endl;
 		for (size_t i = 0; i < layer.size(); ++i)
 		{
-			if (!pause)
-				layer[i].get()->update(e);
+			if (!pause) 
+				layer[i]->update(e);
 
-			layer[i].get()->draw(window);
+			layer[i]->draw(window);
 		}
-
-		update(e);
-	}
-
-	template<class MANAGEDTYPE>
-	int ObjectLayer<MANAGEDTYPE>::getLayerSize() const
-	{
-		return layer.size();
 	}
 
 	template<class MANAGEDTYPE>
@@ -110,10 +103,9 @@ namespace esc
 	}
 
 	template<class MANAGEDTYPE>
-	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::update(float e)
+	int ObjectLayer<MANAGEDTYPE>::getSize() const
 	{
-		// Implement on child class to override and add
-		// additional update routines.
+		return layer.size();
 	}
 }
 
