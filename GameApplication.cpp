@@ -167,7 +167,7 @@ GameApplication::GameState GameApplication::gameLoop()
 					*/
 
 					 tetromino->softDrop();
-					 tetromino->hardDrop();
+					 //tetromino->hardDrop();
 				}
 				else if (event.key.code == sf::Keyboard::Key::Space)
 				{
