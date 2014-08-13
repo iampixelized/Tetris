@@ -99,7 +99,7 @@ void TetrominoLayer::randomizeBag()
 		Tetromino::BlockColor::Yellow
 	};
 
-	int rrange = random.randomIntWithinRange(0,possiblePermutations.size());
+	int rrange = random.randomIntWithinRange(0, possiblePermutations.size());
 	int crange = random.randomIntWithinRange(0, 6);
 
 	string tets = possiblePermutations[rrange];

@@ -112,12 +112,8 @@ GameApplication::GameState GameApplication::gameLoop()
 			kicker.setTetromino(tetromino);
 		}
 
-
 		if (tpf->getClearedRowsSize() > 0)
-		{
 			tpf->shiftClearedRows();
-			tpf->resetRows();
-		}
 
 		while (window.pollEvent(event))
 		{

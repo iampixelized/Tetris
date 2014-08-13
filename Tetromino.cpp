@@ -267,7 +267,16 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 
 void Tetromino::update(float e)
 {
-	cout << "fdafalsfjlkjsdaf" << endl;
+	for (size_t i = 0; i < palette.size(); ++i)
+	{
+		if (palette[i]->isCleared())
+		{
+			auto bfind = palette.find(i);
+			if (bfind != palette.end())
+				palette.erase(bfind);
+		}
+	}
+
 	if (type == TetrominoType::DOT)
 		return;
 	

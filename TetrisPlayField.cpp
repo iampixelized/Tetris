@@ -39,7 +39,6 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	}
 
 	cout << "TPF size : " << blockGrid[0].size() << endl;
-
 }
 
 TetrisPlayField::~TetrisPlayField()
@@ -171,32 +170,53 @@ int TetrisPlayField::getPeak() const
 
 void TetrisPlayField::shiftClearedRows()
 {
+	cout << "Cleared rows... : " << clearedRows.size() << endl;
+
 	for (int row : clearedRows)
 	{
-		for (size_t i = 0; i < fieldSize.x; ++i)
-		{
-			blockGrid[row][i]->markCleared();
-		}
+		//for (size_t i = 0; i < fieldSize.x; ++i)
+		//{
+		//	blockGrid[row][i]->markCleared();
+		//}
 
-		for (size_t y = row; y >= 0; --y)
+		//for (int y = row; y >= peakLevel; --y)
+		//{
+		//	if ((y - 1) <= 0)
+		//	{
+		//		cout << "clearing (row-1) : " << y << endl;
+		//	}
+		//}
+
+		cout << "Cleared : " << row << "-- peak level: " << peakLevel << endl;
+
+		for (int y = row; y >= peakLevel; --y)
 		{
-			for (size_t i = 0; i < fieldSize.x; ++i)
+			if ((y - 1) >= 0)
 			{
-				if ((y-1) < 0) break;
-				blockGrid[y - 1][i]->moveTo(sf::Vector2f(0,offset));
+				cout << "clearing (row-1) : " << y << endl;
+				for (size_t i = 0; i < fieldSize.x; ++i)
+				{
+					if (blockGrid[y - 1][i] != nullptr)
+						blockGrid[y - 1][i]->moveTo(sf::Vector2f(0,offset));
+				}
 			}
 		}
 	}
+
+	//clearedRows.clear();
+	resetRows();
 }
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
 {
 	for (size_t i = 0; i < t->getBlockCount(); ++i)
 	{
-		Block * block = t->getBlock(i);
-		sf::Vector2i gpos = block->getGridPosition();
-
-		blockGrid[gpos.y][gpos.x] = block;
+		if (Block * block = t->getBlock(i))
+		{
+			sf::Vector2i gpos = block->getGridPosition();
+			blockGrid[gpos.y][gpos.x] = block;
+			peakLevel = (gpos.y < peakLevel)? gpos.y : peakLevel;
+		}
 	}
 
 	searchClearedRows();
