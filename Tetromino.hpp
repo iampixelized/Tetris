@@ -38,14 +38,6 @@ class Tetromino
 		typedef unique_ptr<Block> BlockPtr;
 		typedef map<int, BlockPtr> BlockPalette;
 
-		struct BlockConfigurations
-		{
-			vector<sf::Vector2i> _0Config;
-			vector<sf::Vector2i> _90Config;
-			vector<sf::Vector2i> _180Config;
-			vector<sf::Vector2i> _270Config;
-		};
-
 		enum TetrominoType{ S = 1, Z, J, L, I, O, T, DOT };
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange };
 		

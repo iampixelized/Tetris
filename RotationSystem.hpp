@@ -12,19 +12,21 @@ using std::map;
 
 #include<SFML/Graphics.hpp>
 
+class Tetromino;
+
 class RotationSystem
 {
+	struct BlockConfigurations
+	{
+		vector<sf::Vector2i> _0Config;
+		vector<sf::Vector2i> _90Config;
+		vector<sf::Vector2i> _180Config;
+		vector<sf::Vector2i> _270Config;
+	};
+
 	public:
 
 		typedef map<string, map<int, sf::Vector2i>> CheckTable;
-
-		struct BlockConfigurations
-		{
-			vector<sf::Vector2i> _0Config;
-			vector<sf::Vector2i> _90Config;
-			vector<sf::Vector2i> _180Config;
-			vector<sf::Vector2i> _270Config;
-		};
 
 		virtual const vector<sf::Vector2i> & getBlockConfiguration(int);
 		virtual const BlockConfigurations & getBlockConfigurations();
@@ -37,14 +39,17 @@ class RotationSystem
 		sf::Vector2i getCheckTableTest(const string &, int);
 		const CheckTable & getCheckTable() const;
 
+		virtual int getSpawningPosition(int);
+
 	protected:
+
+		BlockConfigurations bConfig;
 
 		explicit RotationSystem(const string &);
 		virtual ~RotationSystem();
 
 		void reset();
 
-		BlockConfigurations bConfig;
 		CheckTable checkTable;
 
 	private:

@@ -7,7 +7,6 @@ using std::boolalpha;
 #include "Tetromino.hpp"
 #include "RotationSystem.hpp"
 
-
 // NOTE: Next stop, determine first the immediate height and the blocks at those
 // particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
 
@@ -67,13 +66,13 @@ Tetromino::Tetromino
 	blockSize = playField->getGridOffset();
 	positionOffset = playField->getPosition();
 
-
+	float sp = rotationSystem->getSpawningPosition(type); 
 	int bnum = 0;
 	for (sf::Vector2i p : blockPositions)
 	{
 		sf::Vector2f actualPos;
 		actualPos.x = (p.x * blockSize) + positionOffset.x + (blockSize * 3);
-		actualPos.y = ((p.y-((type == TetrominoType::I)? 1: 0)) * blockSize) + positionOffset.y;
+		actualPos.y = ((p.y - sp) * blockSize) + positionOffset.y;
 		palette[bnum] = BlockPtr(new Block(spriteName, actualPos, tpf, am));
 		bnum++;
 	}
@@ -265,17 +264,20 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 	}
 }
 
+// ERRORS ON THESE LINES
+// DEBUG we are almost done!!!
+
 void Tetromino::update(float e)
 {
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		if (palette[i]->isCleared())
-		{
-			auto bfind = palette.find(i);
-			if (bfind != palette.end())
-				palette.erase(bfind);
-		}
-	}
+	//for (size_t i = 0; i < palette.size(); ++i)
+	//{
+	//	if (palette[i]->isCleared())
+	//	{
+	//		auto bfind = palette.find(i);
+	//		if (bfind != palette.end())
+	//			palette.erase(bfind);
+	//	}
+	//}
 
 	if (type == TetrominoType::DOT)
 		return;

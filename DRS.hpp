@@ -15,6 +15,8 @@ class DRS : public RotationSystem
 
 		virtual DRS * getStandard();
 		virtual void setConfiguration(int);
+
+		int getSpawningPosition(int);
 };
 
 #endif

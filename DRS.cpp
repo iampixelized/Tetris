@@ -185,3 +185,21 @@ void DRS::setConfiguration(int type)
 	}
 }
 
+int DRS::getSpawningPosition(int type)
+{
+	//S = 1, Z, J, L, I, O, T, DOT
+	if (   type == Tetromino::TetrominoType::S  
+		|| type == Tetromino::TetrominoType::Z
+		|| type == Tetromino::TetrominoType::J
+		|| type == Tetromino::TetrominoType::L
+		|| type == Tetromino::TetrominoType::O
+		|| type == Tetromino::TetrominoType::T
+		)
+		
+		return 1;
+
+	else if (type == Tetromino::TetrominoType::I)
+		return 2;
+
+	return 0;
+}

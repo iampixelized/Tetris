@@ -3,6 +3,7 @@ using std::cout;
 using std::endl;
 
 #include "RotationSystem.hpp"
+#include "Tetromino.hpp"
 
 RotationSystem::RotationSystem(const string & rsname)
 	: name(rsname)
@@ -61,3 +62,7 @@ const RotationSystem::CheckTable & RotationSystem::getCheckTable() const
 	return checkTable;
 }
 
+int RotationSystem::getSpawningPosition(int type)
+{
+	return 0;
+}
