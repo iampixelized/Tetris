@@ -118,9 +118,9 @@ void Tetromino::rotateLeft()
 	face = blockRotationCount * 90;
 	updatePalette(blockPositions);
 
-	cout << endl;
-	cout << "Face      : " << face << endl;
-	cout << "Next face : " << face + 90 << endl;
+	//cout << endl;
+	//cout << "Face      : " << face << endl;
+	//cout << "Next face : " << face + 90 << endl;
 }
 
 void Tetromino::rotateRight()
@@ -147,10 +147,10 @@ void Tetromino::rotateRight()
 	face = blockRotationCount * 90;
 	updatePalette(blockPositions);
 
-	cout << endl;
-	cout << "Face      : " << face << endl;
-	cout << "Next face : " << face + 90 << endl;
-	cout << "Count     : " << blockRotationCount << endl;
+	//cout << endl;
+	//cout << "Face      : " << face << endl;
+	//cout << "Next face : " << face + 90 << endl;
+	//cout << "Count     : " << blockRotationCount << endl;
 }
 
 void Tetromino::setRotation(int f)
@@ -210,7 +210,7 @@ void Tetromino::moveRight()
 	for (size_t i = 0; i < palette.size(); ++i)
 		palette[i]->moveTo(sf::Vector2f(blockSize, 0));
 
-	cout << "Moving (RIGHT): " << moveCount << endl;
+	//cout << "Moving (RIGHT): " << moveCount << endl;
 	return;
 }
 
@@ -223,7 +223,7 @@ void Tetromino::moveLeft()
 	for (size_t i = 0; i < palette.size(); ++i)
 		palette[i]->moveTo(sf::Vector2f(-blockSize, 0));
 
-	cout << "Moving (LEFT): " << moveCount << endl;
+	//cout << "Moving (LEFT): " << moveCount << endl;
 	return;
 }
 
@@ -338,7 +338,7 @@ void Tetromino::softDrop()
 	for (size_t i = 0; i < palette.size(); ++i)
 		palette[i]->moveTo(sf::Vector2f(0, blockSize));
 
-	cout << "Dropcount : " << dropCount << endl;
+	//cout << "Dropcount : " << dropCount << endl;
 }
 
 void Tetromino::move(const sf::Vector2i &pos)
