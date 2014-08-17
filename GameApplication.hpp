@@ -25,6 +25,7 @@ class GameApplication
 		{
 			INITIATING = 1,
 			STARTING,
+			GAMEOVER,
 			EXITING
 		};
 

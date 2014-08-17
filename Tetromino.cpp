@@ -201,6 +201,11 @@ void Tetromino::setGridPosition(const sf::Vector2i &pos)
 	dropCount = pos.y;
 }
 
+sf::Vector2i Tetromino::getGridPosition()
+{
+	return sf::Vector2i(moveCount , dropCount);
+}
+
 void Tetromino::moveRight()
 {
 	if (_isLocked) return;

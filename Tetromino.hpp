@@ -50,6 +50,7 @@ class Tetromino
 		void setRotation(int);
 		int getRotation() const;
 		void setGridPosition(const sf::Vector2i &);
+		sf::Vector2i getGridPosition();
 
 		void hardDrop();
 		void softDrop();

@@ -30,13 +30,15 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 	private:
 		
 		void randomizeBag();
+		Tetromino::BlockColor getRandomColor();
 
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;
 		Tetromino * currentTetromino;
 		Mechanics * mechanics;
 		
-		vector<pair<Tetromino::TetrominoType, Tetromino::BlockColor>> bag;
+		vector<Tetromino::TetrominoType> bag;
+		vector<Tetromino::BlockColor> colors;
 		vector<string> possiblePermutations;
 
 		int spawnCount;

@@ -19,6 +19,18 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 	permutateBag();
 	random.seed();
 	randomizeBag();
+
+	/*
+		PUT borders on each block, flat gradient if possible
+	*/
+
+	colors.push_back(Tetromino::BlockColor::Blue);
+	colors.push_back(Tetromino::BlockColor::Cyan);
+	colors.push_back(Tetromino::BlockColor::Green);
+	colors.push_back(Tetromino::BlockColor::Orange);
+	colors.push_back(Tetromino::BlockColor::Purple);
+	colors.push_back(Tetromino::BlockColor::Red);
+	colors.push_back(Tetromino::BlockColor::Yellow);
 }
 
 TetrominoLayer::~TetrominoLayer()
@@ -37,8 +49,8 @@ Tetromino * TetrominoLayer::spawnTetromino()
 	currentTetromino
 		= Tetromino::createTetromino
 		(  
-			 bag[spawnCount].first
-		  ,  bag[spawnCount].second
+		    bag[spawnCount]
+	      , getRandomColor()
 		  , *tetrisPlayField
 		  , *mechanics
 		  , *assetManager
@@ -59,7 +71,7 @@ void TetrominoLayer::setDotPieces(int line, const vector<int> & pieceLine)
 		Tetromino * tetromino = Tetromino::createTetromino
 			(
 				Tetromino::TetrominoType::DOT,
-				bag[spawnCount].second,
+				getRandomColor(),
 				*tetrisPlayField,
 				*mechanics,
 				*assetManager
@@ -88,22 +100,8 @@ void TetrominoLayer::randomizeBag()
 	bag.clear();
 	spawnCount = 0;
 
-	Tetromino::BlockColor color[] =
-	{
-		Tetromino::BlockColor::Blue,
-		Tetromino::BlockColor::Cyan,
-		Tetromino::BlockColor::Green,
-		Tetromino::BlockColor::Orange,
-		Tetromino::BlockColor::Purple,
-		Tetromino::BlockColor::Red,
-		Tetromino::BlockColor::Yellow
-	};
-
 	int rrange = random.randomIntWithinRange(0, possiblePermutations.size());
-	int crange = random.randomIntWithinRange(0, 6);
-
 	string tets = possiblePermutations[rrange];
-	Tetromino::BlockColor rcolor = color[crange];
 
 	Tetromino::TetrominoType ttype;
 
@@ -124,6 +122,12 @@ void TetrominoLayer::randomizeBag()
 		else if (t == 'Z')
 			ttype = TetrominoType::Z;
 		
-		bag.push_back(pair<Tetromino::TetrominoType, Tetromino::BlockColor>(ttype,rcolor));
+		bag.push_back(ttype);
 	}
+}
+
+Tetromino::BlockColor TetrominoLayer::getRandomColor()
+{
+	int crange = random.randomIntWithinRange(0, 6);
+	return colors[crange];
 }

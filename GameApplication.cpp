@@ -36,7 +36,7 @@ int GameApplication::run()
 	gameState = STARTING;
 	
 	tpf.reset(new TetrisPlayField);
-	//tpf->setPosition(sf::Vector2f(180.0f, 180.0f));
+	tpf->setPosition(sf::Vector2f(180.0f, 180.0f));
 
 	assetManager.addAsset("Textures", new TextureAsset(&GameApplication::loadTextureFromFile));
 	textures = dynamic_cast<TextureAsset*>(assetManager.getAsset("Textures"));
@@ -65,6 +65,7 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 
 GameApplication::GameState GameApplication::gameLoop()
 {
+	bool pause = false;
 	DRS drs; // DTET Rotation System
 
 	//Set tetromino drop speed interval
@@ -104,16 +105,12 @@ GameApplication::GameState GameApplication::gameLoop()
 	while (window.isOpen())
 	{
 		float elapsed = clock.restart().asSeconds();
-		
-		if (tetromino->isLocked())
-		{
-			tpf->registerBlocks(tetromino);
-			tetromino = tetrominoLayer.spawnTetromino();
-			kicker.setTetromino(tetromino);
-		}
 
-		if (tpf->getClearedRowsSize() > 0)
-			tpf->shiftClearedRows();
+		if (tpf->getPeakLevel() == 0)
+		{
+			cout << "Game Over" << endl;
+			return GAMEOVER;
+		}
 
 		while (window.pollEvent(event))
 		{
@@ -122,17 +119,17 @@ GameApplication::GameState GameApplication::gameLoop()
 
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::Key::Left)
+				if (!pause && event.key.code == sf::Keyboard::Key::Left)
 				{
 					if (tetromino->checkMovement(-1))
 						tetromino->moveLeft();
 				}
-				else if (event.key.code == sf::Keyboard::Key::Right)
+				else if (!pause && event.key.code == sf::Keyboard::Key::Right)
 				{
 					if (tetromino->checkMovement(1))
 						tetromino->moveRight();
 				}
-				else if (event.key.code == sf::Keyboard::Key::Up)
+				else if (!pause && event.key.code == sf::Keyboard::Key::Up)
 				{
 					if (tetromino->checkRotation(1))
 						tetromino->rotateRight();
@@ -150,36 +147,35 @@ GameApplication::GameState GameApplication::gameLoop()
 						}
 					}
 				}
-				else if (event.key.code == sf::Keyboard::Key::Down)
+				else if (!pause && event.key.code == sf::Keyboard::Key::Down)
 				{
-					/*
-						Note:
-						Problem with soft drop plus automatic drop
-
-						every time down button is pressed and the press 
-						is occured before the dropInterval the press
-						triggers + 1 drop count then another + 1 for
-						soft drop after dropInterval making the drop count
-						+ 2. Consequently the drop misses count and loses
-						1 line when deployed.
-
-						use hard drop for the meantime.
-					*/
-
 					 tetromino->softDrop();
-					 //tetromino->hardDrop();
 				}
-				else if (event.key.code == sf::Keyboard::Key::Space)
+				else if (event.key.code == sf::Keyboard::Key::P)
 				{
-
+					pause = (pause)? false : true;
+				}
+				else if (!pause && event.key.code == sf::Keyboard::Key::Space)
+				{
+					//tetromino->hardDrop();
 				}
 			}
 		}
 
 		window.clear();
 
+		if (tetromino->isLocked())
+		{
+			tpf->registerBlocks(tetromino);
+			tetromino = tetrominoLayer.spawnTetromino();
+			kicker.setTetromino(tetromino);
+		}
+
+		if (tpf->getClearedRowsSize() > 0)
+			tpf->shiftClearedRows();
+
 		tpf->drawGrid(&window);
-		tetrominoLayer.refreshLayer(elapsed, &window, false);
+		tetrominoLayer.refreshLayer(elapsed, &window, pause);
 		
 		
 		window.display();
@@ -199,6 +195,7 @@ bool GameApplication::loadGameAssets()
 	assetList["red_block"	] = "asset/textures/red_block.png";
 	assetList["yellow_block"] = "asset/textures/yellow_block.png";
 	assetList["marked_block"] = "asset/textures/marked_block.png";
+	assetList["ghost_block"]  = "asset/textures/ghost_block.png";
 
 	for (pair<string, string> p : assetList)
 	{

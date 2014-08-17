@@ -140,7 +140,7 @@ void TetrisPlayField::drawGrid(sf::RenderWindow * window, bool show)
 		window->draw(horizontalGrid[y]);
 }
 
-void TetrisPlayField::showGridLines()
+void TetrisPlayField::showBooleanGrid()
 {
 	for (size_t y = 0; y < blockGrid.size(); ++y)
 	{
@@ -163,37 +163,29 @@ sf::Vector2i TetrisPlayField::convertToGridPosition(const sf::Vector2f & pixelpo
 	return gpos;
 }
 
-int TetrisPlayField::getPeak() const
+int TetrisPlayField::getPeakLevel() const
 {
 	return peakLevel;
 }
 
 void TetrisPlayField::shiftClearedRows()
 {
-	cout << "Cleared rows... : " << clearedRows.size() << endl;
+	//cout << "Cleared rows... : " << clearedRows.size() << endl;
 
 	for (int row : clearedRows)
 	{
-		//for (size_t i = 0; i < fieldSize.x; ++i)
-		//{
-		//	blockGrid[row][i]->markCleared();
-		//}
+		for (size_t i = 0; i < fieldSize.x; ++i)
+		{
+			blockGrid[row][i]->markCleared();
+		}
 
-		//for (int y = row; y >= peakLevel; --y)
-		//{
-		//	if ((y - 1) <= 0)
-		//	{
-		//		cout << "clearing (row-1) : " << y << endl;
-		//	}
-		//}
-
-		cout << "Cleared : " << row << "-- peak level: " << peakLevel << endl;
+		//cout << "Cleared : " << row << "-- peak level: " << peakLevel << endl;
 
 		for (int y = row; y >= peakLevel; --y)
 		{
 			if ((y - 1) >= 0)
 			{
-				cout << "clearing (row-1) : " << y << endl;
+				//cout << "clearing (row-1) : " << y << endl;
 				for (size_t i = 0; i < fieldSize.x; ++i)
 				{
 					if (blockGrid[y - 1][i] != nullptr)
@@ -203,8 +195,8 @@ void TetrisPlayField::shiftClearedRows()
 		}
 	}
 
-	//clearedRows.clear();
 	resetRows();
+	showBooleanGrid();
 }
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
@@ -219,6 +211,7 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 		}
 	}
 
+	showBooleanGrid();
 	searchClearedRows();
 }
 
@@ -244,7 +237,7 @@ void TetrisPlayField::searchClearedRows()
 		}
 	}
 
-	std::sort(clearedRows.begin(), clearedRows.end(), [](int a, int b){ return a > b;});
+	std::sort(clearedRows.begin(), clearedRows.end(), [](int a, int b){ return a < b;});
 }
 
 void TetrisPlayField::removeRow(int row)

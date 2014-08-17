@@ -46,7 +46,10 @@ namespace esc
 		int getSize() const;
 
 	protected:
-		
+
+		virtual void preRoutine();
+		virtual void postRoutine();
+
 		MANAGEDTYPE * recent;
 		TypeLayer layer;
 
@@ -86,6 +89,8 @@ namespace esc
 	template<class MANAGEDTYPE>
 	void ObjectLayer<MANAGEDTYPE>::refreshLayer(float e, sf::RenderWindow * window, bool pause)
 	{
+		preRoutine();
+
 		//cout << "Refreshing layer..." << endl;
 		for (size_t i = 0; i < layer.size(); ++i)
 		{
@@ -94,6 +99,8 @@ namespace esc
 
 			layer[i]->draw(window);
 		}
+
+		postRoutine();
 	}
 
 	template<class MANAGEDTYPE>
@@ -106,6 +113,18 @@ namespace esc
 	int ObjectLayer<MANAGEDTYPE>::getSize() const
 	{
 		return layer.size();
+	}
+
+	template<class MANAGEDTYPE>
+	void ObjectLayer<MANAGEDTYPE>::preRoutine()
+	{
+		//
+	}
+
+	template<class MANAGEDTYPE>
+	void ObjectLayer<MANAGEDTYPE>::postRoutine() 
+	{
+		//
 	}
 }
 

@@ -145,10 +145,10 @@ void DRS::setConfiguration(int type)
 	}
 	else if (type == Tetromino::TetrominoType::O)
 	{
-		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 0));
-		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(2, 0));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 1));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(2, 1));
+		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 2));
+		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(2, 2));
 
 		RotationSystem::bConfig._90Config  = RotationSystem::bConfig._0Config;
 		RotationSystem::bConfig._180Config = RotationSystem::bConfig._0Config;

@@ -47,9 +47,9 @@ class TetrisPlayField
 		void drawGrid(sf::RenderWindow *, bool = true);
 		
 		// to be deleted
-		void showGridLines();
+		void showBooleanGrid();
 		sf::Vector2i convertToGridPosition(const sf::Vector2f &);
-		int getPeak() const;
+		int getPeakLevel() const;
 
 		void shiftClearedRows();
 		void registerBlocks(Tetromino *);
