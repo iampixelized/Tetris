@@ -42,6 +42,7 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		vector<string> possiblePermutations;
 
 		int spawnCount;
+		int pcount;
 
 		esc::RandomGenerator random;
 };

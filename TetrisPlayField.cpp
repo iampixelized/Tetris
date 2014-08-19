@@ -170,8 +170,6 @@ int TetrisPlayField::getPeakLevel() const
 
 void TetrisPlayField::shiftClearedRows()
 {
-	//cout << "Cleared rows... : " << clearedRows.size() << endl;
-
 	for (int row : clearedRows)
 	{
 		for (size_t i = 0; i < fieldSize.x; ++i)
@@ -179,13 +177,10 @@ void TetrisPlayField::shiftClearedRows()
 			blockGrid[row][i]->markCleared();
 		}
 
-		//cout << "Cleared : " << row << "-- peak level: " << peakLevel << endl;
-
 		for (int y = row; y >= peakLevel; --y)
 		{
 			if ((y - 1) >= 0)
 			{
-				//cout << "clearing (row-1) : " << y << endl;
 				for (size_t i = 0; i < fieldSize.x; ++i)
 				{
 					if (blockGrid[y - 1][i] != nullptr)
@@ -247,6 +242,5 @@ void TetrisPlayField::removeRow(int row)
 	if (iter == blockGrid.end())
 		return;
 
-	blockGrid.erase(iter);
-	blockGrid.insert(blockGrid.begin(), vector<Block*>(10, nullptr));
+	blockGrid.insert(iter, vector<Block*>(10, nullptr));
 }
