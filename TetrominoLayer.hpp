@@ -26,7 +26,11 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		Tetromino * spawnTetromino();
 		void setDotPieces(int, const vector<int> &);
 		void permutateBag();
+	
+	protected:
 
+		virtual void preRoutine();
+		
 	private:
 		
 		void randomizeBag();

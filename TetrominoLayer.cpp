@@ -10,6 +10,7 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 	, assetManager(&am)
 	, mechanics(&m)
 	, spawnCount(0)
+	, pcount(0)
 {
 	cout << "Tetris playfield was established:" << endl;
 	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y << endl;
@@ -19,10 +20,6 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 	permutateBag();
 	random.seed();
 	randomizeBag();
-
-	/*
-		PUT borders on each block, flat gradient if possible
-	*/
 
 	colors.push_back(Tetromino::BlockColor::Blue);
 	colors.push_back(Tetromino::BlockColor::Cyan);
@@ -35,13 +32,19 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 
 TetrominoLayer::~TetrominoLayer()
 {
-
 }
 
 Tetromino * TetrominoLayer::spawnTetromino()
 {
+	if (pcount >= possiblePermutations.size())
+	{
+		permutateBag();
+		pcount = 0;
+	}
+
 	if (spawnCount > 6)
 	{
+		pcount++;
 		spawnCount = 0;
 		randomizeBag();
 	}
@@ -93,6 +96,17 @@ void TetrominoLayer::permutateBag()
 		possiblePermutations.push_back(tets);
 	}
 	while (next_permutation(tets.begin(), tets.end()));
+}
+
+void TetrominoLayer::preRoutine()
+{
+	for (auto iter = TLAYER::layer.begin(); iter != TLAYER::layer.end();)
+	{	
+		if (iter->second->getBlockCount() == 0)
+			iter = TLAYER::layer.erase(iter);
+		else
+			++iter;
+	}
 }
 
 void TetrominoLayer::randomizeBag()
