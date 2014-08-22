@@ -39,7 +39,7 @@ class Tetromino
 		typedef map<int, BlockPtr> BlockPalette;
 
 		enum TetrominoType{ S = 1, Z, J, L, I, O, T, DOT };
-		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange };
+		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange, Ghost };
 		
 		virtual ~Tetromino();
 
@@ -77,8 +77,6 @@ class Tetromino
 		bool checkMovement(int);
 		int getBlockCount() const;
 
-		//void registerToField(TetrisPlayField &);
-
 	protected:
 
 		Tetromino
@@ -94,7 +92,7 @@ class Tetromino
 		void updatePalette(const vector<sf::Vector2i> &);
 
 	private:
-
+		
 		static int id_generator;
 		int id;
 

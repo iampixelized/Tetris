@@ -49,13 +49,14 @@ Tetromino::Tetromino
 
 	switch (color)
 	{
-		case BlockColor::Blue	:	spriteName = "blue_block";		break;
-		case BlockColor::Cyan	:	spriteName = "cyan_block";		break;
-		case BlockColor::Green	:	spriteName = "green_block";		break;
-		case BlockColor::Orange	:	spriteName = "orange_block";	break;
-		case BlockColor::Purple	:	spriteName = "purple_block";	break;
-		case BlockColor::Red	:	spriteName = "red_block";		break;
-		case BlockColor::Yellow	:	spriteName = "yellow_block";	break;
+		case BlockColor::Blue	: spriteName = "blue_block";	break;
+		case BlockColor::Cyan	: spriteName = "cyan_block";	break;
+		case BlockColor::Green	: spriteName = "green_block";	break;
+		case BlockColor::Orange	: spriteName = "orange_block";	break;
+		case BlockColor::Purple	: spriteName = "purple_block";	break;
+		case BlockColor::Red	: spriteName = "red_block";		break;
+		case BlockColor::Yellow	: spriteName = "yellow_block";	break;
+		case BlockColor::Ghost	: spriteName = "ghost_block";   break;
 	}
 
 	id = id_generator++;
@@ -82,7 +83,7 @@ Tetromino::Tetromino
 
 Tetromino::~Tetromino()
 { 
-
+	cout << "Tetromino : " << id << " destroyed..." << endl;
 }
 
 RotationSystem * Tetromino::getRotationSystem()
@@ -269,20 +270,16 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 	}
 }
 
-// ERRORS ON THESE LINES
-// DEBUG we are almost done!!!
-
 void Tetromino::update(float e)
 {
-	//for (size_t i = 0; i < palette.size(); ++i)
-	//{
-	//	if (palette[i]->isCleared())
-	//	{
-	//		auto bfind = palette.find(i);
-	//		if (bfind != palette.end())
-	//			palette.erase(bfind);
-	//	}
-	//}
+	for (auto iter = palette.begin(); iter != palette.end(); ++iter)
+	{
+		if (iter->second->isCleared())
+		{
+			iter = palette.erase(iter);
+			blockCount--;
+		}
+	}
 
 	if (type == TetrominoType::DOT)
 		return;
@@ -452,8 +449,3 @@ int Tetromino::getBlockCount() const
 {
 	return blockCount;
 }
-
-//void Tetromino::registerToField(TetrisPlayField & tpf)
-//{
-//	
-//}
