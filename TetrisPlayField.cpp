@@ -6,7 +6,7 @@ using std::endl;
 using std::all_of;
 using std::count;
 using std::find;
-using std::max_element;
+using std::min_element;
 
 #include "TetrisPlayField.hpp"
 #include "Tetromino.hpp"
@@ -161,7 +161,7 @@ sf::Vector2i TetrisPlayField::convertToGridPosition(const sf::Vector2f & pixelpo
 
 int TetrisPlayField::getPeakLevel() const
 {
-	return *max_element(peakLevels.begin(), peakLevels.end());
+	return *min_element(peakLevels.begin(), peakLevels.end());
 }
 
 int TetrisPlayField::getPeakLevelOnRow(int row)
@@ -183,7 +183,7 @@ void TetrisPlayField::shiftClearedRows()
 
 		for (int y = row; y >= getPeakLevel(); --y)
 		{
-			if ((y - 1) >= 0)
+			if ((y - 1) >= 0) 
 			{
 				for (int i = 0; i < fieldSize.x; ++i)
 				{
@@ -195,22 +195,24 @@ void TetrisPlayField::shiftClearedRows()
 	}
 
 	resetRows();
-	showBooleanGrid();
+	//showBooleanGrid();
 }
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
 {
+	cout << "Peak level is : " << getPeakLevel() << endl;
+
 	for (int i = 0; i < t->getBlockCount(); ++i)
 	{
 		if (Block * block = t->getBlock(i))
 		{
 			sf::Vector2i gpos = block->getGridPosition();
 			blockGrid[gpos.y][gpos.x] = block;
-			peakLevels[i] = (gpos.y < peakLevels[i])? gpos.y : peakLevels[i];
+			peakLevels[gpos.x] = (gpos.y < peakLevels[gpos.x]) ? gpos.y : peakLevels[gpos.x];
 		}
 	}
 
-	showBooleanGrid();
+	//showBooleanGrid();
 	searchClearedRows();
 }
 
