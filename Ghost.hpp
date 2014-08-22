@@ -1,28 +1,35 @@
 #ifndef GHOST_HPP
 #define GHOST_HPP
 
+#include<memory>
+using std::unique_ptr;
+
 #include<SFML/Graphics.hpp>
 
-#include "Object.hpp"
-#include "TetrisPlayField.hpp"
 #include "AssetManager.hpp"
 
+class TetrisPlayField;
 class Tetromino;
+struct Mechanics;
 
-class Ghost : public esc::Object
+class Ghost 
 {
 	public:
-		
-		Ghost(TetrisPlayField &, esc::AssetManager &);
+
+		Ghost(TetrisPlayField & , Mechanics & , esc::AssetManager &);
 		virtual ~Ghost();
 
 		void setTetromino(Tetromino &);
+		void calculate();
+		void showGhostTetromino(sf::RenderWindow * , bool = true );
 
 	private:
 		
-		void computeLocation();
-
 		Tetromino * tetromino;
+		unique_ptr<Tetromino> mimic;
+		TetrisPlayField * playField;
+		Mechanics * mechanics;	
+		esc::AssetManager * assetManager;	
 };
 
 #endif
