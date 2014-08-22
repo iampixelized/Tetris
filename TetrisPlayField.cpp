@@ -6,6 +6,7 @@ using std::endl;
 using std::all_of;
 using std::count;
 using std::find;
+using std::max_element;
 
 #include "TetrisPlayField.hpp"
 #include "Tetromino.hpp"
@@ -13,11 +14,11 @@ using std::find;
 
 TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	:
-	fieldSize(sf::Vector2f(10.f, 20.f))
+	  fieldSize(sf::Vector2i(10, 20))
 	, blockGrid(fieldSize.y, vector<Block*>(static_cast<int>(fieldSize.x), nullptr))
 	, position(pos)
 	, offset(o)
-	, peakLevel(20)
+	, peakLevels(20, 20)
 {
 
 	for (size_t i = 0; i <= fieldSize.y; ++i)
@@ -38,7 +39,7 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 		verticalGrid.push_back(vline);
 	}
 
-	cout << "TPF size : " << blockGrid[0].size() << endl;
+	cout << "TPF size : " << peakLevels.size() << endl;
 }
 
 TetrisPlayField::~TetrisPlayField()
@@ -81,12 +82,7 @@ bool TetrisPlayField::isWithinBounds(const sf::Vector2f &pos)
 	return isWithinBounds(gridpos);
 }
 
-void TetrisPlayField::setFieldSize(const sf::Vector2f &fs)
-{
-	fieldSize = fs;
-}
-
-const sf::Vector2f & TetrisPlayField::getFieldSize() const
+const sf::Vector2i & TetrisPlayField::getFieldSize() const
 {
 	return fieldSize;
 }
@@ -165,7 +161,15 @@ sf::Vector2i TetrisPlayField::convertToGridPosition(const sf::Vector2f & pixelpo
 
 int TetrisPlayField::getPeakLevel() const
 {
-	return peakLevel;
+	return *max_element(peakLevels.begin(), peakLevels.end());
+}
+
+int TetrisPlayField::getPeakLevelOnRow(int row)
+{
+	if (row >= 19 || row <= 0)
+		return peakLevels[row];
+
+	return -1;
 }
 
 void TetrisPlayField::shiftClearedRows()
@@ -177,7 +181,7 @@ void TetrisPlayField::shiftClearedRows()
 			blockGrid[row][i]->markCleared();
 		}
 
-		for (int y = row; y >= peakLevel; --y)
+		for (int y = row; y >= getPeakLevel(); --y)
 		{
 			if ((y - 1) >= 0)
 			{
@@ -202,7 +206,7 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 		{
 			sf::Vector2i gpos = block->getGridPosition();
 			blockGrid[gpos.y][gpos.x] = block;
-			peakLevel = (gpos.y < peakLevel)? gpos.y : peakLevel;
+			peakLevels[i] = (gpos.y < peakLevels[i])? gpos.y : peakLevels[i];
 		}
 	}
 
@@ -241,6 +245,7 @@ void TetrisPlayField::removeRow(int row)
 
 	if (iter == blockGrid.end())
 		return;
-
-	blockGrid.insert(iter, vector<Block*>(10, nullptr));
+	
+	blockGrid.erase(iter);
+	blockGrid.insert(blockGrid.begin(), vector<Block*>(10, nullptr));
 }

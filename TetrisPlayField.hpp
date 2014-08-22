@@ -35,8 +35,7 @@ class TetrisPlayField
 		bool isWithinBounds(const sf::Vector2f &);
 		bool isWithinBounds(const sf::Vector2i &);
 		
-		void setFieldSize(const sf::Vector2f &);
-		const sf::Vector2f & getFieldSize() const;
+		const sf::Vector2i & getFieldSize() const;
 
 		void setGridOffset(float);
 		float getGridOffset();
@@ -50,6 +49,7 @@ class TetrisPlayField
 		void showBooleanGrid();
 		sf::Vector2i convertToGridPosition(const sf::Vector2f &);
 		int getPeakLevel() const;
+		int getPeakLevelOnRow(int);
 
 		void shiftClearedRows();
 		void registerBlocks(Tetromino *);
@@ -61,7 +61,7 @@ class TetrisPlayField
 		void searchClearedRows();
 		void removeRow(int);
 
-		sf::Vector2f fieldSize;
+		sf::Vector2i fieldSize;
 		BlockGrid blockGrid;
 
 		vector<sf::RectangleShape> horizontalGrid;
@@ -69,8 +69,8 @@ class TetrisPlayField
 
 		sf::Vector2f position;
 		float offset;
-		int peakLevel;
 
+		vector<int> peakLevels;
 		vector<int> clearedRows;
 };
 
