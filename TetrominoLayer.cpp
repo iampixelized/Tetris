@@ -36,7 +36,7 @@ TetrominoLayer::~TetrominoLayer()
 
 Tetromino * TetrominoLayer::spawnTetromino()
 {
-	if (pcount >= possiblePermutations.size())
+	if ( (unsigned) pcount >= possiblePermutations.size())
 	{
 		permutateBag();
 		pcount = 0;

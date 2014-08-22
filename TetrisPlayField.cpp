@@ -21,7 +21,7 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	, peakLevels(20, 20)
 {
 
-	for (size_t i = 0; i <= fieldSize.y; ++i)
+	for (int i = 0; i <= fieldSize.y; ++i)
 	{
 		sf::RectangleShape hline;
 		hline.setSize(sf::Vector2f(fieldSize.x * offset, 1.0f));
@@ -30,7 +30,7 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 		horizontalGrid.push_back(hline);
 	}
 
-	for (size_t i = 0; i <= fieldSize.x; ++i)
+	for (int i = 0; i <= fieldSize.x; ++i)
 	{
 		sf::RectangleShape vline;
 		vline.setSize(sf::Vector2f(1.0f, fieldSize.y * offset));
@@ -91,13 +91,13 @@ void TetrisPlayField::setGridOffset(float o)
 {
 	offset = (o < 6) ? o : 6;
 
-	for (size_t i = 0; i <= fieldSize.x; ++i)
+	for (int i = 0; i <= fieldSize.x; ++i)
 	{
 		verticalGrid[i].setSize(sf::Vector2f(1.0f, fieldSize.y * offset));
 		verticalGrid[i].setPosition(sf::Vector2f(i * offset, position.x));
 	}
 
-	for (size_t i = 0; i <= fieldSize.y; ++i)
+	for (int i = 0; i <= fieldSize.y; ++i)
 	{
 		horizontalGrid[i].setSize(sf::Vector2f(fieldSize.x * offset, 1.0f));
 		horizontalGrid[i].setPosition(sf::Vector2f(position.y, i * offset));
@@ -113,10 +113,10 @@ void TetrisPlayField::setPosition(const sf::Vector2f &pos)
 {
 	position = pos;
 
-	for (size_t i = 0; i <= fieldSize.x; ++i)
+	for (int i = 0; i <= fieldSize.x; ++i)
 		verticalGrid[i].setPosition(sf::Vector2f((i * offset) + position.x, position.y));
 
-	for (size_t i = 0; i <= fieldSize.y; ++i)
+	for (int i = 0; i <= fieldSize.y; ++i)
 		horizontalGrid[i].setPosition(sf::Vector2f(position.x, (i * offset) + position.y));
 }
 
@@ -129,10 +129,10 @@ void TetrisPlayField::drawGrid(sf::RenderWindow * window, bool show)
 {
 	if (!show) return;
 
-	for (size_t x = 0; x <= fieldSize.x; ++x)
+	for (int x = 0; x <= fieldSize.x; ++x)
 		window->draw(verticalGrid[x]);
 
-	for (size_t y = 0; y <= fieldSize.y; ++y)
+	for (int y = 0; y <= fieldSize.y; ++y)
 		window->draw(horizontalGrid[y]);
 }
 
@@ -153,8 +153,8 @@ void TetrisPlayField::showBooleanGrid()
 sf::Vector2i TetrisPlayField::convertToGridPosition(const sf::Vector2f & pixelpos)
 {
 	sf::Vector2i gpos = sf::Vector2i(pixelpos - position);
-	gpos.x /= offset;
-	gpos.y /= offset;
+	gpos.x = static_cast<int>(gpos.x / offset);
+	gpos.y = static_cast<int>(gpos.y / offset);
 
 	return gpos;
 }
@@ -176,7 +176,7 @@ void TetrisPlayField::shiftClearedRows()
 {
 	for (int row : clearedRows)
 	{
-		for (size_t i = 0; i < fieldSize.x; ++i)
+		for (int i = 0; i < fieldSize.x; ++i)
 		{
 			blockGrid[row][i]->markCleared();
 		}
@@ -185,7 +185,7 @@ void TetrisPlayField::shiftClearedRows()
 		{
 			if ((y - 1) >= 0)
 			{
-				for (size_t i = 0; i < fieldSize.x; ++i)
+				for (int i = 0; i < fieldSize.x; ++i)
 				{
 					if (blockGrid[y - 1][i] != nullptr)
 						blockGrid[y - 1][i]->moveTo(sf::Vector2f(0,offset));
@@ -200,7 +200,7 @@ void TetrisPlayField::shiftClearedRows()
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
 {
-	for (size_t i = 0; i < t->getBlockCount(); ++i)
+	for (int i = 0; i < t->getBlockCount(); ++i)
 	{
 		if (Block * block = t->getBlock(i))
 		{
@@ -227,7 +227,7 @@ int TetrisPlayField::getClearedRowsSize() const
 
 void TetrisPlayField::searchClearedRows()
 {
-	for (size_t y = 0; y < fieldSize.y; ++y)
+	for (int y = 0; y < fieldSize.y; ++y)
 	{
 		if (all_of(blockGrid[y].begin(), blockGrid[y].end(),
 			[](Block * b){return (b != nullptr) ? true : false; }))

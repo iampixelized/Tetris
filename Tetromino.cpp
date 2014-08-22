@@ -67,7 +67,7 @@ Tetromino::Tetromino
 	blockSize = playField->getGridOffset();
 	positionOffset = playField->getPosition();
 
-	float sp = rotationSystem->getSpawningPosition(type); 
+	int sp = rotationSystem->getSpawningPosition(type); 
 	int bnum = 0;
 	for (sf::Vector2i p : blockPositions)
 	{
@@ -394,8 +394,8 @@ bool Tetromino::checkRotation(int rd)
 		pos.y = ((predictedRotatedPositions[i].y + dropCount) * blockSize) + positionOffset.y;
 
 		sf::Vector2i gridpos;
-		gridpos.x = (pos.x - positionOffset.x) / blockSize;
-		gridpos.y = (pos.y - positionOffset.y) / blockSize;
+		gridpos.x = static_cast<int>((pos.x - positionOffset.x) / blockSize);
+		gridpos.y = static_cast<int>((pos.y - positionOffset.y) / blockSize);
 		
 		if (!playField->isWithinBounds(gridpos))
 			return false;

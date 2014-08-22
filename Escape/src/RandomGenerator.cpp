@@ -4,7 +4,7 @@ namespace esc
 {
     void RandomGenerator::seed()
     {
-        rng.seed( time( 0 ) );
+        rng.seed( (unsigned) time( 0 ) );
     }
 
     int RandomGenerator::randomIntWithinRange( int minValue , int maxValue )
