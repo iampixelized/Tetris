@@ -19,55 +19,55 @@ using std::boolalpha;
 int Tetromino::id_generator = 0;
 
 Tetromino::Tetromino
-	(
-		TetrominoType ttype			, 
-		BlockColor bc				, 
-		TetrisPlayField &tpf		, 
-		Mechanics &tmech			,
-		esc::AssetManager & am
-	)
-	: 
-	  blockRotationCount(0)
-	, dropElapsed(0.0f)
-	, lockElapsed(0.0f)
-	, lockTime(tmech.lockTime)
-	, dropInterval(tmech.dropInterval)
-	, rotationSystem(tmech.getRotationSystem())
-	, type(ttype)
-	, color(bc)
-	, _isLocked(false)
-	, _isDeployed(false)
-	, face(0)
-	, previousFace(face)
-	, playField(&tpf)
-	, moveCount(3)
-	, dropCount(0)
-	, blockCount(0)
+(
+TetrominoType ttype,
+BlockColor bc,
+TetrisPlayField &tpf,
+Mechanics &tmech,
+esc::AssetManager & am
+)
+:
+blockRotationCount(0)
+, dropElapsed(0.0f)
+, lockElapsed(0.0f)
+, lockTime(tmech.lockTime)
+, dropInterval(tmech.dropInterval)
+, rotationSystem(tmech.getRotationSystem())
+, type(ttype)
+, color(bc)
+, _isLocked(false)
+, _isDeployed(false)
+, face(0)
+, previousFace(face)
+, playField(&tpf)
+, moveCount(3)
+, dropCount(0)
+, blockCount(0)
 {
 	rotationSystem->setConfiguration(ttype);
 	string spriteName;
 
 	switch (color)
 	{
-		case BlockColor::Blue	: spriteName = "blue_block";	break;
-		case BlockColor::Cyan	: spriteName = "cyan_block";	break;
-		case BlockColor::Green	: spriteName = "green_block";	break;
-		case BlockColor::Orange	: spriteName = "orange_block";	break;
-		case BlockColor::Purple	: spriteName = "purple_block";	break;
-		case BlockColor::Red	: spriteName = "red_block";		break;
-		case BlockColor::Yellow	: spriteName = "yellow_block";	break;
-		case BlockColor::Ghost	: spriteName = "ghost_block";   break;
+		case BlockColor::Blue: spriteName = "blue_block";	break;
+		case BlockColor::Cyan: spriteName = "cyan_block";	break;
+		case BlockColor::Green: spriteName = "green_block";	break;
+		case BlockColor::Orange: spriteName = "orange_block";	break;
+		case BlockColor::Purple: spriteName = "purple_block";	break;
+		case BlockColor::Red: spriteName = "red_block";		break;
+		case BlockColor::Yellow: spriteName = "yellow_block";	break;
+		case BlockColor::Ghost: spriteName = "ghost_block";   break;
 	}
 
 	id = id_generator++;
-	moveCount = (type == TetrominoType::O)? 4 : 3;
-	
+	moveCount = (type == TetrominoType::O) ? 4 : 3;
+
 	blockPositions = rotationSystem->getBlockConfiguration(0);
 	playField = &tpf;
 	blockSize = playField->getGridOffset();
 	positionOffset = playField->getPosition();
 
-	int sp = rotationSystem->getSpawningPosition(type); 
+	float sp = rotationSystem->getSpawningPosition(type);
 	int bnum = 0;
 	for (sf::Vector2i p : blockPositions)
 	{
@@ -82,7 +82,7 @@ Tetromino::Tetromino
 }
 
 Tetromino::~Tetromino()
-{ 
+{
 	cout << "Tetromino : " << id << " destroyed..." << endl;
 }
 
@@ -94,7 +94,7 @@ RotationSystem * Tetromino::getRotationSystem()
 void Tetromino::rotateLeft()
 {
 	if (_isLocked) return;
-	
+
 	blockRotationCount--;
 
 	if (blockRotationCount < 0 || blockRotationCount == 3)
@@ -164,10 +164,10 @@ void Tetromino::setRotation(int f)
 
 	switch (f)
 	{
-		case 0   :
-		case 360 :
-			      blockPositions = rotationSystem->getBlockConfiguration(0); break;
-		case 90 : blockPositions = rotationSystem->getBlockConfiguration(90); break;
+		case 0:
+		case 360:
+			blockPositions = rotationSystem->getBlockConfiguration(0); break;
+		case 90: blockPositions = rotationSystem->getBlockConfiguration(90); break;
 		case 180: blockPositions = rotationSystem->getBlockConfiguration(180); break;
 		case 270: blockPositions = rotationSystem->getBlockConfiguration(270); break;
 	}
@@ -204,7 +204,7 @@ void Tetromino::setGridPosition(const sf::Vector2i &pos)
 
 sf::Vector2i Tetromino::getGridPosition()
 {
-	return sf::Vector2i(moveCount , dropCount);
+	return sf::Vector2i(moveCount, dropCount);
 }
 
 void Tetromino::moveRight()
@@ -212,7 +212,7 @@ void Tetromino::moveRight()
 	if (_isLocked) return;
 
 	moveCount++;
-	
+
 	for (size_t i = 0; i < palette.size(); ++i)
 		palette[i]->moveTo(sf::Vector2f(blockSize, 0));
 
@@ -221,7 +221,7 @@ void Tetromino::moveRight()
 }
 
 void Tetromino::moveLeft()
-{	
+{
 	if (_isLocked) return;
 
 	moveCount--;
@@ -244,13 +244,13 @@ const vector<sf::Vector2i> & Tetromino::getCurrentConfiguration() const
 }
 
 Tetromino * Tetromino::createTetromino
-	(
-		Tetromino::TetrominoType ttype, 
-		Tetromino::BlockColor bc, 
-		TetrisPlayField & tpf, 
-		Mechanics & m,
-		esc::AssetManager & am
-	)
+(
+Tetromino::TetrominoType ttype,
+Tetromino::BlockColor bc,
+TetrisPlayField & tpf,
+Mechanics & m,
+esc::AssetManager & am
+)
 {
 	return new Tetromino(ttype, bc, tpf, m, am);
 }
@@ -262,7 +262,7 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 	for (size_t i = 0; i < pos.size(); ++i)
 	{
 		sf::Vector2f actualPos;
-		
+
 		actualPos.x = (pos[i].x * blockSize) + positionOffset.x + (moveCount * blockSize);
 		actualPos.y = (pos[i].y * blockSize) + positionOffset.y + (dropCount * blockSize);
 
@@ -272,18 +272,19 @@ void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
 
 void Tetromino::update(float e)
 {
-	for (auto iter = palette.begin(); iter != palette.end(); ++iter)
+	for (auto iter = palette.begin(); iter != palette.end(); )
 	{
 		if (iter->second->isCleared())
 		{
 			iter = palette.erase(iter);
 			blockCount--;
 		}
+		else ++iter;
 	}
 
 	if (type == TetrominoType::DOT)
 		return;
-	
+
 	if (_isDeployed)
 	{
 		if (_isLocked) return;
@@ -315,10 +316,8 @@ void Tetromino::update(float e)
 
 void Tetromino::draw(sf::RenderWindow * window)
 {
-	for (size_t i = 0; i < palette.size(); ++i)
-	{
-		palette[i]->draw(window);
-	}
+	for (auto iter = palette.begin(); iter != palette.end(); ++iter)
+		iter->second->draw(window);
 }
 
 void Tetromino::hardDrop()
@@ -354,9 +353,9 @@ void Tetromino::move(const sf::Vector2i &pos)
 	}
 }
 
-int Tetromino::getMoveCount() const{return moveCount;}
+int Tetromino::getMoveCount() const{ return moveCount; }
 
-int Tetromino::getDropCount() const{return dropCount;}
+int Tetromino::getDropCount() const{ return dropCount; }
 
 bool Tetromino::isLocked() const
 {
@@ -382,10 +381,10 @@ Block * Tetromino::getBlock(int pid)
 }
 
 bool Tetromino::checkRotation(int rd)
-{	
-	int direction = (rd<=0)? -1 : 1;
+{
+	int direction = (rd <= 0) ? -1 : 1;
 	vector<sf::Vector2i> predictedRotatedPositions;
-	predictedRotatedPositions = rotationSystem->getBlockConfiguration(face + (90*direction));
+	predictedRotatedPositions = rotationSystem->getBlockConfiguration(face + (90 * direction));
 
 	for (size_t i = 0; i < predictedRotatedPositions.size(); ++i)
 	{
@@ -394,9 +393,9 @@ bool Tetromino::checkRotation(int rd)
 		pos.y = ((predictedRotatedPositions[i].y + dropCount) * blockSize) + positionOffset.y;
 
 		sf::Vector2i gridpos;
-		gridpos.x = static_cast<int>((pos.x - positionOffset.x) / blockSize);
-		gridpos.y = static_cast<int>((pos.y - positionOffset.y) / blockSize);
-		
+		gridpos.x = (pos.x - positionOffset.x) / blockSize;
+		gridpos.y = (pos.y - positionOffset.y) / blockSize;
+
 		if (!playField->isWithinBounds(gridpos))
 			return false;
 
@@ -405,21 +404,21 @@ bool Tetromino::checkRotation(int rd)
 	}
 
 	return true;
-} 
+}
 
 bool Tetromino::checkMovement(int direction)
-{	
+{
 	if (direction <= 0)
 	{
 		for (size_t i = 0; i < palette.size(); ++i)
 		{
 			sf::Vector2f pos = palette[i]->getPosition();
-			
+
 			if (direction < 0)
 				pos.x -= blockSize;
 			else if (direction == 0)
 				pos.y += blockSize;
-		
+
 			if (!playField->isWithinBounds(pos))
 				return false;
 
@@ -431,7 +430,7 @@ bool Tetromino::checkMovement(int direction)
 	{
 		for (size_t i = palette.size(); i > 0; --i)
 		{
-			sf::Vector2f pos = palette[i-1]->getPosition();
+			sf::Vector2f pos = palette[i - 1]->getPosition();
 			pos.x += blockSize;
 
 			if (!playField->isWithinBounds(pos))
