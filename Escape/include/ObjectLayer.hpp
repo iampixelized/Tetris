@@ -92,12 +92,12 @@ namespace esc
 		preRoutine();
 
 		//cout << "Refreshing layer..." << endl;
-		for (size_t i = 0; i < layer.size(); ++i)
+		for (auto iter = layer.begin(); iter != layer.end(); ++iter)
 		{
 			if (!pause) 
-				layer[i]->update(e);
+				iter->second->update(e);
 
-			layer[i]->draw(window);
+			iter->second->draw(window);
 		}
 
 		postRoutine();
