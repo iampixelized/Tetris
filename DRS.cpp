@@ -11,12 +11,15 @@ DRS::DRS() : RotationSystem("DTET Rotation System (DRS)")
 	checkTable["left"].insert(make_pair(3, sf::Vector2i( 0, 1)));
 	checkTable["left"].insert(make_pair(4, sf::Vector2i(-1, 1)));
 	checkTable["left"].insert(make_pair(5, sf::Vector2i( 1, 1)));
+	checkTable["left"].insert(make_pair(6, sf::Vector2i(-2, 0))); // for I Tetromino
 
 	checkTable["right"].insert(make_pair(1, sf::Vector2i( 1, 0)));
 	checkTable["right"].insert(make_pair(2, sf::Vector2i(-1, 0)));
 	checkTable["right"].insert(make_pair(3, sf::Vector2i( 0, 1)));
 	checkTable["right"].insert(make_pair(4, sf::Vector2i( 1, 1)));
 	checkTable["right"].insert(make_pair(5, sf::Vector2i(-1, 1)));
+	checkTable["right"].insert(make_pair(6, sf::Vector2i( 2, 0))); // for I Tetromino
+
 }
 
 DRS::~DRS()
@@ -188,12 +191,12 @@ void DRS::setConfiguration(int type)
 int DRS::getSpawningPosition(int type)
 {
 	//S = 1, Z, J, L, I, O, T, DOT
-	if (   type == Tetromino::TetrominoType::S  
-		|| type == Tetromino::TetrominoType::Z
-		|| type == Tetromino::TetrominoType::J
-		|| type == Tetromino::TetrominoType::L
-		|| type == Tetromino::TetrominoType::O
-		|| type == Tetromino::TetrominoType::T
+	if (	   type == Tetromino::TetrominoType::S  
+			|| type == Tetromino::TetrominoType::Z
+			|| type == Tetromino::TetrominoType::J
+			|| type == Tetromino::TetrominoType::L
+			|| type == Tetromino::TetrominoType::O
+			|| type == Tetromino::TetrominoType::T
 		)
 		
 		return 1;
