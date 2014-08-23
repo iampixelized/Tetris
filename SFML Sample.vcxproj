@@ -16,7 +16,6 @@
     <ClCompile Include="Escape\src\Object.cpp" />
     <ClCompile Include="Escape\src\RandomGenerator.cpp" />
     <ClCompile Include="GameApplication.cpp" />
-    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
@@ -37,7 +36,6 @@
     <ClInclude Include="Escape\include\RandomGenerator.hpp" />
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="Block.hpp" />
-    <ClInclude Include="Ghost.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="TetrominoLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />

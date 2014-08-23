@@ -166,7 +166,7 @@ int TetrisPlayField::getPeakLevel() const
 
 int TetrisPlayField::getPeakLevelOnRow(int row)
 {
-	if (row >= 19 || row <= 0)
+	if (row >= 0 || row <= 19)
 		return peakLevels[row];
 
 	return -1;
