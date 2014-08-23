@@ -52,8 +52,8 @@ class Tetromino
 		void setGridPosition(const sf::Vector2i &);
 		sf::Vector2i getGridPosition();
 
-		void hardDrop();
-		void softDrop();
+		void hardDrop(bool = true);
+		void softDrop(bool = true);
 		bool isLocked() const;
 
 		void moveRight();
@@ -77,19 +77,23 @@ class Tetromino
 		bool checkMovement(int);
 		int getBlockCount() const;
 
+		void setMimic(Tetromino * mimic);
+		Tetromino * getMimic() const;
+
 	protected:
 
 		Tetromino
 		(
-		TetrominoType,
-		BlockColor,
-		TetrisPlayField    &,
-		Mechanics		   &,
-		esc::AssetManager  &
+			  TetrominoType
+			, BlockColor
+			, TetrisPlayField    &
+			, Mechanics		     &
+			, esc::AssetManager  &
 		);
 
 		Tetromino(){}
 		void updatePalette(const vector<sf::Vector2i> &);
+		void updateMimic();
 
 	private:
 		
@@ -99,6 +103,7 @@ class Tetromino
 		float blockSize;
 		int blockRotationCount;
 
+		Tetromino * mimic;
 		RotationSystem * rotationSystem;
 		TetrominoType type;
 		BlockColor color;
