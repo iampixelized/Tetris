@@ -79,6 +79,9 @@ Tetromino::Tetromino
 		bnum++;
 	}
 
+	softDrop();
+	softDrop();
+
 	blockCount = palette.size();
 }
 
