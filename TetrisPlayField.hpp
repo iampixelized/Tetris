@@ -49,7 +49,7 @@ class TetrisPlayField
 		void showBooleanGrid();
 		sf::Vector2i convertToGridPosition(const sf::Vector2f &);
 		int getPeakLevel() const;
-		int getPeakLevelOnRow(int);
+		int getPeakLevelOnColumn(int);
 
 		void shiftClearedRows();
 		void registerBlocks(Tetromino *);
