@@ -50,6 +50,8 @@ int GameApplication::run()
 	if (gameLoop() == EXITING)
 		window.close();
 
+
+	system("pause");
 	return 0;
 }
 
@@ -113,7 +115,7 @@ GameApplication::GameState GameApplication::gameLoop()
 	{
 		float elapsed = clock.restart().asSeconds();
 
-		if (tpf->getPeakLevel() == 0)
+		if (tpf->getPeakLevel() < 2)
 		{
 			cout << "Game Over" << endl;
 			return GAMEOVER;
