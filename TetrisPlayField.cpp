@@ -14,13 +14,12 @@ using std::min_element;
 
 TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	:
-	  fieldSize(sf::Vector2i(10, 20))
+	  fieldSize(sf::Vector2i(10, 22))
 	, blockGrid(fieldSize.y, vector<Block*>(static_cast<int>(fieldSize.x), nullptr))
 	, position(pos)
 	, offset(o)
 	, peakLevels(20, 20)
 {
-
 	for (int i = 0; i <= fieldSize.y; ++i)
 	{
 		sf::RectangleShape hline;
@@ -164,10 +163,10 @@ int TetrisPlayField::getPeakLevel() const
 	return *min_element(peakLevels.begin(), peakLevels.end());
 }
 
-int TetrisPlayField::getPeakLevelOnRow(int row)
+int TetrisPlayField::getPeakLevelOnColumn(int col)
 {
-	if (row >= 0 || row <= 19)
-		return peakLevels[row];
+	if (col >= 0 || col <= fieldSize.y-1)
+		return peakLevels[col];
 
 	return -1;
 }
@@ -195,7 +194,6 @@ void TetrisPlayField::shiftClearedRows()
 	}
 
 	resetRows();
-	//showBooleanGrid();
 }
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
@@ -212,7 +210,6 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 		}
 	}
 
-	//showBooleanGrid();
 	searchClearedRows();
 }
 
