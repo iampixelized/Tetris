@@ -47,6 +47,9 @@
     <ClCompile Include="Escape\src\RandomGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TetrisPlayFieldBackground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApplication.hpp">
@@ -95,6 +98,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Escape\include\RandomGenerator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrisPlayFieldBackground.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

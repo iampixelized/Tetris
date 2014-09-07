@@ -19,6 +19,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
+    <ClCompile Include="TetrisPlayFieldBackground.cpp" />
     <ClCompile Include="TetrominoLayer.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
     <ClCompile Include="Tetromino.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="Block.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
+    <ClInclude Include="TetrisPlayFieldBackground.hpp" />
     <ClInclude Include="TetrominoLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />
     <ClInclude Include="Tetromino.hpp" />
@@ -75,6 +77,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
