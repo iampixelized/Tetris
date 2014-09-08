@@ -51,6 +51,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{61B849D1-92C0-43E5-9FC7-C503692E46A2}</ProjectGuid>
     <RootNamespace>SFMLSample</RootNamespace>
+    <ProjectName>Tetris SFML</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
