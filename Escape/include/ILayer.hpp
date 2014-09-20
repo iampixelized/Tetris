@@ -15,7 +15,8 @@ namespace esc
 		void setParentLayer(ILayer &);
 		void setChildLayer(ILayer &);
 
-		virtual void refreshLayer(float , sf::RenderWindow * , bool = false) = 0;
+		virtual void drawLayer(sf::RenderWindow *) = 0;
+		virtual void updateLayer(float) = 0;
 
 		ILayer * getParentLayer() const;
 		ILayer * getChildLayer() const;

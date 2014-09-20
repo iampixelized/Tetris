@@ -29,7 +29,7 @@ namespace esc
 		//
 	}
 
-	void Object::draw(sf::RenderWindow*window)
+	void Object::draw(sf::RenderWindow * window)
 	{
 		window->draw(sprite);
 	}
@@ -99,5 +99,10 @@ namespace esc
 	int Object::getObjectID() const
 	{
 		return id;
+	}
+
+	bool Object::isGarbageCollectible()
+	{
+		return false;
 	}
 }

@@ -28,21 +28,23 @@ namespace esc
 	using MANAGEDTYPE::update;
 	using MANAGEDTYPE::draw;
 	using MANAGEDTYPE::getID;
+	using MANAGEDTYPE::isGarbageCollectible;
 
 	typedef unique_ptr<MANAGEDTYPE> ObjectPtr;
 	typedef map<int, ObjectPtr> TypeLayer;
 
 	public:
-
+		
+		ObjectLayer();
 		virtual ~ObjectLayer(){};
 
-		void addNewObject(MANAGEDTYPE*);
+		MANAGEDTYPE * addNewObject(MANAGEDTYPE * , bool * check = nullptr);
 		bool deleteObject(int);
 		MANAGEDTYPE * getObject(int);
 		
-		virtual void refreshLayer(float e , sf::RenderWindow * , bool = false);
+		virtual void drawLayer(sf::RenderWindow *);
+		virtual void updateLayer(float e);
 
-		MANAGEDTYPE * getRecentObject() const;
 		int getSize() const;
 
 	protected:
@@ -56,11 +58,28 @@ namespace esc
 	};
 
 	template<class MANAGEDTYPE>
-	void ObjectLayer<MANAGEDTYPE>::addNewObject(MANAGEDTYPE* mtype)
+	ObjectLayer<MANAGEDTYPE>::ObjectLayer()
+		: recent(nullptr)
+	{
+	
+	}
+
+	template<class MANAGEDTYPE>
+	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::addNewObject(MANAGEDTYPE* mtype , bool * check)
 	{
 		int id = mtype->getID();
+
+		if (layer.find(id) != layer.end())
+		{	
+			if (check != nullptr) *check = false;
+			return layer[id].get();
+		}
+
 		layer.insert(pair<int, ObjectPtr>(id,ObjectPtr(mtype)));
-		recent = layer[id].get();
+		recent  = layer[id].get();
+		if(check != nullptr) *check  = true;  
+
+		return recent;
 	}
 
 	template<class MANAGEDTYPE>
@@ -80,33 +99,36 @@ namespace esc
 	{
 		auto iter = layer.find(id);
 
-		if (iter != layer.end())
+		if (iter == layer.end())
 			return nullptr;
 
 		return iter->second.get();
 	}
 
 	template<class MANAGEDTYPE>
-	void ObjectLayer<MANAGEDTYPE>::refreshLayer(float e, sf::RenderWindow * window, bool pause)
+	void ObjectLayer<MANAGEDTYPE>::drawLayer(sf::RenderWindow * window)
 	{
-		preRoutine();
-
-		//cout << "Refreshing layer..." << endl;
 		for (auto iter = layer.begin(); iter != layer.end(); ++iter)
-		{
-			if (!pause) 
-				iter->second->update(e);
-
 			iter->second->draw(window);
-		}
-
-		postRoutine();
 	}
 
 	template<class MANAGEDTYPE>
-	MANAGEDTYPE * ObjectLayer<MANAGEDTYPE>::getRecentObject() const
+	void ObjectLayer<MANAGEDTYPE>::updateLayer(float e)
 	{
-		return recent;
+		for (auto iter = layer.begin(); iter != layer.end();)
+		{ 
+			if (iter->second->isGarbageCollectible())
+				iter = layer.erase(iter);
+			else
+				++iter;
+		}
+
+		preRoutine();
+
+		for (auto iter = layer.begin(); iter != layer.end(); ++iter)
+			iter->second->update(e);
+
+		postRoutine();
 	}
 
 	template<class MANAGEDTYPE>

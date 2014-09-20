@@ -40,9 +40,11 @@ namespace esc
 		bool changeObject(const string &);
 
 		int getObjectID() const;
+		virtual bool isGarbageCollectible();
 
 	protected:
-
+		
+		Object(){}
 		Asset<sf::Texture> * textureHandler;
 		Asset<sf::SoundBuffer> * soundBufferHandler;
 		AssetManager * assetManager;
