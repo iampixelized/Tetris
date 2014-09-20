@@ -1,12 +1,17 @@
+#include<iostream>
+using std::cout;
+using std::endl;
+
 #include "Block.hpp"
 
-Block::Block(const string &pname, const sf::Vector2f &pos, TetrisPlayField & tpf, esc::AssetManager &am)
+Block::Block(const string &pname, const sf::Vector2f &pos, TetrisPlayField & tpf, esc::AssetManager &am, int id)
 	: 
 	  esc::Object(pname, pos, am)
+	, blockID(id)
 	, _isCleared(false)
 	, playField(&tpf)
 {
-	
+
 }
 
 Block::~Block()
@@ -48,7 +53,12 @@ void Block::markCleared()
 	_isCleared = true;
 }
 
-bool Block::isCleared() const
+bool Block::isGarbageCollectible()
 {
-	return _isCleared;
+	return false;
+}
+
+int Block::getID() const
+{
+	return blockID;
 }

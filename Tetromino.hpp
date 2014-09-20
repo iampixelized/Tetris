@@ -22,21 +22,21 @@ class RotationSystem;
 struct Mechanics
 {
 	float dropInterval = 2.0f;
-	float lockTime     = 0.8f;
+	float lockTime = 0.8f;
 
 	Mechanics(RotationSystem & rs) : rotationSystem(&rs){}
-	RotationSystem * getRotationSystem() const {return rotationSystem; }
-	
+	RotationSystem * getRotationSystem() const { return rotationSystem; }
+
 	private:
-		RotationSystem * rotationSystem;
+	RotationSystem * rotationSystem;
 };
+
 
 class Tetromino
 {
 	public:
 
 		typedef unique_ptr<Block> BlockPtr;
-		typedef map<int, BlockPtr> BlockPalette;
 
 		enum TetrominoType{ S = 1, Z, J, L, I, O, T, DOT };
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange, Ghost };
@@ -79,6 +79,7 @@ class Tetromino
 
 		void setMimic(Tetromino * mimic);
 		Tetromino * getMimic() const;
+		bool isGarbageCollectible();
 
 	protected:
 
@@ -109,7 +110,7 @@ class Tetromino
 		BlockColor color;
 		vector<sf::Vector2i> blockPositions;
 
-		BlockPalette palette;
+		esc::ObjectLayer<Block> blocks;
 
 		float lockTime;
 		float dropInterval;

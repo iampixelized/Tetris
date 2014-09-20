@@ -11,7 +11,7 @@ class Block : public esc::Object
 {
 	public:
 
-		Block(const string &, const sf::Vector2f &pos, TetrisPlayField &, esc::AssetManager &);
+		Block(const string &, const sf::Vector2f &pos, TetrisPlayField &, esc::AssetManager & , int);
 		virtual ~Block();
 
 		virtual void update(float);
@@ -19,11 +19,17 @@ class Block : public esc::Object
 		sf::Vector2i getGridPosition();
 
 		void markCleared();
-		bool isCleared() const;
+		virtual bool isGarbageCollectible();
+		int getID() const;
+
+	protected:
+		
+		Block() : blockID(-1){};
 
 	private:
-
+		
 		bool _isCleared;
+		int blockID;
 		int fieldLevel;
 		TetrisPlayField * playField;
 };

@@ -19,6 +19,7 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	, position(pos)
 	, offset(o)
 	, peakLevels(20, 20)
+	, _topLevelOccupied(false)
 {
 	for (int i = 0; i <= fieldSize.y; ++i)
 	{
@@ -247,4 +248,9 @@ void TetrisPlayField::removeRow(int row)
 	
 	blockGrid.erase(iter);
 	blockGrid.insert(blockGrid.begin(), vector<Block*>(10, nullptr));
+}
+
+bool TetrisPlayField::isTopLevelOccupied() const
+{
+	return _topLevelOccupied;
 }

@@ -55,12 +55,14 @@ class TetrisPlayField
 		void registerBlocks(Tetromino *);
 		void resetRows();
 		int getClearedRowsSize() const;
+		bool isTopLevelOccupied() const;
 
 	private:
 
 		void searchClearedRows();
 		void removeRow(int);
 
+		bool _topLevelOccupied;
 		sf::Vector2i fieldSize;
 		BlockGrid blockGrid;
 

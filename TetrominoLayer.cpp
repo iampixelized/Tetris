@@ -18,16 +18,8 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 	cout << "Position   : " << tetrisPlayField->getPosition().x << " " << tetrisPlayField->getPosition().y << endl;
 
 	permutateBag();
-	random.seed();
 	randomizeBag();
-
-	colors.push_back(Tetromino::BlockColor::Blue);
-	colors.push_back(Tetromino::BlockColor::Cyan);
-	colors.push_back(Tetromino::BlockColor::Green);
-	colors.push_back(Tetromino::BlockColor::Orange);
-	colors.push_back(Tetromino::BlockColor::Purple);
-	colors.push_back(Tetromino::BlockColor::Red);
-	colors.push_back(Tetromino::BlockColor::Yellow);
+	random.seed();
 }
 
 TetrominoLayer::~TetrominoLayer()
@@ -98,17 +90,6 @@ void TetrominoLayer::permutateBag()
 	while (next_permutation(tets.begin(), tets.end()));
 }
 
-void TetrominoLayer::preRoutine()
-{
-	for (auto iter = TLAYER::layer.begin(); iter != TLAYER::layer.end();)
-	{	
-		if (iter->second->getBlockCount() == 0)
-			iter = TLAYER::layer.erase(iter);
-		else
-			++iter;
-	}
-}
-
 void TetrominoLayer::randomizeBag()
 {
 	bag.clear();
@@ -142,6 +123,6 @@ void TetrominoLayer::randomizeBag()
 
 Tetromino::BlockColor TetrominoLayer::getRandomColor()
 {
-	int crange = random.randomIntWithinRange(0, 6);
-	return colors[crange];
+	int crange = random.randomIntWithinRange(0, 6);	
+	return static_cast<Tetromino::BlockColor>(crange);
 }

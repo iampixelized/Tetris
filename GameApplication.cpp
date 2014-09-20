@@ -50,7 +50,6 @@ int GameApplication::run()
 	if (gameLoop() == EXITING)
 		window.close();
 
-
 	system("pause");
 	return 0;
 }
@@ -80,31 +79,41 @@ GameApplication::GameState GameApplication::gameLoop()
 	TetrominoKicker kicker(*tpf.get());
 	TetrominoKicker ghostKicker(*tpf.get());
 
-
-	//tetrominoLayer.setDotPieces(0,  { 1, 0, 1, 0, 0, 0, 0, 1, 0, 1 });
-	//tetrominoLayer.setDotPieces(1,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(2,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(3,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrominoLayer.setDotPieces(4,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrominoLayer.setDotPieces(5,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(6,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(7,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(8,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(9,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(10, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(11, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(12, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(13, { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(14, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(15, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(16, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(17, { 0, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
-	//tetrominoLayer.setDotPieces(18, { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
-	//tetrominoLayer.setDotPieces(19, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
+	//tetrominoLayer.setDotPieces(3,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(4,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(5,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(6,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+	//tetrominoLayer.setDotPieces(7,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
+	//tetrominoLayer.setDotPieces(8,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(9,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(10, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(11, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(12, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(13, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(14, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(15, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(16, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(17, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+	//tetrominoLayer.setDotPieces(18, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(19, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
+	//tetrominoLayer.setDotPieces(20, { 1, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
+	//tetrominoLayer.setDotPieces(21, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
+	//tetrominoLayer.setDotPieces(22, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
 
 	Tetromino * tetromino = tetrominoLayer.spawnTetromino();	
-	ghostLayer.addNewObject(Tetromino::createTetromino(tetromino->getType(), Tetromino::BlockColor::Ghost, *tpf.get(), mechanics, assetManager));
-	Tetromino * ghost = ghostLayer.getRecentObject();
+	Tetromino * ghost = ghostLayer.addNewObject
+	(
+		Tetromino::createTetromino
+		(
+			  tetromino->getType()
+			, Tetromino::BlockColor::Ghost
+			, *tpf.get()
+			, mechanics
+			, assetManager
+		)
+	);
+
+	ghost->hardDrop(false);
 	tetromino->setMimic(ghost);
 	kicker.setTetromino(tetromino);
 	ghostKicker.setTetromino(ghost);
@@ -123,6 +132,8 @@ GameApplication::GameState GameApplication::gameLoop()
 
 		while (window.pollEvent(event))
 		{
+			// COnvert to switch...
+
 			if (event.type == sf::Event::Closed)
 				return EXITING;
 
@@ -183,10 +194,21 @@ GameApplication::GameState GameApplication::gameLoop()
 			kicker.setTetromino(tetromino);
 
 			ghostLayer.deleteObject(ghost->getID());
-			ghostLayer.addNewObject(Tetromino::createTetromino(tetromino->getType(), Tetromino::BlockColor::Ghost, *tpf.get(), mechanics, assetManager));
-			ghost = ghostLayer.getRecentObject();
+			
+			ghost = ghostLayer.addNewObject
+			(
+				  Tetromino::createTetromino
+				  (
+					  tetromino->getType()
+					, Tetromino::BlockColor::Ghost
+					, *tpf.get()
+					, mechanics
+					, assetManager
+				  )
+			);
+			
+			ghost->hardDrop(false);
 			ghostKicker.setTetromino(ghost);
-
 			tetromino->setMimic(ghost);
 		}
 
@@ -195,9 +217,12 @@ GameApplication::GameState GameApplication::gameLoop()
 
 		tpf->drawGrid(&window);
 
-		ghostLayer.refreshLayer(elapsed, &window, pause);
-		tetrominoLayer.refreshLayer(elapsed, &window, pause);
+		ghostLayer.updateLayer(elapsed);
+		tetrominoLayer.updateLayer(elapsed);
 		
+		ghostLayer.drawLayer(&window);
+		tetrominoLayer.drawLayer(&window);
+
 		window.display();
 	}
 

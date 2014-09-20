@@ -15,21 +15,16 @@ using std::pair;
 
 class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 {
-	
 	typedef esc::ObjectLayer<Tetromino> TLAYER;
 
 	public:
 
-	TetrominoLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
-	virtual ~TetrominoLayer();
+		TetrominoLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
+		virtual ~TetrominoLayer();
 
 		Tetromino * spawnTetromino();
 		void setDotPieces(int, const vector<int> &);
 		void permutateBag();
-	
-	protected:
-
-		virtual void preRoutine();
 		
 	private:
 		
@@ -42,7 +37,6 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		Mechanics * mechanics;
 		
 		vector<Tetromino::TetrominoType> bag;
-		vector<Tetromino::BlockColor> colors;
 		vector<string> possiblePermutations;
 
 		int spawnCount;
