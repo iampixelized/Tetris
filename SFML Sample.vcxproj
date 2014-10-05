@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
@@ -19,11 +27,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
+    <ClCompile Include="SRS.cpp" />
     <ClCompile Include="TetrisPlayFieldBackground.cpp" />
-    <ClCompile Include="TetrominoLayer.cpp" />
+    <ClCompile Include="TetrominoDropper.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
     <ClCompile Include="Tetromino.cpp" />
-    <ClCompile Include="TetrominoKicker.cpp" />
+    <ClCompile Include="TetrominoLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DRS.hpp" />
@@ -31,18 +40,22 @@
     <ClInclude Include="Escape\include\AssetManager.hpp" />
     <ClInclude Include="Escape\include\IAsset.hpp" />
     <ClInclude Include="Escape\include\IAssetManager.hpp" />
+    <ClInclude Include="Escape\include\IDrawableObject.hpp" />
     <ClInclude Include="Escape\include\ILayer.hpp" />
     <ClInclude Include="Escape\include\Object.hpp" />
     <ClInclude Include="Escape\include\ObjectLayer.hpp" />
     <ClInclude Include="Escape\include\RandomGenerator.hpp" />
+    <ClInclude Include="Escape\include\IUpdatableObject.hpp" />
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="Block.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
+    <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrisPlayFieldBackground.hpp" />
+    <ClInclude Include="TetrominoDropper.hpp" />
     <ClInclude Include="TetrominoLayer.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />
     <ClInclude Include="Tetromino.hpp" />
-    <ClInclude Include="TetrominoKicker.hpp" />
+    <ClInclude Include="TetrominoType.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
@@ -60,7 +73,20 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
@@ -73,14 +99,26 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -88,13 +126,34 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\libraries\SFML\source\branches\SFML 2.1-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013-x86\include;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013-x86\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML 2.1-build-VS\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013-x86\lib;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013-x86\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;thor-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SwapRunFromCD>false</SwapRunFromCD>
+      <SubSystem>NotSet</SubSystem>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013\include;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013\bin;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SwapRunFromCD>false</SwapRunFromCD>
       <SubSystem>NotSet</SubSystem>
@@ -111,14 +170,34 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\libraries\SFML\source\branches\SFML 2.1-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013-x86\include;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013-x86\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML 2.1-build-VS\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013-x86\lib;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013-x86\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-graphics.lib;sfml-window.lib;sfml-audio.lib;sfml-network.lib;thor.lib</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013\include;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\libraries\SFML\build\branches\SFML-eXpl0it3r-build-vs2013\bin;C:\libraries\Thor\build\branches\Thor-eXpl0it3r-build-vs2013\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>

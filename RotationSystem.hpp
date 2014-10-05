@@ -7,10 +7,10 @@ using std::vector;
 #include<string>
 using std::string;
 
-#include<map>
-using std::map;
-
 #include<SFML/Graphics.hpp>
+
+#include "TetrisPlayField.hpp"
+#include "TetrominoType.hpp"
 
 class Tetromino;
 
@@ -26,35 +26,47 @@ class RotationSystem
 
 	public:
 
-		typedef map<string, map<int, sf::Vector2i>> CheckTable;
-
-		virtual const vector<sf::Vector2i> & getBlockConfiguration(int);
-		virtual const BlockConfigurations & getBlockConfigurations();
-		
-		virtual RotationSystem * getStandard() = 0;
 		virtual void setConfiguration(int) = 0;
+		virtual sf::Vector2i getCorrectPosition(int) = 0;
 
+		const vector<sf::Vector2i> & getBlockConfiguration(int);
+		const vector<sf::Vector2i> & getBlockNextConfiguration(int);
+		const vector<sf::Vector2i> & getBlockPreviousConfiguration(int);
+
+		const BlockConfigurations & getBlockConfigurations();
+		virtual RotationSystem * getStandard();
 		const string & getStandardName() const;
-
-		sf::Vector2i getCheckTableTest(const string &, int);
-		const CheckTable & getCheckTable() const;
-
 		virtual int getSpawningPosition(int);
+		
+		void updateCurrentPosition(const sf::Vector2i &);
+		const sf::Vector2i & getCurrentPosition() const;
+		void updateCurrentFace(int);
+		int getCurrentFace() const;
+
+		TetrisPlayField * getTetrisPlayField() const;
+		void setKickEnable(bool);
+		bool isKickEnabled() const;
+		TetrominoType getHostType();
+
 
 	protected:
 
 		BlockConfigurations bConfig;
-
-		explicit RotationSystem(const string &);
+		RotationSystem(const string & , TetrisPlayField &);
 		virtual ~RotationSystem();
-
 		void reset();
 
-		CheckTable checkTable;
+		bool checkProjectedPosition(const sf::Vector2i &, int);
+		void updateType(TetrominoType);
 
 	private:
 		
 		string name;
+		sf::Vector2i currentPosition;
+		int currentFace;
+		bool _isKickEnabled;
+		TetrisPlayField * playField;
+		TetrominoType type;
 			
 };
 

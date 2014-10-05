@@ -1,25 +1,26 @@
 #include "DRS.hpp"
 #include "Tetromino.hpp"
 
-DRS::DRS() : RotationSystem("DTET Rotation System (DRS)")
+DRS::DRS(TetrisPlayField & tpf) : RotationSystem("DTET Rotation System (DRS)", tpf)
 {
-	checkTable.insert(make_pair("Left"  , map<int, sf::Vector2i>()));
-	checkTable.insert(make_pair("Right" , map<int, sf::Vector2i>()));
+	checkTable.insert(make_pair( -1 , vector<sf::Vector2i>())); // Left
+	checkTable.insert(make_pair(  1 , vector<sf::Vector2i>())); // Right
 
-	checkTable["left"].insert(make_pair(1, sf::Vector2i(-1, 0)));
-	checkTable["left"].insert(make_pair(2, sf::Vector2i( 1, 0)));
-	checkTable["left"].insert(make_pair(3, sf::Vector2i( 0, 1)));
-	checkTable["left"].insert(make_pair(4, sf::Vector2i(-1, 1)));
-	checkTable["left"].insert(make_pair(5, sf::Vector2i( 1, 1)));
-	checkTable["left"].insert(make_pair(6, sf::Vector2i(-2, 0))); // for I Tetromino
+	checkTable[-1].push_back(sf::Vector2i(-1, 0));
+	checkTable[-1].push_back(sf::Vector2i( 1, 0));
+	checkTable[-1].push_back(sf::Vector2i( 0, 1));
+	checkTable[-1].push_back(sf::Vector2i(-1, 1));
+	checkTable[-1].push_back(sf::Vector2i( 1, 1));
+	checkTable[-1].push_back(sf::Vector2i(-2, 0)); // for I Tetromino
+	checkTable[-1].push_back(sf::Vector2i(-3, 0));
 
-	checkTable["right"].insert(make_pair(1, sf::Vector2i( 1, 0)));
-	checkTable["right"].insert(make_pair(2, sf::Vector2i(-1, 0)));
-	checkTable["right"].insert(make_pair(3, sf::Vector2i( 0, 1)));
-	checkTable["right"].insert(make_pair(4, sf::Vector2i( 1, 1)));
-	checkTable["right"].insert(make_pair(5, sf::Vector2i(-1, 1)));
-	checkTable["right"].insert(make_pair(6, sf::Vector2i( 2, 0))); // for I Tetromino
-
+	checkTable[ 1].push_back(sf::Vector2i( 1, 0));
+	checkTable[ 1].push_back(sf::Vector2i(-1, 0));
+	checkTable[ 1].push_back(sf::Vector2i( 0, 1));
+	checkTable[ 1].push_back(sf::Vector2i( 1, 1));
+	checkTable[ 1].push_back(sf::Vector2i(-1, 1));
+	checkTable[ 1].push_back(sf::Vector2i( 2, 0)); // for I Tetromino
+	checkTable[ 1].push_back(sf::Vector2i(-2, 0));
 }
 
 DRS::~DRS()
@@ -36,7 +37,7 @@ void DRS::setConfiguration(int type)
 {
 	RotationSystem::reset();
 
-	if (type == Tetromino::TetrominoType::S)
+	if (type == TetrominoType::S)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 2));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 2));
@@ -58,7 +59,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 1));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 2));
 	}
-	else if (type == Tetromino::TetrominoType::Z)
+	else if (type == TetrominoType::Z)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 1));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 1));
@@ -80,7 +81,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(0, 1));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(0, 2));
 	}
-	else if (type == Tetromino::TetrominoType::J)
+	else if (type == TetrominoType::J)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 1));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 1));
@@ -102,7 +103,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 0));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(2, 0));
 	}
-	else if (type == Tetromino::TetrominoType::L)
+	else if (type == TetrominoType::L)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 2));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 1));
@@ -124,7 +125,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 2));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(2, 2));
 	}
-	else if (type == Tetromino::TetrominoType::I)
+	else if (type == TetrominoType::I)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 2));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 2));
@@ -146,7 +147,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 2));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 3));
 	}
-	else if (type == Tetromino::TetrominoType::O)
+	else if (type == TetrominoType::O)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 1));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(2, 1));
@@ -157,7 +158,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._180Config = RotationSystem::bConfig._0Config;
 		RotationSystem::bConfig._270Config = RotationSystem::bConfig._0Config;
 	}
-	else if (type == Tetromino::TetrominoType::T)
+	else if (type == TetrominoType::T)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 1));
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(1, 1));
@@ -179,7 +180,7 @@ void DRS::setConfiguration(int type)
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(1, 2));
 		RotationSystem::bConfig._270Config.push_back(sf::Vector2i(2, 1));
 	}
-	else if (type == Tetromino::TetrominoType::DOT)
+	else if (type == TetrominoType::DOT)
 	{
 		RotationSystem::bConfig._0Config.push_back(sf::Vector2i(0, 0));
 		RotationSystem::bConfig._90Config.push_back(sf::Vector2i(0, 0));
@@ -191,18 +192,34 @@ void DRS::setConfiguration(int type)
 int DRS::getSpawningPosition(int type)
 {
 	//S = 1, Z, J, L, I, O, T, DOT
-	if (	   type == Tetromino::TetrominoType::S  
-			|| type == Tetromino::TetrominoType::Z
-			|| type == Tetromino::TetrominoType::J
-			|| type == Tetromino::TetrominoType::L
-			|| type == Tetromino::TetrominoType::O
-			|| type == Tetromino::TetrominoType::T
+	if (	   type == TetrominoType::S  
+			|| type == TetrominoType::Z
+			|| type == TetrominoType::J
+			|| type == TetrominoType::L
+			|| type == TetrominoType::O
+			|| type == TetrominoType::T
 		)
 		
 		return 1;
 
-	else if (type == Tetromino::TetrominoType::I)
+	else if (type == TetrominoType::I)
 		return 2;
 
 	return 0;
+}
+
+sf::Vector2i DRS::getCorrectPosition(int dir)
+{	
+	sf::Vector2i kickPosition;
+	int cface = RotationSystem::getCurrentFace() + (90*dir);
+ 
+	for (size_t test = 0; test < checkTable[dir].size(); ++test)
+	{
+		sf::Vector2i cmove = checkTable[dir][test];
+		
+		if (RotationSystem::checkProjectedPosition(cmove, cface))
+			return cmove;
+	}
+
+	return sf::Vector2i();
 }

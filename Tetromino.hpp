@@ -16,21 +16,10 @@ using std::make_pair;
 #include "TetrisPlayField.hpp"
 #include "Block.hpp"
 #include "ObjectLayer.hpp"
+#include "TetrominoType.hpp"
 
 class RotationSystem;
-
-struct Mechanics
-{
-	float dropInterval = 2.0f;
-	float lockTime = 0.8f;
-
-	Mechanics(RotationSystem & rs) : rotationSystem(&rs){}
-	RotationSystem * getRotationSystem() const { return rotationSystem; }
-
-	private:
-	RotationSystem * rotationSystem;
-};
-
+class Mechanics;
 
 class Tetromino
 {
@@ -38,13 +27,13 @@ class Tetromino
 
 		typedef unique_ptr<Block> BlockPtr;
 
-		enum TetrominoType{ S = 1, Z, J, L, I, O, T, DOT };
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange, Ghost };
 		
 		virtual ~Tetromino();
 
 		RotationSystem * getRotationSystem();
 
+		void kick(int);
 		void rotateLeft();
 		void rotateRight();
 		void setRotation(int);
@@ -52,19 +41,19 @@ class Tetromino
 		void setGridPosition(const sf::Vector2i &);
 		sf::Vector2i getGridPosition();
 
-		void hardDrop(bool = true);
-		void softDrop(bool = true);
+		void lock();
 		bool isLocked() const;
+		
+		void deploy(bool);
+		bool isDeployed() const;
 
 		void moveRight();
 		void moveLeft();
 		void move(const sf::Vector2i &);
-		int getMoveCount() const;
-		int getDropCount() const;
 
 		TetrominoType getType() const;
 		const vector<sf::Vector2i> & getCurrentConfiguration() const;
-		static Tetromino * createTetromino(TetrominoType, BlockColor, TetrisPlayField &, Mechanics & , esc::AssetManager &);
+		static Tetromino * createTetromino(TetrominoType, BlockColor, RotationSystem &, esc::AssetManager &);
 
 		void update(float);
 		void draw(sf::RenderWindow *);
@@ -75,6 +64,7 @@ class Tetromino
 
 		bool checkRotation(int);
 		bool checkMovement(int);
+		bool checkPosition(const sf::Vector2i &);
 		int getBlockCount() const;
 
 		void setMimic(Tetromino * mimic);
@@ -87,9 +77,8 @@ class Tetromino
 		(
 			  TetrominoType
 			, BlockColor
-			, TetrisPlayField    &
-			, Mechanics		     &
-			, esc::AssetManager  &
+			, RotationSystem &
+			, esc::AssetManager &
 		);
 
 		Tetromino(){}
@@ -112,24 +101,16 @@ class Tetromino
 
 		esc::ObjectLayer<Block> blocks;
 
-		float lockTime;
-		float dropInterval;
-		float dropElapsed;
-		float lockElapsed;
-
 		bool _isLocked;
 		bool _isDeployed;
 		int face;
-		int previousFace;
 		
 		TetrisPlayField * playField;
 		sf::Vector2f positionOffset;
 		
-		int hWidthOffset;
-		int vWidthOffset;
-		int moveCount;
-		int dropCount;
-		int blockCount;
+		sf::Vector2i moveCount;
+		sf::Vector2i kickPos;
+		int blockCount;		
 };	
 
 #endif

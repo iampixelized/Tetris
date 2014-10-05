@@ -9,9 +9,11 @@ using std::pair;
 
 #include "ObjectLayer.hpp"
 #include "Tetromino.hpp"
-#include "TetrisPlayField.hpp"
 #include "AssetManager.hpp"
 #include "RandomGenerator.hpp"
+#include "TetrominoType.hpp"
+
+class TetrisPlayField;
 
 class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 {
@@ -19,7 +21,7 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 
 	public:
 
-		TetrominoLayer(Mechanics &, TetrisPlayField &, esc::AssetManager &);
+		TetrominoLayer(RotationSystem &, esc::AssetManager &);
 		virtual ~TetrominoLayer();
 
 		Tetromino * spawnTetromino();
@@ -31,12 +33,12 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		void randomizeBag();
 		Tetromino::BlockColor getRandomColor();
 
+		RotationSystem * rotationSystem;
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;
 		Tetromino * currentTetromino;
-		Mechanics * mechanics;
-		
-		vector<Tetromino::TetrominoType> bag;
+				
+		vector<TetrominoType> bag;
 		vector<string> possiblePermutations;
 
 		int spawnCount;

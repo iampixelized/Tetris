@@ -8,7 +8,7 @@ using std::pair;
 
 #include "GameApplication.hpp"
 #include "RandomGenerator.hpp"
-#include "TetrominoKicker.hpp"
+#include "TetrominoDropper.hpp"
 #include "TetrominoLayer.hpp"
 #include "DRS.hpp"
 
@@ -41,7 +41,7 @@ int GameApplication::run()
 	assetManager.addAsset("Textures", new TextureAsset(&GameApplication::loadTextureFromFile));
 	textures = dynamic_cast<TextureAsset*>(assetManager.getAsset("Textures"));
 
-	window.create(sf::VideoMode(screen_width, screen_height,32), "TETRIS");
+	window.create(sf::VideoMode(screen_width, screen_height,32), "Tetris SFML");
 	window.setFramerateLimit(60);
 
 	if (!loadGameAssets())
@@ -67,17 +67,17 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 GameApplication::GameState GameApplication::gameLoop()
 {
 	bool pause = false;
-	DRS drs; // DTET Rotation System
+	DRS drs(*tpf.get()); // DTET Rotation System
 
-	//Set tetromino drop speed interval
-	Mechanics mechanics(drs);
-	mechanics.dropInterval		= 0.8f;
-	mechanics.lockTime			= 0.5f;
 	
-	TetrominoLayer tetrominoLayer(mechanics, *tpf.get(), assetManager);
-	TetrominoLayer ghostLayer(mechanics, *tpf.get(), assetManager);
-	TetrominoKicker kicker(*tpf.get());
-	TetrominoKicker ghostKicker(*tpf.get());
+	TetrominoLayer tetrominoLayer(drs , assetManager);
+	TetrominoLayer ghostLayer(drs , assetManager);
+
+	TetrominoDropper dropper;
+	TetrominoDropper ghostDropper;
+
+	dropper.setDropInterval(0.8f); ghostDropper.setDropInterval(0.8f);
+	dropper.setLockInterval(0.5f); ghostDropper.setLockInterval(0.5f);
 
 	//tetrominoLayer.setDotPieces(3,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrominoLayer.setDotPieces(4,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
@@ -101,22 +101,9 @@ GameApplication::GameState GameApplication::gameLoop()
 	//tetrominoLayer.setDotPieces(22, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
 
 	Tetromino * tetromino = tetrominoLayer.spawnTetromino();	
-	Tetromino * ghost = ghostLayer.addNewObject
-	(
-		Tetromino::createTetromino
-		(
-			  tetromino->getType()
-			, Tetromino::BlockColor::Ghost
-			, *tpf.get()
-			, mechanics
-			, assetManager
-		)
-	);
 
-	ghost->hardDrop(false);
-	tetromino->setMimic(ghost);
-	kicker.setTetromino(tetromino);
-	ghostKicker.setTetromino(ghost);
+	//tetromino->setMimic(ghost);
+	dropper.setTetromino(tetromino);
 
 	cout << "\n\n\n\n\n\n\n\nContent number of t-layer : " << tetrominoLayer.getSize() << endl;
 
@@ -148,29 +135,15 @@ GameApplication::GameState GameApplication::gameLoop()
 				{
 					if (tetromino->checkMovement(1))
 						tetromino->moveRight();
-
 				}
 				else if (!pause && event.key.code == sf::Keyboard::Key::Up)
 				{
-					if (tetromino->checkRotation(1))
-						tetromino->rotateRight();
-					else
-					{	
-						if (kicker.checkKick("right", 1))
-						{
-							kicker.kickTetromino(1);
-							tetromino->rotateRight();
-						}
-						else if (kicker.checkKick("left", -1))
-						{
-							kicker.kickTetromino(-1);
-							tetromino->rotateLeft();
-						}
-					}
+					if (tetromino->checkRotation(1)) tetromino->rotateRight();
+					else tetromino->kick(1);
 				}
 				else if (!pause && event.key.code == sf::Keyboard::Key::Down)
 				{
-					 tetromino->softDrop();
+					dropper.softDrop();
 				}
 				else if (event.key.code == sf::Keyboard::Key::P)
 				{
@@ -178,10 +151,14 @@ GameApplication::GameState GameApplication::gameLoop()
 				}
 				else if (!pause && event.key.code == sf::Keyboard::Key::Space)
 				{
-					tetromino->hardDrop();
+					dropper.hardDrop();
+				}
+				else if (event.key.code == sf::Keyboard::Key::Escape)
+				{
+					return EXITING;
 				}
 
-				ghost->hardDrop(false);
+				//ghostDropper.hardDrop(false);
 			}
 		}
 
@@ -191,25 +168,7 @@ GameApplication::GameState GameApplication::gameLoop()
 		{
 			tpf->registerBlocks(tetromino);
 			tetromino = tetrominoLayer.spawnTetromino();
-			kicker.setTetromino(tetromino);
-
-			ghostLayer.deleteObject(ghost->getID());
-			
-			ghost = ghostLayer.addNewObject
-			(
-				  Tetromino::createTetromino
-				  (
-					  tetromino->getType()
-					, Tetromino::BlockColor::Ghost
-					, *tpf.get()
-					, mechanics
-					, assetManager
-				  )
-			);
-			
-			ghost->hardDrop(false);
-			ghostKicker.setTetromino(ghost);
-			tetromino->setMimic(ghost);
+			dropper.setTetromino(tetromino); 
 		}
 
 		if (tpf->getClearedRowsSize() > 0)
@@ -220,8 +179,12 @@ GameApplication::GameState GameApplication::gameLoop()
 		ghostLayer.updateLayer(elapsed);
 		tetrominoLayer.updateLayer(elapsed);
 		
+		//dropper.update(elapsed);
+		//ghostDropper.update(elapsed);
+
 		ghostLayer.drawLayer(&window);
 		tetrominoLayer.drawLayer(&window);
+
 
 		window.display();
 	}

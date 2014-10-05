@@ -38,14 +38,14 @@ namespace esc
 		ObjectLayer();
 		virtual ~ObjectLayer(){};
 
-		MANAGEDTYPE * addNewObject(MANAGEDTYPE * , bool * check = nullptr);
+		MANAGEDTYPE * addNewObject(MANAGEDTYPE *, bool * check = nullptr);
 		bool deleteObject(int);
 		MANAGEDTYPE * getObject(int);
 		
 		virtual void drawLayer(sf::RenderWindow *);
 		virtual void updateLayer(float e);
 
-		int getSize() const;
+		size_t getSize() const;
 
 	protected:
 
@@ -132,7 +132,7 @@ namespace esc
 	}
 
 	template<class MANAGEDTYPE>
-	int ObjectLayer<MANAGEDTYPE>::getSize() const
+	size_t ObjectLayer<MANAGEDTYPE>::getSize() const
 	{
 		return layer.size();
 	}

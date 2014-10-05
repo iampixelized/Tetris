@@ -1,14 +1,16 @@
 #include <algorithm>
 using std::next_permutation;
+using std::random_shuffle;
 
+#include "RotationSystem.hpp"
 #include "TetrominoLayer.hpp"
 #include "RandomGenerator.hpp"
 
-TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetManager &am)
+TetrominoLayer::TetrominoLayer(RotationSystem & rs, esc::AssetManager &am)
 	:
-	  tetrisPlayField(&tpf)
+	tetrisPlayField(rs.getTetrisPlayField())
+	, rotationSystem(&rs)
 	, assetManager(&am)
-	, mechanics(&m)
 	, spawnCount(0)
 	, pcount(0)
 {
@@ -22,9 +24,7 @@ TetrominoLayer::TetrominoLayer(Mechanics & m, TetrisPlayField & tpf, esc::AssetM
 	random.seed();
 }
 
-TetrominoLayer::~TetrominoLayer()
-{
-}
+TetrominoLayer::~TetrominoLayer(){}
 
 Tetromino * TetrominoLayer::spawnTetromino()
 {
@@ -46,8 +46,7 @@ Tetromino * TetrominoLayer::spawnTetromino()
 		(  
 		    bag[spawnCount]
 	      , getRandomColor()
-		  , *tetrisPlayField
-		  , *mechanics
+		  , *rotationSystem
 		  , *assetManager
 		);
 
@@ -65,11 +64,10 @@ void TetrominoLayer::setDotPieces(int line, const vector<int> & pieceLine)
 
 		Tetromino * tetromino = Tetromino::createTetromino
 			(
-				Tetromino::TetrominoType::DOT,
-				getRandomColor(),
-				*tetrisPlayField,
-				*mechanics,
-				*assetManager
+				TetrominoType::DOT
+				, getRandomColor()
+				, *rotationSystem
+				, *assetManager
 			);
 
 		TLAYER::addNewObject(tetromino);
@@ -88,6 +86,8 @@ void TetrominoLayer::permutateBag()
 		possiblePermutations.push_back(tets);
 	}
 	while (next_permutation(tets.begin(), tets.end()));
+
+	//random_shuffle(possiblePermutations.begin(), possiblePermutations.end(), possiblePermutations);
 }
 
 void TetrominoLayer::randomizeBag()
@@ -98,7 +98,7 @@ void TetrominoLayer::randomizeBag()
 	int rrange = random.randomIntWithinRange(0, possiblePermutations.size());
 	string tets = possiblePermutations[rrange];
 
-	Tetromino::TetrominoType ttype;
+	TetrominoType ttype;
 
 	for (char & t : tets)
 	{

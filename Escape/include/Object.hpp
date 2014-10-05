@@ -10,10 +10,12 @@ using std::string;
 #include "Asset.hpp"
 #include "AssetManager.hpp"
 #include "ObjectLayer.hpp"
+#include "IDrawableObject.hpp"
+#include "IUpdatableObject.hpp"
 
 namespace esc
 {
-	class Object
+	class Object : public IDrawableObject , public IUpdatableObject
 	{
 
 	public:
