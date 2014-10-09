@@ -48,13 +48,14 @@ class RotationSystem
 		bool isKickEnabled() const;
 		TetrominoType getHostType();
 
+		void resetCount();
 
 	protected:
 
 		BlockConfigurations bConfig;
 		RotationSystem(const string & , TetrisPlayField &);
 		virtual ~RotationSystem();
-		void reset();
+		void resetConfigurations();
 
 		bool checkProjectedPosition(const sf::Vector2i &, int);
 		void updateType(TetrominoType);

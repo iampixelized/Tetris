@@ -16,7 +16,7 @@ RotationSystem::~RotationSystem()
 
 }
 
-void RotationSystem::reset()
+void RotationSystem::resetConfigurations()
 {
 	bConfig._0Config.clear();
 	bConfig._90Config.clear();
@@ -133,4 +133,10 @@ bool RotationSystem::isKickEnabled() const
 TetrominoType RotationSystem::getHostType()
 {
 	return type;
+}
+
+void RotationSystem::resetCount()
+{
+	currentPosition = sf::Vector2i();
+	currentFace = 0;
 }

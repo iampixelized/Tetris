@@ -122,5 +122,18 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="asset\textures\blue_block.png" />
+    <Image Include="asset\textures\cyan_block.png" />
+    <Image Include="asset\textures\ghost_block.png" />
+    <Image Include="asset\textures\green_block.png" />
+    <Image Include="asset\textures\orange_block.png" />
+    <Image Include="asset\textures\sample.png" />
+    <Image Include="asset\textures\yellow_block.png" />
+    <Image Include="asset\textures\red_block.png" />
+    <Image Include="asset\textures\purple_block.png" />
+    <Image Include="asset\textures\marked_block.png" />
   </ItemGroup>
 </Project>

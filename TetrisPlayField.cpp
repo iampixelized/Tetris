@@ -9,6 +9,7 @@ using std::find;
 using std::min_element;
 
 #include "TetrisPlayField.hpp"
+#include "RotationSystem.hpp"
 #include "Tetromino.hpp"
 #include "Block.hpp"
 
@@ -199,6 +200,7 @@ void TetrisPlayField::shiftClearedRows()
 
 void TetrisPlayField::registerBlocks(Tetromino * t)
 {
+	if (t == nullptr) return;
 	cout << "Peak level is : " << getPeakLevel() << endl;
 
 	for (int i = 0; i < t->getBlockCount(); ++i)
@@ -212,6 +214,8 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 	}
 
 	searchClearedRows();
+	t->getRotationSystem()->resetCount();
+	t->resetMimic();
 }
 
 void TetrisPlayField::resetRows()

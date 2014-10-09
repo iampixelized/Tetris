@@ -10,6 +10,7 @@ using std::pair;
 #include "RandomGenerator.hpp"
 #include "TetrominoDropper.hpp"
 #include "TetrominoLayer.hpp"
+#include "TetrominoType.hpp"
 #include "DRS.hpp"
 
 GameApplication::GameApplication()
@@ -68,16 +69,12 @@ GameApplication::GameState GameApplication::gameLoop()
 {
 	bool pause = false;
 	DRS drs(*tpf.get()); // DTET Rotation System
-
-	
+		
 	TetrominoLayer tetrominoLayer(drs , assetManager);
-	TetrominoLayer ghostLayer(drs , assetManager);
 
 	TetrominoDropper dropper;
-	TetrominoDropper ghostDropper;
-
-	dropper.setDropInterval(0.8f); ghostDropper.setDropInterval(0.8f);
-	dropper.setLockInterval(0.5f); ghostDropper.setLockInterval(0.5f);
+	dropper.setDropInterval(0.8f);
+	dropper.setLockInterval(0.5f);
 
 	//tetrominoLayer.setDotPieces(3,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 	//tetrominoLayer.setDotPieces(4,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
@@ -100,9 +97,7 @@ GameApplication::GameState GameApplication::gameLoop()
 	//tetrominoLayer.setDotPieces(21, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
 	//tetrominoLayer.setDotPieces(22, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
 
-	Tetromino * tetromino = tetrominoLayer.spawnTetromino();	
-
-	//tetromino->setMimic(ghost);
+	Tetromino * tetromino = tetrominoLayer.spawnTetromino();
 	dropper.setTetromino(tetromino);
 
 	cout << "\n\n\n\n\n\n\n\nContent number of t-layer : " << tetrominoLayer.getSize() << endl;
@@ -157,8 +152,6 @@ GameApplication::GameState GameApplication::gameLoop()
 				{
 					return EXITING;
 				}
-
-				//ghostDropper.hardDrop(false);
 			}
 		}
 
@@ -168,21 +161,15 @@ GameApplication::GameState GameApplication::gameLoop()
 		{
 			tpf->registerBlocks(tetromino);
 			tetromino = tetrominoLayer.spawnTetromino();
-			dropper.setTetromino(tetromino); 
+			dropper.setTetromino(tetromino);
 		}
 
 		if (tpf->getClearedRowsSize() > 0)
 			tpf->shiftClearedRows();
 
 		tpf->drawGrid(&window);
-
-		ghostLayer.updateLayer(elapsed);
 		tetrominoLayer.updateLayer(elapsed);
-		
-		//dropper.update(elapsed);
-		//ghostDropper.update(elapsed);
-
-		ghostLayer.drawLayer(&window);
+		dropper.update(elapsed);
 		tetrominoLayer.drawLayer(&window);
 
 

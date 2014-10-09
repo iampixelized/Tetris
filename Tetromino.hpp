@@ -18,6 +18,17 @@ using std::make_pair;
 #include "ObjectLayer.hpp"
 #include "TetrominoType.hpp"
 
+/*
+	TO DO:
+		1. Reimplement Ghost Pieces
+		2. Finish SRS
+		3. Test SRS
+
+		Then(A MUST)
+		4. Do batch processing on single spritesheet
+		5. Review SFML tutorials on Vertex Arrays
+*/
+
 class RotationSystem;
 class Mechanics;
 
@@ -30,7 +41,6 @@ class Tetromino
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange, Ghost };
 		
 		virtual ~Tetromino();
-
 		RotationSystem * getRotationSystem();
 
 		void kick(int);
@@ -69,6 +79,7 @@ class Tetromino
 
 		void setMimic(Tetromino * mimic);
 		Tetromino * getMimic() const;
+		void resetMimic();
 		bool isGarbageCollectible();
 
 	protected:

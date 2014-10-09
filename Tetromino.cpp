@@ -7,13 +7,6 @@ using std::boolalpha;
 #include "Tetromino.hpp"
 #include "RotationSystem.hpp"
 
-// NOTE: Next stop, determine first the immediate height and the blocks at those
-// particular heights then do the gradual drop, ghost piece, hard drop, soft drop.
-
-// TO DO:
-//    1. Preserve TetrominoKicker and find a way to make DRS/SRS class
-//       return positions when checkKick()
-
 int Tetromino::id_generator = 0;
 
 Tetromino::Tetromino
@@ -401,22 +394,18 @@ bool Tetromino::checkPosition(const sf::Vector2i & ppos)
 	return true;
 }
 
-int Tetromino::getBlockCount() const
-{
-	return blockCount;
-}
+int Tetromino::getBlockCount() const{ return blockCount; }
 
-void Tetromino::setMimic(Tetromino * t)
-{
-	mimic = t;
-}
+void Tetromino::setMimic(Tetromino * t){ mimic = t;}
 
-Tetromino * Tetromino::getMimic() const
-{
-	return mimic;
-}
+Tetromino * Tetromino::getMimic() const{ return mimic; }
 
-bool Tetromino::isGarbageCollectible()
+bool Tetromino::isGarbageCollectible(){ return false; }
+
+void Tetromino::resetMimic()
 {
-	return false;
+	if (mimic == nullptr) return;
+
+	mimic->setGridPosition(sf::Vector2i(3,2));
+	mimic->setRotation(0);
 }

@@ -53,7 +53,7 @@ SRS * SRS::getStandard()
 
 void SRS::setConfiguration(int type)
 {
-	RotationSystem::reset();
+	RotationSystem::resetConfigurations();
 
 }
 

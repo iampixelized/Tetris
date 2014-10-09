@@ -35,7 +35,7 @@ DRS * DRS::getStandard()
 
 void DRS::setConfiguration(int type)
 {
-	RotationSystem::reset();
+	RotationSystem::resetConfigurations();
 
 	if (type == TetrominoType::S)
 	{
