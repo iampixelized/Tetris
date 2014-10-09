@@ -6,7 +6,6 @@ using std::vector;
 
 #include <memory>
 using std::unique_ptr;
-using std::make_unique;
 
 #include<map>
 using std::map;
@@ -17,6 +16,7 @@ using std::make_pair;
 #include "Block.hpp"
 #include "ObjectLayer.hpp"
 #include "TetrominoType.hpp"
+#include "RotationSystem.hpp"
 
 /*
 	TO DO:
@@ -29,15 +29,13 @@ using std::make_pair;
 		5. Review SFML tutorials on Vertex Arrays
 */
 
-class RotationSystem;
 class Mechanics;
 
 class Tetromino
 {
 	public:
 
-		typedef unique_ptr<Block> BlockPtr;
-
+		typedef unique_ptr<RotationSystem> RPtr;
 		enum BlockColor{ Cyan, Yellow, Purple, Green, Red, Blue, Orange, Ghost };
 		
 		virtual ~Tetromino();
@@ -63,7 +61,7 @@ class Tetromino
 
 		TetrominoType getType() const;
 		const vector<sf::Vector2i> & getCurrentConfiguration() const;
-		static Tetromino * createTetromino(TetrominoType, BlockColor, RotationSystem &, esc::AssetManager &);
+		static Tetromino * createTetromino(TetrominoType, BlockColor, RPtr, esc::AssetManager &);
 
 		void update(float);
 		void draw(sf::RenderWindow *);
@@ -75,7 +73,7 @@ class Tetromino
 		bool checkRotation(int);
 		bool checkMovement(int);
 		bool checkPosition(const sf::Vector2i &);
-		int getBlockCount() const;
+		size_t getBlockCount() const;
 
 		void setMimic(Tetromino * mimic);
 		Tetromino * getMimic() const;
@@ -88,7 +86,7 @@ class Tetromino
 		(
 			  TetrominoType
 			, BlockColor
-			, RotationSystem &
+			, RPtr
 			, esc::AssetManager &
 		);
 
@@ -105,7 +103,7 @@ class Tetromino
 		int blockRotationCount;
 
 		Tetromino * mimic;
-		RotationSystem * rotationSystem;
+		RPtr rotationSystem;
 		TetrominoType type;
 		BlockColor color;
 		vector<sf::Vector2i> blockPositions;

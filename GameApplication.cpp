@@ -68,35 +68,13 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 GameApplication::GameState GameApplication::gameLoop()
 {
 	bool pause = false;
-	DRS drs(*tpf.get()); // DTET Rotation System
 		
-	TetrominoLayer tetrominoLayer(drs , assetManager);
+	TetrominoLayer tetrominoLayer(Tetromino::RPtr(new DRS(*tpf.get())) , assetManager);
 
 	TetrominoDropper dropper;
 	dropper.setDropInterval(0.8f);
 	dropper.setLockInterval(0.5f);
-
-	//tetrominoLayer.setDotPieces(3,  { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(4,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(5,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(6,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrominoLayer.setDotPieces(7,  { 1, 1, 0, 0, 0, 0, 0, 0, 1, 1 });
-	//tetrominoLayer.setDotPieces(8,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(9,  { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(10, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(11, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(12, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(13, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(14, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(15, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(16, { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(17, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-	//tetrominoLayer.setDotPieces(18, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(19, { 1, 0, 0, 1, 1, 1, 1, 0, 0, 1 });
-	//tetrominoLayer.setDotPieces(20, { 1, 0, 0, 1, 1, 1, 1, 0, 1, 0 });
-	//tetrominoLayer.setDotPieces(21, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 });
-	//tetrominoLayer.setDotPieces(22, { 1, 0, 1, 1, 1, 1, 1, 1, 0, 1 });
-
+	
 	Tetromino * tetromino = tetrominoLayer.spawnTetromino();
 	dropper.setTetromino(tetromino);
 

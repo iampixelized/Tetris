@@ -3,9 +3,11 @@ using std::cout;
 using std::endl;
 using std::boolalpha;
 
+#include<utility>
+using std::move;
+
 #include "ObjectLayer.hpp"
 #include "Tetromino.hpp"
-#include "RotationSystem.hpp"
 
 int Tetromino::id_generator = 0;
 
@@ -13,13 +15,13 @@ Tetromino::Tetromino
 	(
 		TetrominoType		ttype
 		, BlockColor		bc
-		, RotationSystem	& rs
+		, RPtr rs
 		, esc::AssetManager	& am
 	)
 	:
 	  blockRotationCount(0)
 	, mimic(nullptr)
-	, rotationSystem(&rs)
+	, rotationSystem(std::move(rs))
 	, type(ttype)
 	, color(bc)
 	, _isLocked(false)
@@ -27,7 +29,6 @@ Tetromino::Tetromino
 	, face(0)
 	, playField(rotationSystem->getTetrisPlayField())
 	, moveCount(sf::Vector2i(3,0))
-	, blockCount(0)
 {
 	rotationSystem->setConfiguration(ttype);
 	string spriteName;
@@ -64,20 +65,15 @@ Tetromino::Tetromino
 	}
 
 	move(sf::Vector2i(0,2));
-	blockCount = blocks.getSize();
-
 	rotationSystem->updateCurrentPosition(moveCount);
 	rotationSystem->updateCurrentFace(face);
 }
 
-Tetromino::~Tetromino()
-{
-
-}
+Tetromino::~Tetromino(){}
 
 RotationSystem * Tetromino::getRotationSystem()
 {
-	return rotationSystem;
+	return rotationSystem.get();
 }
 
 void Tetromino::kick(int rd)
@@ -244,11 +240,11 @@ Tetromino * Tetromino::createTetromino
 	(
 		  TetrominoType ttype
 		, Tetromino::BlockColor bc
-		, RotationSystem	& rs
+		, RPtr rs
 		, esc::AssetManager & am
 	)
 {
-	return new Tetromino(ttype, bc, rs, am);
+	return new Tetromino(ttype, bc, std::move(rs), am);
 }
 
 void Tetromino::updatePalette(const vector<sf::Vector2i> &pos)
@@ -394,13 +390,13 @@ bool Tetromino::checkPosition(const sf::Vector2i & ppos)
 	return true;
 }
 
-int Tetromino::getBlockCount() const{ return blockCount; }
+size_t Tetromino::getBlockCount() const{ return blocks.getSize(); }
 
 void Tetromino::setMimic(Tetromino * t){ mimic = t;}
 
 Tetromino * Tetromino::getMimic() const{ return mimic; }
 
-bool Tetromino::isGarbageCollectible(){ return false; }
+bool Tetromino::isGarbageCollectible(){ return blocks.getSize() == 0; }
 
 void Tetromino::resetMimic()
 {

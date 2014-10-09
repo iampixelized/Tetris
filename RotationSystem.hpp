@@ -25,9 +25,12 @@ class RotationSystem
 	};
 
 	public:
+	
+		virtual ~RotationSystem();
 
 		virtual void setConfiguration(int) = 0;
 		virtual sf::Vector2i getCorrectPosition(int) = 0;
+		virtual RotationSystem * createNewInstance() = 0;
 
 		const vector<sf::Vector2i> & getBlockConfiguration(int);
 		const vector<sf::Vector2i> & getBlockNextConfiguration(int);
@@ -54,7 +57,6 @@ class RotationSystem
 
 		BlockConfigurations bConfig;
 		RotationSystem(const string & , TetrisPlayField &);
-		virtual ~RotationSystem();
 		void resetConfigurations();
 
 		bool checkProjectedPosition(const sf::Vector2i &, int);

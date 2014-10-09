@@ -27,6 +27,7 @@ class DRS : public RotationSystem
 		virtual DRS * getStandard();
 		virtual void setConfiguration(int);
 		virtual sf::Vector2i getCorrectPosition(int);
+		virtual DRS * createNewInstance();
 
 		int getSpawningPosition(int);
 

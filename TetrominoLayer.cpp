@@ -2,19 +2,24 @@
 using std::next_permutation;
 using std::random_shuffle;
 
+#include<utility>
+using std::move;
+
 #include "RotationSystem.hpp"
 #include "TetrominoLayer.hpp"
 #include "RandomGenerator.hpp"
 
-TetrominoLayer::TetrominoLayer(RotationSystem & rs, esc::AssetManager &am)
+TetrominoLayer::TetrominoLayer(Tetromino::RPtr rs, esc::AssetManager &am)
 	:
-	tetrisPlayField(rs.getTetrisPlayField())
-	, rotationSystem(&rs)
+	  rotationSystem(std::move(rs))
+	, tetrisPlayField(rotationSystem->getTetrisPlayField())
 	, assetManager(&am)
 	, spawnCount(0)
 	, pcount(0)
 {
-	cout << "Tetris playfield was established:" << endl;
+	tetrisPlayField = rotationSystem->getTetrisPlayField();
+
+	cout << "Tetris playfield was established : " << endl;
 	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y << endl;
 	cout << "Offset     : " << tetrisPlayField->getGridOffset() << endl;
 	cout << "Position   : " << tetrisPlayField->getPosition().x << " " << tetrisPlayField->getPosition().y << endl;
@@ -46,7 +51,7 @@ Tetromino * TetrominoLayer::spawnTetromino()
 		(  
 		    bag[spawnCount]
 	      , getRandomColor()
-		  , *rotationSystem
+		  , std::move(Tetromino::RPtr(rotationSystem->createNewInstance()))
 		  , *assetManager
 		);
 
@@ -56,24 +61,9 @@ Tetromino * TetrominoLayer::spawnTetromino()
 	return currentTetromino;
 }
 
-void TetrominoLayer::setDotPieces(int line, const vector<int> & pieceLine)
+Tetromino * TetrominoLayer::spawnTetromino(TetrominoType type, Tetromino::BlockColor color)
 {
-	for (size_t i = 0; i < pieceLine.size(); ++i)
-	{
-		if (pieceLine[i] <= 0) continue;
-
-		Tetromino * tetromino = Tetromino::createTetromino
-			(
-				TetrominoType::DOT
-				, getRandomColor()
-				, *rotationSystem
-				, *assetManager
-			);
-
-		TLAYER::addNewObject(tetromino);
-		tetromino->setGridPosition(sf::Vector2i(i, line));
-		tetrisPlayField->registerBlocks(tetromino);
-	}
+	return Tetromino::createTetromino(type, color, std::move(Tetromino::RPtr(rotationSystem->createNewInstance())), *assetManager);
 }
 
 void TetrominoLayer::permutateBag()

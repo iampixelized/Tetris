@@ -55,7 +55,7 @@ void Block::markCleared()
 
 bool Block::isGarbageCollectible()
 {
-	return false;
+	return _isCleared;
 }
 
 int Block::getID() const

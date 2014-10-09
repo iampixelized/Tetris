@@ -21,11 +21,11 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 
 	public:
 
-		TetrominoLayer(RotationSystem &, esc::AssetManager &);
+		TetrominoLayer(Tetromino::RPtr , esc::AssetManager &);
 		virtual ~TetrominoLayer();
 
 		Tetromino * spawnTetromino();
-		void setDotPieces(int, const vector<int> &);
+		Tetromino * spawnTetromino(TetrominoType , Tetromino::BlockColor);
 		void permutateBag();
 		
 	private:
@@ -33,7 +33,7 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		void randomizeBag();
 		Tetromino::BlockColor getRandomColor();
 
-		RotationSystem * rotationSystem;
+		Tetromino::RPtr rotationSystem;
 		TetrisPlayField * tetrisPlayField;
 		esc::AssetManager * assetManager;
 		Tetromino * currentTetromino;

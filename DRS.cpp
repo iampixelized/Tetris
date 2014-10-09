@@ -223,3 +223,8 @@ sf::Vector2i DRS::getCorrectPosition(int dir)
 
 	return sf::Vector2i();
 }
+
+DRS * DRS::createNewInstance()
+{
+	return new DRS(*RotationSystem::getTetrisPlayField());
+}

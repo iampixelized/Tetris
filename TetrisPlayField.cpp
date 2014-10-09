@@ -249,9 +249,12 @@ void TetrisPlayField::removeRow(int row)
 
 	if (iter == blockGrid.end())
 		return;
+
+	for (Block * b : *iter)
+		b->markCleared();
 	
 	blockGrid.erase(iter);
-	blockGrid.insert(blockGrid.begin(), vector<Block*>(10, nullptr));
+	blockGrid.insert(blockGrid.begin() , vector<Block*>(10, nullptr));
 }
 
 bool TetrisPlayField::isTopLevelOccupied() const
