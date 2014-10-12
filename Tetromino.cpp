@@ -84,7 +84,9 @@ void Tetromino::kick(int rd)
 		else rotateRight();
 
 		move(kickPos);
+		updateMimic();
 		kickPos = sf::Vector2i();
+		
 	}
 }
 
@@ -273,7 +275,6 @@ void Tetromino::updateMimic()
 		sf::Vector2f pos = blocks.getObject(i)->getPosition();
 		mimic->getBlock(i)->setPosition(pos);
 	}
-
 }
 
 void Tetromino::update(float e)
@@ -397,11 +398,3 @@ void Tetromino::setMimic(Tetromino * t){ mimic = t;}
 Tetromino * Tetromino::getMimic() const{ return mimic; }
 
 bool Tetromino::isGarbageCollectible(){ return blocks.getSize() == 0; }
-
-void Tetromino::resetMimic()
-{
-	if (mimic == nullptr) return;
-
-	mimic->setGridPosition(sf::Vector2i(3,2));
-	mimic->setRotation(0);
-}

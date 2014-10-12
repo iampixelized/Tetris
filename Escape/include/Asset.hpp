@@ -1,6 +1,9 @@
 #ifndef ASSET_HPP
 #define ASSET_HPP
 
+#include<fstream>
+using std::ifstream;
+
 #include<map>
 using std::map;
 using std::pair;
@@ -26,20 +29,30 @@ namespace esc
 		protected:
 
 			typedef map<string, unique_ptr<T>> AssetLibrary;
+			typedef map<string, string> AssetDefinition;
 			typedef function<T*(const string &)> LoadMethod;
 
 			AssetLibrary library;
-		
+			AssetDefinition paths;
+			
 		public:
 
 			explicit Asset(const LoadMethod &);
 			virtual ~Asset();
 
-			bool loadFromFile(const string & oname, const string & path);
-			bool deleteFromAssetLibrary(const string &aname);
+			bool checkAllAssets();
+
+			void addPath(const string & , const string &);
+			string getPath(const string &);
+
+			bool loadFromFile(const string &, const string &);
+			bool deleteFromAssetLibrary(const string &);
+			bool deleteDefinition(const string &);
 
 			size_t getSize() const;
 			virtual T * getResource(const string &);
+
+			bool isLoaded(const string &);
 			bool isResource(const string &) const;
 
 		private:
@@ -49,15 +62,39 @@ namespace esc
 
 	template<class T>
 	Asset<T>::Asset(const LoadMethod &_m)
-		: loadMethod(_m)
-	{
+		: loadMethod(_m){}
 
+	template<class T>
+	Asset<T>::~Asset(){}
+	
+	template<class T>
+	bool Asset<T>::checkAllAssets()
+	{
+		for (pair<string, string> p : paths)
+		{
+			ifstream f(p.second.c_str());
+
+			if (!f.good())
+				return false;
+
+			f.close();
+		}
+
+		return true;
 	}
 
 	template<class T>
-	Asset<T>::~Asset()
+	void Asset<T>::addPath(const string &oname, const string &path)
 	{
-	
+		paths.insert(pair<string, string>(oname, path));
+	}
+
+	template<class T>
+	string Asset<T>::getPath(const string &oname)
+	{
+		if (!isResource(oname)) return "";
+
+		return paths[oname];
 	}
 
 	template<class T>
@@ -65,7 +102,8 @@ namespace esc
 	{
 		if(T * asset = loadMethod(path))
 		{
-			library.insert(pair<string, unique_ptr<T>>(oname, unique_ptr<T>(asset)));
+			library[oname] = unique_ptr<T>(asset);
+			paths.insert(pair<string, string>(oname,path));
 			return true;
 		}
 
@@ -77,6 +115,18 @@ namespace esc
 	{
 		if (!isResource(oname)) return false;
 		library.erase(oname);
+
+		return true;
+	}
+
+	template<class T>
+	bool Asset<T>::deleteDefinition(const string &oname)
+	{
+		if (!isResource(oname)) return false;
+
+		library.erase(oname);
+		definition.erase(oname);
+
 		return true;
 	}
 
@@ -89,18 +139,24 @@ namespace esc
 	template<class T>
 	T * Asset<T>::getResource(const string &oname)
 	{
+		if (!isLoaded(oname) && isResource(oname))
+			loadFromFile(oname , paths[oname]); 
+
 		return (isResource(oname)) ? library[oname].get() : nullptr;
+	}
+	
+	template<class T>
+	bool Asset<T>::isLoaded(const string & oname) 
+	{
+		if (!isResource(oname)) return false;
+
+		return library[oname].get() != nullptr;
 	}
 
 	template<class T>
 	bool Asset<T>::isResource(const string & oname) const
 	{
-		auto iter = library.find(oname);
-
-		if (iter == library.end())
-			return false;
-
-		return true;
+		return (paths.find(oname) != paths.end())? true : false;
 	}
 }
 

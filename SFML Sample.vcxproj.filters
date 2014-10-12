@@ -53,6 +53,9 @@
     <ClCompile Include="SRS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mimic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApplication.hpp">
@@ -116,6 +119,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TetrominoType.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mimic.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

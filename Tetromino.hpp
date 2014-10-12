@@ -20,7 +20,6 @@ using std::make_pair;
 
 /*
 	TO DO:
-		1. Reimplement Ghost Pieces
 		2. Finish SRS
 		3. Test SRS
 
@@ -77,7 +76,6 @@ class Tetromino
 
 		void setMimic(Tetromino * mimic);
 		Tetromino * getMimic() const;
-		void resetMimic();
 		bool isGarbageCollectible();
 
 	protected:

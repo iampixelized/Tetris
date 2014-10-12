@@ -78,19 +78,29 @@ namespace esc
 
 	bool Object::changeObject(const string & oname)
 	{
-		IAsset * tmpHndlr = assetManager->getAsset("Textures");
+		sprite.setPosition(position);
 
-		if (tmpHndlr != nullptr)
+		if (IAsset * tmpHndlr = assetManager->getAsset("Textures"))
 		{
 			textureHandler = dynamic_cast<Asset<sf::Texture>*>(tmpHndlr);
-			
-			if (textureHandler->isResource(oname))
+
+			if (!textureHandler->isResource(oname))
+				return false;
+
+			if (sf::Texture * tmp = textureHandler->getResource(oname))
 			{
-				texture = *textureHandler->getResource(oname);
+				cout << "\nFUCKING RESOURCE : " << oname << " : " << textureHandler->getResource(oname) << endl;
+
+				texture = *tmp;
 				sprite.setTexture(texture);
-				sprite.setPosition(position);
 				return true;
 			}
+			else 
+			{
+				cout << "FUCKING RESOURCE not loaded properly." << endl;
+			}
+
+			return false;
 		}
 
 		return false;

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DRS.cpp" />
+    <ClCompile Include="Mimic.cpp" />
     <ClCompile Include="Escape\src\AssetManager.cpp" />
     <ClCompile Include="Escape\src\Object.cpp" />
     <ClCompile Include="Escape\src\RandomGenerator.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Escape\include\IUpdatableObject.hpp" />
     <ClInclude Include="GameApplication.hpp" />
     <ClInclude Include="Block.hpp" />
+    <ClInclude Include="Mimic.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrisPlayFieldBackground.hpp" />

@@ -18,12 +18,6 @@ TetrominoLayer::TetrominoLayer(Tetromino::RPtr rs, esc::AssetManager &am)
 	, pcount(0)
 {
 	tetrisPlayField = rotationSystem->getTetrisPlayField();
-
-	cout << "Tetris playfield was established : " << endl;
-	cout << "Field Size : " << tetrisPlayField->getFieldSize().x << " " << tetrisPlayField->getFieldSize().y << endl;
-	cout << "Offset     : " << tetrisPlayField->getGridOffset() << endl;
-	cout << "Position   : " << tetrisPlayField->getPosition().x << " " << tetrisPlayField->getPosition().y << endl;
-
 	permutateBag();
 	randomizeBag();
 	random.seed();
@@ -63,7 +57,10 @@ Tetromino * TetrominoLayer::spawnTetromino()
 
 Tetromino * TetrominoLayer::spawnTetromino(TetrominoType type, Tetromino::BlockColor color)
 {
-	return Tetromino::createTetromino(type, color, std::move(Tetromino::RPtr(rotationSystem->createNewInstance())), *assetManager);
+	currentTetromino = Tetromino::createTetromino(type, color, std::move(Tetromino::RPtr(rotationSystem->createNewInstance())), *assetManager);
+	TLAYER::addNewObject(currentTetromino);
+
+	return currentTetromino;
 }
 
 void TetrominoLayer::permutateBag()
@@ -77,7 +74,7 @@ void TetrominoLayer::permutateBag()
 	}
 	while (next_permutation(tets.begin(), tets.end()));
 
-	//random_shuffle(possiblePermutations.begin(), possiblePermutations.end(), possiblePermutations);
+	random_shuffle(possiblePermutations.begin(), possiblePermutations.end());
 }
 
 void TetrominoLayer::randomizeBag()

@@ -24,6 +24,7 @@ namespace esc
 
 	typedef unique_ptr<IAsset> IAssetType;
 	typedef map<string, IAssetType> AssetContainer;
+	typedef map<string, string> Definition;
 
 	public:
 
@@ -42,6 +43,7 @@ namespace esc
 	private:
 
 		AssetContainer a_container;
+		Definition definition;
 	};
 }
 

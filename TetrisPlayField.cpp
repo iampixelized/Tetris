@@ -203,7 +203,7 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 	if (t == nullptr) return;
 	cout << "Peak level is : " << getPeakLevel() << endl;
 
-	for (int i = 0; i < t->getBlockCount(); ++i)
+	for (size_t i = 0; i < t->getBlockCount(); ++i)
 	{
 		if (Block * block = t->getBlock(i))
 		{
@@ -215,7 +215,9 @@ void TetrisPlayField::registerBlocks(Tetromino * t)
 
 	searchClearedRows();
 	t->getRotationSystem()->resetCount();
-	t->resetMimic();
+
+	if (t->getMimic() != nullptr)
+		t->getMimic()->getRotationSystem()->resetCount();
 }
 
 void TetrisPlayField::resetRows()
