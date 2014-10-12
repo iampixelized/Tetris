@@ -89,15 +89,10 @@ namespace esc
 
 			if (sf::Texture * tmp = textureHandler->getResource(oname))
 			{
-				cout << "\nFUCKING RESOURCE : " << oname << " : " << textureHandler->getResource(oname) << endl;
-
+				
 				texture = *tmp;
 				sprite.setTexture(texture);
 				return true;
-			}
-			else 
-			{
-				cout << "FUCKING RESOURCE not loaded properly." << endl;
 			}
 
 			return false;
