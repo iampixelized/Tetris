@@ -34,9 +34,6 @@ namespace esc
 		void enable(bool);
 		bool isEnabled() const;
 
-		virtual void onDeath(){};  // no implementation yet
-		virtual void onCreate(){}; // no implementation yet
-
 		virtual void perceiveLayer(ILayer &);
 		ILayer * getPerceivedLayer() const;
 		bool changeObject(const string &);

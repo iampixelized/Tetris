@@ -1,32 +1,14 @@
 #ifndef TETROMINO_HPP
 #define TETROMINO_HPP
 
-#include<vector>
-using std::vector;
-
 #include <memory>
 using std::unique_ptr;
-
-#include<map>
-using std::map;
-using std::pair;
-using std::make_pair;
 
 #include "TetrisPlayField.hpp"
 #include "Block.hpp"
 #include "ObjectLayer.hpp"
 #include "TetrominoType.hpp"
 #include "RotationSystem.hpp"
-
-/*
-	TO DO:
-		2. Finish SRS
-		3. Test SRS
-
-		Then(A MUST)
-		4. Do batch processing on single spritesheet
-		5. Review SFML tutorials on Vertex Arrays
-*/
 
 class Mechanics;
 

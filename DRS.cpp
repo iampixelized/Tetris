@@ -192,24 +192,12 @@ void DRS::setConfiguration(int type)
 int DRS::getSpawningPosition(int type)
 {
 	//S = 1, Z, J, L, I, O, T, DOT
-	if (	   type == TetrominoType::S  
-			|| type == TetrominoType::Z
-			|| type == TetrominoType::J
-			|| type == TetrominoType::L
-			|| type == TetrominoType::O
-			|| type == TetrominoType::T
-		)
-		
-		return 1;
-
-	else if (type == TetrominoType::I)
-		return 2;
-
-	return 0;
+	return (type != TetrominoType::I)? 1 : 2;
 }
 
-sf::Vector2i DRS::getCorrectPosition(int dir)
+sf::Vector2i DRS::getCorrectPosition(int d)
 {	
+	int dir = (d <= 0)? -1 : 1;
 	sf::Vector2i kickPosition;
 	int cface = RotationSystem::getCurrentFace() + (90*dir);
  

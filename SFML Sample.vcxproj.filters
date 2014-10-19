@@ -142,4 +142,7 @@
     <Image Include="asset\textures\purple_block.png" />
     <Image Include="asset\textures\marked_block.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="To Do.txt" />
+  </ItemGroup>
 </Project>

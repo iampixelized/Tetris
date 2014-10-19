@@ -103,10 +103,17 @@ bool RotationSystem::checkProjectedPosition(const sf::Vector2i & ppos, int r)
 	{
 		sf::Vector2i npos = rotations[i] + currentPosition + ppos;
 
+		cout << "\nChecking : " << npos.x << ' ' << npos.y;
+
 		if (RotationSystem::getTetrisPlayField()->isActive(npos))
+		{
+			cout << " -- Active" << endl;
 			return false;
+		}
 	}
 
+
+	cout << endl;
 	return true;
 }
 

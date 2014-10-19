@@ -13,8 +13,8 @@ int Tetromino::id_generator = 0;
 
 Tetromino::Tetromino
 	(
-		TetrominoType		ttype
-		, BlockColor		bc
+		TetrominoType ttype
+		, BlockColor bc
 		, RPtr rs
 		, esc::AssetManager	& am
 	)
@@ -86,7 +86,6 @@ void Tetromino::kick(int rd)
 		move(kickPos);
 		updateMimic();
 		kickPos = sf::Vector2i();
-		
 	}
 }
 
@@ -118,10 +117,6 @@ void Tetromino::rotateLeft()
 	face = blockRotationCount * 90;
 	updatePalette(blockPositions);
 	updateMimic();
-
-	//cout << endl;
-	//cout << "Face      : " << face << endl;
-	//cout << "Next face : " << face + 90 << endl;
 }
 
 void Tetromino::rotateRight()
@@ -148,11 +143,6 @@ void Tetromino::rotateRight()
 	face = blockRotationCount * 90;
 	updatePalette(blockPositions);
 	updateMimic();
-
-	//cout << endl;
-	//cout << "Face      : " << face << endl;
-	//cout << "Next face : " << face + 90 << endl;
-	//cout << "Count     : " << blockRotationCount << endl;
 }
 
 void Tetromino::setRotation(int f)
@@ -209,8 +199,6 @@ void Tetromino::moveRight()
 
 	updateMimic();
 	rotationSystem->updateCurrentPosition(moveCount);
-
-	//cout << "Moving (RIGHT): " << moveCount << endl;
 }
 
 void Tetromino::moveLeft()
@@ -224,8 +212,6 @@ void Tetromino::moveLeft()
 
 	updateMimic();
 	rotationSystem->updateCurrentPosition(moveCount);
-
-	//cout << "Moving (LEFT): " << moveCount << endl;
 }
 
 TetrominoType Tetromino::getType() const
