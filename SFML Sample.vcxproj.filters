@@ -47,13 +47,13 @@
     <ClCompile Include="TetrominoDropper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TetrominoLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SRS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mimic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TetrominoFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,9 +74,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Block.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TetrominoLayer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Escape\include\Asset.hpp">
@@ -122,6 +119,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mimic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TetrominoFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

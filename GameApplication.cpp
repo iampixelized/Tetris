@@ -9,7 +9,8 @@ using std::pair;
 #include "GameApplication.hpp"
 #include "RandomGenerator.hpp"
 #include "TetrominoDropper.hpp"
-#include "TetrominoLayer.hpp"
+#include "ObjectLayer.hpp"
+#include "TetrominoFactory.hpp"
 #include "TetrominoType.hpp"
 #include "Mimic.hpp"
 #include "DRS.hpp"
@@ -70,15 +71,19 @@ sf::Texture * GameApplication::loadTextureFromFile(const string & path)
 GameApplication::GameState GameApplication::gameLoop()
 {
 	bool pause = false;
-		
-	TetrominoLayer tetrominoLayer(Tetromino::RPtr(new SRS(*tpf.get())), assetManager);
-	Mimic mimic(Tetromino::RPtr(new SRS(*tpf.get())), assetManager);
+
+	//
+	esc::ObjectLayer<Tetromino> tetrominoLayer;
+	//
+
+	TetrominoFactory tetrominoFactory(tetrominoLayer, Tetromino::RPtr(new SRS(*tpf.get())), assetManager);
+	Mimic mimic(tetrominoLayer, Tetromino::RPtr(new SRS(*tpf.get())), assetManager);
 
 	TetrominoDropper dropper;
 	dropper.setDropInterval(0.8f); 
 	dropper.setLockInterval(0.5f);
 	
-	Tetromino * tetromino = tetrominoLayer.spawnTetromino();
+	Tetromino * tetromino = tetrominoFactory.spawnTetromino();
 	dropper.setTetromino(tetromino);
 	mimic.initialize(tetromino);
 
@@ -145,7 +150,7 @@ GameApplication::GameState GameApplication::gameLoop()
 		if (tetromino->isLocked())
 		{
 			tpf->registerBlocks(tetromino);
-			tetromino = tetrominoLayer.spawnTetromino();
+			tetromino = tetrominoFactory.spawnTetromino();
 			dropper.setTetromino(tetromino);
 			mimic.initialize(tetromino);
 		}

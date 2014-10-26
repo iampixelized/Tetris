@@ -6,16 +6,17 @@ using std::random_shuffle;
 using std::move;
 
 #include "RotationSystem.hpp"
-#include "TetrominoLayer.hpp"
+#include "TetrominoFactory.hpp"
 #include "RandomGenerator.hpp"
 
-TetrominoLayer::TetrominoLayer(Tetromino::RPtr rs, esc::AssetManager &am)
+TetrominoFactory::TetrominoFactory(TLAYER & l, Tetromino::RPtr rs, esc::AssetManager &am)
 	:
 	  rotationSystem(std::move(rs))
 	, tetrisPlayField(rotationSystem->getTetrisPlayField())
 	, assetManager(&am)
 	, spawnCount(0)
 	, pcount(0)
+	, layer(&l)
 {
 	tetrisPlayField = rotationSystem->getTetrisPlayField();
 	permutateBag();
@@ -23,9 +24,9 @@ TetrominoLayer::TetrominoLayer(Tetromino::RPtr rs, esc::AssetManager &am)
 	random.seed();
 }
 
-TetrominoLayer::~TetrominoLayer(){}
+TetrominoFactory::~TetrominoFactory(){}
 
-Tetromino * TetrominoLayer::spawnTetromino()
+Tetromino * TetrominoFactory::spawnTetromino()
 {
 	if ( (unsigned) pcount >= possiblePermutations.size())
 	{
@@ -49,21 +50,21 @@ Tetromino * TetrominoLayer::spawnTetromino()
 		  , *assetManager
 		);
 
-	TLAYER::addNewObject(currentTetromino);
+	layer->addNewObject(currentTetromino);
 	spawnCount++;
 
 	return currentTetromino;
 }
 
-Tetromino * TetrominoLayer::spawnTetromino(TetrominoType type, Tetromino::BlockColor color)
+Tetromino * TetrominoFactory::spawnTetromino(TetrominoType type, Tetromino::BlockColor color)
 {
 	currentTetromino = Tetromino::createTetromino(type, color, std::move(Tetromino::RPtr(rotationSystem->createNewInstance())), *assetManager);
-	TLAYER::addNewObject(currentTetromino);
+	layer->addNewObject(currentTetromino);
 
 	return currentTetromino;
 }
 
-void TetrominoLayer::permutateBag()
+void TetrominoFactory::permutateBag()
 {
 	possiblePermutations.clear();
 
@@ -77,7 +78,7 @@ void TetrominoLayer::permutateBag()
 	random_shuffle(possiblePermutations.begin(), possiblePermutations.end());
 }
 
-void TetrominoLayer::randomizeBag()
+void TetrominoFactory::randomizeBag()
 {
 	bag.clear();
 	spawnCount = 0;
@@ -108,7 +109,7 @@ void TetrominoLayer::randomizeBag()
 	}
 }
 
-Tetromino::BlockColor TetrominoLayer::getRandomColor()
+Tetromino::BlockColor TetrominoFactory::getRandomColor()
 {
 	int crange = random.randomIntWithinRange(0, 6);	
 	return static_cast<Tetromino::BlockColor>(crange);

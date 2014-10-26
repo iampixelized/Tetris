@@ -3,7 +3,8 @@
 
 #include "IUpdatableObject.hpp"
 #include "IDrawableObject.hpp"
-#include "TetrominoLayer.hpp"
+#include "TetrominoFactory.hpp"
+#include "ObjectLayer.hpp"
 
 #include "Tetromino.hpp"
 #include "TetrominoDropper.hpp"
@@ -12,7 +13,7 @@ class Mimic : public esc::IUpdatableObject , esc::IDrawableObject
 {
 	public:
 		
-		Mimic(Tetromino::RPtr rptr , esc::AssetManager&);
+		Mimic(esc::ObjectLayer<Tetromino> &, Tetromino::RPtr rptr , esc::AssetManager&);
 		virtual ~Mimic();
 
 		void initialize(Tetromino * t);
@@ -25,7 +26,8 @@ class Mimic : public esc::IUpdatableObject , esc::IDrawableObject
 	private:
 		
 		Tetromino * ghost;
-		TetrominoLayer layer;
+		TetrominoFactory factory;
+		TetrominoFactory::TLAYER * layer;
 		TetrominoDropper dropper;
 };
 

@@ -90,7 +90,7 @@ void SRS::setConfiguration(int type)
 			RotationSystem::bConfig._0Config   = { sf::Vector2i(0, 1), sf::Vector2i(1, 1), sf::Vector2i(1, 0), sf::Vector2i(2, 0) };
 			RotationSystem::bConfig._90Config  = { sf::Vector2i(1, 0), sf::Vector2i(1, 1), sf::Vector2i(2, 1), sf::Vector2i(2, 2) };
 			RotationSystem::bConfig._180Config = { sf::Vector2i(0, 2), sf::Vector2i(1, 2), sf::Vector2i(1, 1), sf::Vector2i(2, 1) };
-			RotationSystem::bConfig._270Config = { sf::Vector2i(1, 0), sf::Vector2i(1, 1), sf::Vector2i(0, 1), sf::Vector2i(0, 2) };
+			RotationSystem::bConfig._270Config = { sf::Vector2i(0, 0), sf::Vector2i(0, 1), sf::Vector2i(1, 1), sf::Vector2i(1, 2) };
 			break;
 
 		case TetrominoType::T:

@@ -22,7 +22,7 @@ using std::unique_ptr;
 namespace esc
 {
 	template<class MANAGEDTYPE>
-	class ObjectLayer : protected MANAGEDTYPE , public ILayer
+	class ObjectLayer : private MANAGEDTYPE , public ILayer
 	{
 
 	using MANAGEDTYPE::update;

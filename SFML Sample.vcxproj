@@ -33,7 +33,7 @@
     <ClCompile Include="TetrominoDropper.cpp" />
     <ClCompile Include="TetrisPlayField.cpp" />
     <ClCompile Include="Tetromino.cpp" />
-    <ClCompile Include="TetrominoLayer.cpp" />
+    <ClCompile Include="TetrominoFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DRS.hpp" />
@@ -54,7 +54,7 @@
     <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrisPlayFieldBackground.hpp" />
     <ClInclude Include="TetrominoDropper.hpp" />
-    <ClInclude Include="TetrominoLayer.hpp" />
+    <ClInclude Include="TetrominoFactory.hpp" />
     <ClInclude Include="TetrisPlayField.hpp" />
     <ClInclude Include="Tetromino.hpp" />
     <ClInclude Include="TetrominoType.hpp" />

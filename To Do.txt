@@ -1,10 +1,16 @@
 /*
 	TO DO:
-		2. Finish SRS
-		3. Test SRS
-		4. Double check values in SRS table
 
 		Then(A MUST)
+		4. Review Framework architecture
+			- Decouple TetrominoLayer -> change this to TetrominoFactory
+			- TetrominoLayer is now a factory class that creates Tetromino on a given Layer
+
 		4. Do batch processing on single spritesheet
 		5. Review SFML tutorials on Vertex Arrays
+
+		6. Playfield on Framework
+		7. Renderer Context on Framework
+		8. Multiplayer
+		9. Design.
 */

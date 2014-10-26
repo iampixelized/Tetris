@@ -15,14 +15,14 @@ using std::pair;
 
 class TetrisPlayField;
 
-class TetrominoLayer : public esc::ObjectLayer<Tetromino>
+class TetrominoFactory
 {
-	typedef esc::ObjectLayer<Tetromino> TLAYER;
-
 	public:
 
-		TetrominoLayer(Tetromino::RPtr , esc::AssetManager &);
-		virtual ~TetrominoLayer();
+		typedef esc::ObjectLayer<Tetromino> TLAYER;
+
+		TetrominoFactory(TLAYER &, Tetromino::RPtr, esc::AssetManager &);
+		virtual ~TetrominoFactory();
 
 		Tetromino * spawnTetromino();
 		Tetromino * spawnTetromino(TetrominoType , Tetromino::BlockColor);
@@ -45,6 +45,7 @@ class TetrominoLayer : public esc::ObjectLayer<Tetromino>
 		int pcount;
 
 		esc::RandomGenerator random;
+		TLAYER * layer;
 };
 
 #endif
