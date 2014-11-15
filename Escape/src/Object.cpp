@@ -89,9 +89,7 @@ namespace esc
 
 			if (sf::Texture * tmp = textureHandler->getResource(oname))
 			{
-				
-				texture = *tmp;
-				sprite.setTexture(texture);
+				sprite.setTexture(*tmp);
 				return true;
 			}
 

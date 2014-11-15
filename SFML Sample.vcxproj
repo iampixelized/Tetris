@@ -62,52 +62,48 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="bin\debug\sfml-audio-d-2.dll" />
+    <None Include="bin\debug\sfml-graphics-d-2.dll" />
+    <None Include="bin\debug\sfml-network-d-2.dll" />
+    <None Include="bin\debug\sfml-system-d-2.dll" />
+    <None Include="bin\debug\sfml-window-d-2.dll" />
+    <None Include="bin\debug\Tetris SFML.exe" />
+    <None Include="bin\release\sfml-audio-2.dll" />
+    <None Include="bin\release\sfml-graphics-2.dll" />
+    <None Include="bin\release\sfml-network-2.dll" />
+    <None Include="bin\release\sfml-system-2.dll" />
+    <None Include="bin\release\sfml-window-2.dll" />
+    <None Include="bin\release\Tetris SFML.exe" />
     <None Include="LICENSE" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="asset\textures\blue_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\cyan_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\ghost_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\green_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\marked_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\orange_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\purple_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\red_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\sample.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
-    <Image Include="asset\textures\yellow_block.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Image>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="To Do.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="asset\textures">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Image>
+    <Image Include="asset\textures\">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Image>
+    <Image Include="content\asset\textures\blue_block.png" />
+    <Image Include="content\asset\textures\cyan_block.png" />
+    <Image Include="content\asset\textures\ghost_block.png" />
+    <Image Include="content\asset\textures\green_block.png" />
+    <Image Include="content\asset\textures\marked_block.png" />
+    <Image Include="content\asset\textures\minos_sheet.png" />
+    <Image Include="content\asset\textures\orange_block.png" />
+    <Image Include="content\asset\textures\purple_block.png" />
+    <Image Include="content\asset\textures\red_block.png" />
+    <Image Include="content\asset\textures\sample.png" />
+    <Image Include="content\asset\textures\yellow_block.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{61B849D1-92C0-43E5-9FC7-C503692E46A2}</ProjectGuid>
@@ -159,12 +155,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\bin\debug\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\bin\release\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\src;C:\Users\Neon Warge\Documents\Visual Studio 2013\Projects\SFML Sample\Escape\include;$(IncludePath)</IncludePath>
@@ -189,6 +187,12 @@
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /d /y "$(ProjectDir)extlib\debug\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /d /s /y "$(ProjectDir)content" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -231,6 +235,12 @@
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /d /y "$(ProjectDir)extlib\release\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>xcopy /d /s /y "$(ProjectDir)content" "$(TargetDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

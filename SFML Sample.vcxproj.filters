@@ -129,20 +129,36 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="LICENSE" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="asset\textures\blue_block.png" />
-    <Image Include="asset\textures\cyan_block.png" />
-    <Image Include="asset\textures\ghost_block.png" />
-    <Image Include="asset\textures\green_block.png" />
-    <Image Include="asset\textures\orange_block.png" />
-    <Image Include="asset\textures\sample.png" />
-    <Image Include="asset\textures\yellow_block.png" />
-    <Image Include="asset\textures\red_block.png" />
-    <Image Include="asset\textures\purple_block.png" />
-    <Image Include="asset\textures\marked_block.png" />
+    <None Include="README.md" />
+    <None Include="bin\debug\sfml-audio-d-2.dll" />
+    <None Include="bin\debug\sfml-graphics-d-2.dll" />
+    <None Include="bin\debug\sfml-network-d-2.dll" />
+    <None Include="bin\debug\sfml-system-d-2.dll" />
+    <None Include="bin\debug\sfml-window-d-2.dll" />
+    <None Include="bin\debug\Tetris SFML.exe" />
+    <None Include="bin\release\Tetris SFML.exe" />
+    <None Include="bin\release\sfml-window-2.dll" />
+    <None Include="bin\release\sfml-system-2.dll" />
+    <None Include="bin\release\sfml-network-2.dll" />
+    <None Include="bin\release\sfml-graphics-2.dll" />
+    <None Include="bin\release\sfml-audio-2.dll" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="To Do.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="asset\textures\" />
+    <Image Include="asset\textures" />
+    <Image Include="content\asset\textures\yellow_block.png" />
+    <Image Include="content\asset\textures\sample.png" />
+    <Image Include="content\asset\textures\red_block.png" />
+    <Image Include="content\asset\textures\purple_block.png" />
+    <Image Include="content\asset\textures\orange_block.png" />
+    <Image Include="content\asset\textures\minos_sheet.png" />
+    <Image Include="content\asset\textures\marked_block.png" />
+    <Image Include="content\asset\textures\ghost_block.png" />
+    <Image Include="content\asset\textures\green_block.png" />
+    <Image Include="content\asset\textures\cyan_block.png" />
+    <Image Include="content\asset\textures\blue_block.png" />
   </ItemGroup>
 </Project>

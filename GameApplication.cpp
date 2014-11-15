@@ -54,7 +54,6 @@ int GameApplication::run()
 	if (gameLoop() == EXITING)
 		window.close();
 
-	system("pause");
 	return 0;
 }
 
