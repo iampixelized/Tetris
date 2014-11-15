@@ -160,5 +160,27 @@
     <Image Include="content\asset\textures\green_block.png" />
     <Image Include="content\asset\textures\cyan_block.png" />
     <Image Include="content\asset\textures\blue_block.png" />
+    <Image Include="bin\debug\asset\textures\blue_block.png" />
+    <Image Include="bin\debug\asset\textures\yellow_block.png" />
+    <Image Include="bin\debug\asset\textures\sample.png" />
+    <Image Include="bin\debug\asset\textures\red_block.png" />
+    <Image Include="bin\debug\asset\textures\purple_block.png" />
+    <Image Include="bin\debug\asset\textures\orange_block.png" />
+    <Image Include="bin\debug\asset\textures\marked_block.png" />
+    <Image Include="bin\debug\asset\textures\minos_sheet.png" />
+    <Image Include="bin\debug\asset\textures\ghost_block.png" />
+    <Image Include="bin\debug\asset\textures\green_block.png" />
+    <Image Include="bin\debug\asset\textures\cyan_block.png" />
+    <Image Include="bin\release\asset\textures\yellow_block.png" />
+    <Image Include="bin\release\asset\textures\sample.png" />
+    <Image Include="bin\release\asset\textures\red_block.png" />
+    <Image Include="bin\release\asset\textures\purple_block.png" />
+    <Image Include="bin\release\asset\textures\orange_block.png" />
+    <Image Include="bin\release\asset\textures\minos_sheet.png" />
+    <Image Include="bin\release\asset\textures\marked_block.png" />
+    <Image Include="bin\release\asset\textures\green_block.png" />
+    <Image Include="bin\release\asset\textures\ghost_block.png" />
+    <Image Include="bin\release\asset\textures\cyan_block.png" />
+    <Image Include="bin\release\asset\textures\blue_block.png" />
   </ItemGroup>
 </Project>
