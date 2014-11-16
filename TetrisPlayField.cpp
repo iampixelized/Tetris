@@ -1,7 +1,3 @@
-#include<iostream>
-using std::cout;
-using std::endl;
-
 #include<algorithm>
 using std::all_of;
 using std::count;
@@ -20,7 +16,6 @@ TetrisPlayField::TetrisPlayField(sf::Vector2f pos, float o)
 	, position(pos)
 	, offset(o)
 	, peakLevels(20, 20)
-	, _topLevelOccupied(false)
 {
 	for (int i = 0; i <= fieldSize.y; ++i)
 	{
@@ -201,7 +196,6 @@ void TetrisPlayField::shiftClearedRows()
 void TetrisPlayField::registerBlocks(Tetromino * t)
 {
 	if (t == nullptr) return;
-	cout << "Peak level is : " << getPeakLevel() << endl;
 
 	for (size_t i = 0; i < t->getBlockCount(); ++i)
 	{
@@ -257,9 +251,4 @@ void TetrisPlayField::removeRow(int row)
 	
 	blockGrid.erase(iter);
 	blockGrid.insert(blockGrid.begin() , vector<Block*>(10, nullptr));
-}
-
-bool TetrisPlayField::isTopLevelOccupied() const
-{
-	return _topLevelOccupied;
 }

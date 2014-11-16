@@ -16,6 +16,8 @@ using std::make_pair;
 
 #include<SFML/Graphics.hpp>
 
+#include "IUpdatableObject.hpp"
+
 class Tetromino;
 class Block;
 
@@ -25,6 +27,7 @@ class TetrisPlayField
 
 	public:
 		
+
 		TetrisPlayField(sf::Vector2f = sf::Vector2f(), float offset = 16.0f);
 		virtual ~TetrisPlayField();
 
@@ -55,14 +58,12 @@ class TetrisPlayField
 		void registerBlocks(Tetromino *);
 		void resetRows();
 		int getClearedRowsSize() const;
-		bool isTopLevelOccupied() const;
 
 	private:
-
+		
 		void searchClearedRows();
 		void removeRow(int);
 
-		bool _topLevelOccupied;
 		sf::Vector2i fieldSize;
 		BlockGrid blockGrid;
 

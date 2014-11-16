@@ -28,6 +28,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
+    <ClCompile Include="Scorer.cpp" />
     <ClCompile Include="SRS.cpp" />
     <ClCompile Include="TetrisPlayFieldBackground.cpp" />
     <ClCompile Include="TetrominoDropper.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Block.hpp" />
     <ClInclude Include="Mimic.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
+    <ClInclude Include="Scorer.hpp" />
     <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrisPlayFieldBackground.hpp" />
     <ClInclude Include="TetrominoDropper.hpp" />
@@ -213,7 +215,7 @@
       <Command>xcopy /d /y "$(ProjectDir)extlib\debug\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /d /s /y "$(ProjectDir)content" "$(TargetDir)"</Command>
+      <Command>xcopy /d /s /y "$(ProjectDir)asset" "$(TargetDir)asset"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -261,7 +263,7 @@
       <Command>xcopy /d /y "$(ProjectDir)extlib\release\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>xcopy /d /s /y "$(ProjectDir)content" "$(TargetDir)"</Command>
+      <Command>xcopy /d /s /y "$(ProjectDir)asset" "$(TargetDir)asset"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

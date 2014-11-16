@@ -40,6 +40,7 @@ namespace esc
 
 		MANAGEDTYPE * addNewObject(MANAGEDTYPE *, bool * check = nullptr);
 		bool deleteObject(int);
+		void deleteAll();
 		MANAGEDTYPE * getObject(int);
 		
 		virtual void drawLayer(sf::RenderWindow *);
@@ -92,6 +93,12 @@ namespace esc
 
 		layer.erase(id);
 		return true;
+	}
+
+	template<class MANAGEDTYPE>
+	void ObjectLayer<MANAGEDTYPE>::deleteAll()
+	{
+		layer.clear();
 	}
 
 	template<class MANAGEDTYPE>

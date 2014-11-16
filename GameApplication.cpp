@@ -15,6 +15,7 @@ using std::pair;
 #include "Mimic.hpp"
 #include "DRS.hpp"
 #include "SRS.hpp"
+#include "Scorer.hpp"
 
 GameApplication::GameApplication()
 	:
@@ -86,6 +87,7 @@ GameApplication::GameState GameApplication::gameLoop()
 	dropper.setTetromino(tetromino);
 	mimic.initialize(tetromino);
 
+	Scorer scorer(*tpf.get());
 
 	cout << "\n\n\n\n\n\n\n\nContent number of t-layer : " << tetrominoLayer.getSize() << endl;
 
@@ -155,34 +157,41 @@ GameApplication::GameState GameApplication::gameLoop()
 		}
 
 		if (tpf->getClearedRowsSize() > 0)
+		{
+			scorer.makeScore();
 			tpf->shiftClearedRows();
+		}
 
 		tpf->drawGrid(&window);
+
+		dropper.update(elapsed);
+		tetrominoLayer.updateLayer(elapsed);
+		tetrominoLayer.drawLayer(&window);
 
 		mimic.update(elapsed);
 		mimic.draw(&window);
 
-		//dropper.update(elapsed);
-		tetrominoLayer.updateLayer(elapsed);
-		tetrominoLayer.drawLayer(&window);
+		scorer.update(elapsed);
 
 		window.display();
 	}
+
+	tetrominoLayer.deleteAll();
 
 	return STARTING;
 }
 
 bool GameApplication::loadGameAssets()
 {
-	textures->addPath("blue_block"	 , "content/asset/textures/blue_block.png"		);
-	textures->addPath("cyan_block"	 , "content/asset/textures/cyan_block.png"		);
-	textures->addPath("green_block"	 , "content/asset/textures/green_block.png"		);
-	textures->addPath("orange_block" , "content/asset/textures/orange_block.png"	);
-	textures->addPath("purple_block" , "content/asset/textures/purple_block.png"	);
-	textures->addPath("red_block"	 , "content/asset/textures/red_block.png"		);
-	textures->addPath("yellow_block" , "content/asset/textures/yellow_block.png"	);
-	textures->addPath("marked_block" , "content/asset/textures/marked_block.png"	);
-	textures->addPath("ghost_block"	 , "content/asset/textures/ghost_block.png"		);
+	textures->addPath("blue_block"	 , "asset/textures/blue_block.png"		);
+	textures->addPath("cyan_block"	 , "asset/textures/cyan_block.png"		);
+	textures->addPath("green_block"	 , "asset/textures/green_block.png"		);
+	textures->addPath("orange_block" , "asset/textures/orange_block.png"	);
+	textures->addPath("purple_block" , "asset/textures/purple_block.png"	);
+	textures->addPath("red_block"	 , "asset/textures/red_block.png"		);
+	textures->addPath("yellow_block" , "asset/textures/yellow_block.png"	);
+	textures->addPath("marked_block" , "asset/textures/marked_block.png"	);
+	textures->addPath("ghost_block"	 , "asset/textures/ghost_block.png"		);
 
 	if (!textures->checkAllAssets())
 		return false;
