@@ -95,17 +95,17 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Image>
-    <Image Include="bin\debug\asset\textures\blue_block.png" />
-    <Image Include="bin\debug\asset\textures\cyan_block.png" />
-    <Image Include="bin\debug\asset\textures\ghost_block.png" />
-    <Image Include="bin\debug\asset\textures\green_block.png" />
-    <Image Include="bin\debug\asset\textures\marked_block.png" />
-    <Image Include="bin\debug\asset\textures\minos_sheet.png" />
-    <Image Include="bin\debug\asset\textures\orange_block.png" />
-    <Image Include="bin\debug\asset\textures\purple_block.png" />
-    <Image Include="bin\debug\asset\textures\red_block.png" />
-    <Image Include="bin\debug\asset\textures\sample.png" />
-    <Image Include="bin\debug\asset\textures\yellow_block.png" />
+    <Image Include="bin\debug\textures\blue_block.png" />
+    <Image Include="bin\debug\textures\cyan_block.png" />
+    <Image Include="bin\debug\textures\ghost_block.png" />
+    <Image Include="bin\debug\textures\green_block.png" />
+    <Image Include="bin\debug\textures\marked_block.png" />
+    <Image Include="bin\debug\textures\minos_sheet.png" />
+    <Image Include="bin\debug\textures\orange_block.png" />
+    <Image Include="bin\debug\textures\purple_block.png" />
+    <Image Include="bin\debug\textures\red_block.png" />
+    <Image Include="bin\debug\textures\sample.png" />
+    <Image Include="bin\debug\textures\yellow_block.png" />
     <Image Include="bin\release\asset\textures\blue_block.png" />
     <Image Include="bin\release\asset\textures\cyan_block.png" />
     <Image Include="bin\release\asset\textures\ghost_block.png" />

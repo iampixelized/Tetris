@@ -1,9 +1,14 @@
 #include <algorithm>
 using std::next_permutation;
-using std::random_shuffle;
+using std::shuffle;
 
 #include<utility>
 using std::move;
+
+#include<chrono>
+using std::chrono::system_clock;
+
+#include<random>
 
 #include "RotationSystem.hpp"
 #include "TetrominoFactory.hpp"
@@ -75,7 +80,8 @@ void TetrominoFactory::permutateBag()
 	}
 	while (next_permutation(tets.begin(), tets.end()));
 
-	random_shuffle(possiblePermutations.begin(), possiblePermutations.end());
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle(possiblePermutations.begin(), possiblePermutations.end(), std::default_random_engine(seed));
 }
 
 void TetrominoFactory::randomizeBag()
