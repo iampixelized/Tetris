@@ -29,6 +29,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="RotationSystem.cpp" />
     <ClCompile Include="Scorer.cpp" />
+    <ClCompile Include="SoundDirector.cpp" />
     <ClCompile Include="SRS.cpp" />
     <ClCompile Include="TetrisPlayFieldBackground.cpp" />
     <ClCompile Include="TetrominoDropper.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Mimic.hpp" />
     <ClInclude Include="RotationSystem.hpp" />
     <ClInclude Include="Scorer.hpp" />
+    <ClInclude Include="SoundDirector.hpp" />
     <ClInclude Include="SRS.hpp" />
     <ClInclude Include="TetrisPlayFieldBackground.hpp" />
     <ClInclude Include="TetrominoDropper.hpp" />

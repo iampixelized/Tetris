@@ -2,10 +2,6 @@
 	TO DO:
 
 		Then(A MUST)
-		- Scoring
-			- Do scoring
-			- How to detect T-Spin?
-			- learn more about T-Spin!
 		- Audio
 		- Design
 		- Multiplayer

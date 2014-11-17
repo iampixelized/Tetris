@@ -14,10 +14,12 @@ using std::unique_ptr;
 
 #include "AssetManager.hpp"
 #include "TetrisPlayField.hpp"
+#include "SoundDirector.hpp"
 
 class GameApplication
 {
 	typedef esc::Asset<sf::Texture> TextureAsset;
+	typedef esc::Asset<sf::SoundBuffer> SoundAsset;
 
 	public:
 
@@ -35,8 +37,9 @@ class GameApplication
 		int run();
 		void setScreenSize(unsigned int , unsigned int);
 
-		static sf::Texture * loadTextureFromFile(const string & path);
-
+		static sf::Texture		* loadTextureFromFile(const string & path);
+		static sf::SoundBuffer	* loadSoundFromFile  (const string & path);
+	
 	private:
 
 		
@@ -53,6 +56,9 @@ class GameApplication
 		unique_ptr<TetrisPlayField> tpf;
 		esc::AssetManager assetManager;
 		TextureAsset * textures;
+		SoundAsset * sounds;
+
+		unique_ptr<SoundDirector> soundDirector;
 
 		sf::Clock clock;
 };
